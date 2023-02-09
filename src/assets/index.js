@@ -20,3 +20,15 @@
 // };
 
 // export { icons, images };
+
+
+const icons = {
+    backIcon: require('../assets/icons/backIcon.png'),
+    vietnamIcon: require('../assets/icons/vietnamIcon.png'),
+    googleIcon: require('../assets/icons/googleIcon.png'),
+    facebookIcon: require('../assets/icons/facebookIcon.png'),
+}
+
+
+
+export { icons }
