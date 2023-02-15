@@ -42,6 +42,9 @@ const icons = {
     clockIcon : require('../assets/icons/clockIcon.png'),
     customerSupportIcon : require('../assets/icons/customerSupportIcon.png'),
     userIcon : require('../assets/icons/userIcon.png'),
+    checkedIcon : require('../assets/icons/checkedIcon.png'),
+    unCheckedIcon : require('../assets/icons/unCheckedIcon.png'),
+    nextIconBlack : require('../assets/icons/nextIconBlack.png'),
 }
 
 const images = {
@@ -52,6 +55,8 @@ const images = {
     memberImage : require('../assets/images/memberImage.png'),
     coinVoucherImage : require('../assets/images/coinVoucherImage.png'),
     superVoucherImage : require('../assets/images/superVoucherImage.png'),
+    hoodieImage : require('../assets/images/hoodieImage.png'),
+    ratingStarImage : require('../assets/images/ratingStarImage.png'),
 }
 
 

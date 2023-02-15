@@ -8,7 +8,9 @@ const Voucher = () => {
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <Image source={icons.backIcon} />
+                <TouchableOpacity>
+                    <Image source={icons.backIcon} />
+                </TouchableOpacity>
                 <Text style={styles.headerText}>Voucher</Text>
             </View>
             <TouchableOpacity style={styles.imageContainer}>
@@ -22,10 +24,10 @@ export default Voucher
 
 const styles = StyleSheet.create({
 
-    imageContainer : {
-        marginTop : 22,
-        justifyContent : 'center',
-        alignItems : 'center',
+    imageContainer: {
+        marginTop: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     headerText: {
