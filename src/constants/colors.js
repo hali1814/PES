@@ -8,6 +8,7 @@ const colorsPES = {
     borderColorPrimary : '#DADFE6',
     borderColorBlue : '#5865F2',
     transText : '#8592A6',
+    grey : '#F2F0F5',
 }
 
 export default colorsPES
