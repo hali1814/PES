@@ -7,6 +7,9 @@ import Voucher from './src/pages/profile/Voucher'
 import MyFeedback from './src/pages/profile/MyFeedback'
 import CustomerSupport from './src/pages/profile/CustomerSupport'
 import MyProfileDetail from './src/pages/profile/MyProfileDetail'
+import ChangePassword from './src/pages/profile/ChangePassword'
+import ChangeAddress from './src/pages/profile/ChangeAddress'
+import AddAddress from './src/pages/profile/AddAddress'
 
 const App = () => {
   return (
@@ -16,7 +19,10 @@ const App = () => {
       {/* <Voucher/> */}
       {/* <MyFeedback /> */}
       {/* <CustomerSupport /> */}
-      <MyProfileDetail />
+      {/* <MyProfileDetail /> */}
+      {/* <ChangePassword /> */}
+      {/* <ChangeAddress /> */}
+      <AddAddress />
     </View>
   )
 }
