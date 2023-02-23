@@ -9,6 +9,8 @@ export const textsPES = {
   txtPhone: '091233322',
   txtVoucher: 'VOUCHER CỦA SHOP',
   txtDetail: 'Chi tiết',
+  titleHeaderVoucher: 'Voucher',
+  txtUse: 'Sử dụng',
 };
 
 // hint trong textinput

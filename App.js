@@ -5,15 +5,17 @@ import Loading from './src/pages/loading/Loading';
 import Onboarding from './src/pages/onboarding/Onboarding';
 import PESCategories from './src/components/PESCategories';
 import Shop from './src/pages/shop/Shop';
+import Voucher from './src/pages/voucher/Voucher';
 
 const App = () => {
   return (
     <View>
       {/* <Product /> */}
       {/* <Loading /> */}
-      {/* <Onboarding/> */}
+      {/* <Onboarding /> */}
       {/* <PESCategories /> */}
-      <Shop />
+      {/* <Shop /> */}
+      <Voucher />
     </View>
   );
 };
