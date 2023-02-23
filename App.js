@@ -6,6 +6,7 @@ import Onboarding from './src/pages/onboarding/Onboarding';
 import PESCategories from './src/components/PESCategories';
 import Shop from './src/pages/shop/Shop';
 import Voucher from './src/pages/voucher/Voucher';
+import Detail from './src/pages/detail/Detail';
 
 const App = () => {
   return (
@@ -15,7 +16,8 @@ const App = () => {
       {/* <Onboarding /> */}
       {/* <PESCategories /> */}
       {/* <Shop /> */}
-      <Voucher />
+      {/* <Voucher /> */}
+      <Detail />
     </View>
   );
 };
