@@ -24,6 +24,8 @@ import {
 } from './components/styles';
 import {textsPES} from '../../constants/string';
 import PESShop from '../../components/PESShop';
+import PESProductDescription from '../../components/PESProductDescription';
+import PESRelatedProducts from '../../components/PESRelatedProducts';
 const {width: screenWidth} = Dimensions.get('window');
 
 const Detail = () => {
@@ -73,6 +75,7 @@ const Detail = () => {
     setImageList(data);
   }, []);
 
+  //Bộ đếm số ảnh
   const handleScroll = e => {
     if (!e) {
       return;
@@ -101,7 +104,7 @@ const Detail = () => {
           position: 'relative',
           justifyContent: 'flex-end',
         }}>
-        <View style={{}}>
+        <View>
           <ScrollView
             horizontal
             pagingEnabled
@@ -131,7 +134,7 @@ const Detail = () => {
             <TouchableOpacity style={{paddingHorizontal: 16}}>
               <Image
                 source={icons.heartWhite_icon}
-                style={{width: 24, height: 24, color: color.WHITE}}
+                style={{width: 24, height: 24}}
               />
             </TouchableOpacity>
           </SafeAreaView>
@@ -217,6 +220,7 @@ const Detail = () => {
           </View>
         </View>
       </View>
+      {/* Voucher */}
       <View style={{paddingHorizontal: 12, marginTop: 90}}>
         <View style={voucherContainer}>
           <View style={{flexDirection: 'row'}}>
@@ -238,7 +242,8 @@ const Detail = () => {
         </View>
       </View>
       <ScrollView pagingEnabled>
-        <View style={{paddingHorizontal: 12, marginTop: 8}}>
+        {/* AdminShop */}
+        <View key={[]} style={{paddingHorizontal: 12, marginTop: 8}}>
           <View style={ContainerShop}>
             <View style={headerContainerShop}>
               <View style={{flexDirection: 'row'}}>
@@ -303,28 +308,205 @@ const Detail = () => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  backgroundColor: color.MAIN,
                 }}>
-                <Text>{'Mo ta Chi Tiet'}</Text>
+                <Text
+                  style={{fontWeight: '600', fontSize: 16, color: color.BLACK}}>
+                  {'Mô tả chi tiết'}
+                </Text>
                 <TouchableOpacity
                   style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text>{'Chi Tiet'}</Text>
+                  <Text
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 13,
+                      color: color.MAIN,
+                    }}>
+                    {'Chi tiết'}
+                  </Text>
                   <Image
                     source={icons.chevronRight_icon}
-                    style={{width: 24, height: 24}}
+                    style={{width: 16, height: 16}}
                   />
                 </TouchableOpacity>
               </View>
               <View
                 style={{
                   marginTop: 16,
-                  backgroundColor: color.TEXT_PRIMARY,
                   height: 100,
-                }}></View>
+                }}>
+                <View>
+                  <PESProductDescription
+                    icon={icons.color_icon}
+                    text1={'Màu'}
+                    text2={'Trắng, xanh, vàng'}
+                  />
+                  <View style={{paddingTop: 8}}>
+                    <PESProductDescription
+                      icon={icons.size_icon}
+                      text1={'Size'}
+                      text2={'37 - 45'}
+                    />
+                  </View>
+                  <View style={{paddingTop: 8}}>
+                    <PESProductDescription
+                      icon={icons.location_icon}
+                      text1={'Khu vực'}
+                      text2={'Hồ Chí Minh, Hà Nội'}
+                    />
+                  </View>
+                  <View style={{paddingTop: 8}}>
+                    <PESProductDescription
+                      icon={icons.local_icon}
+                      text1={'Thương hiệu'}
+                      text2={'Sneaker MLB'}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            marginTop: 8,
+            height: '100%',
+            marginHorizontal: 12,
+          }}>
+          <View>
+            <View>
+              <PESRelatedProducts
+                imageProducts={images.detail_image}
+                imageUser={images.user2_image}
+                title={'Giày Bán rồi'}
+                description={
+                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
+                }
+                money={'2.000.000'}
+              />
+            </View>
+            <View style={{marginTop: 8}}>
+              <PESRelatedProducts
+                imageProducts={images.detail_image}
+                imageUser={images.user2_image}
+                title={'Giày Bán rồi'}
+                description={
+                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
+                }
+                money={'2.000.000'}
+              />
+            </View>
+            <View style={{marginTop: 8}}>
+              <PESRelatedProducts
+                imageProducts={images.detail_image}
+                imageUser={images.user2_image}
+                title={'Giày Bán rồi'}
+                description={
+                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
+                }
+                money={'2.000.000'}
+              />
+            </View>
+            <TouchableOpacity style={{marginTop: 8}}>
+              <PESRelatedProducts
+                imageProducts={images.detail_image}
+                imageUser={images.user2_image}
+                title={'Giày Bán rồi'}
+                description={
+                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
+                }
+                money={'2.000.000'}
+              />
+            </TouchableOpacity>
+            <View style={{marginTop: 8}}>
+              <PESRelatedProducts
+                imageProducts={images.detail_image}
+                imageUser={images.user2_image}
+                title={'Giày Bán rồi'}
+                description={
+                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
+                }
+                money={'2.000.000'}
+              />
             </View>
           </View>
         </View>
       </ScrollView>
+      <View style={{height: 75, backgroundColor: color.WHITE}}>
+        <View
+          style={{
+            height: 61,
+            paddingHorizontal: 16,
+            paddingVertical: 8,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <View style={{flexDirection: 'column'}}>
+            <View style={{height: 20, justifyContent: 'center'}}>
+              <Text
+                style={{
+                  fontWeight: '600',
+                  fontSize: 14,
+                }}>
+                {'Thanh Toán'}
+              </Text>
+            </View>
+            <View style={{height: 20, justifyContent: 'center'}}>
+              <Text
+                style={{
+                  fontWeight: '700',
+                  fontSize: 18,
+                  color: color.MAIN,
+                }}>
+                {'2.000.000'}đ
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity>
+            <View
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 60,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderColor: color.MAIN,
+                borderWidth: 0.5,
+              }}>
+              <Image
+                source={icons.cartAdd_icon}
+                style={{width: 32, height: 32}}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                width: 140,
+                height: 44,
+                backgroundColor: color.MAIN,
+                borderRadius: 60,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  width: 140,
+                  height: 44,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontWeight: '500',
+                    fontSize: 16,
+                    color: color.WHITE,
+                  }}>
+                  {'Mua ngay'}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };

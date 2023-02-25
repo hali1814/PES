@@ -15,6 +15,12 @@ const icons = {
   voucher_icon: require('../assets/icons/Voucher.png'),
   chevronBack_icon: require('../assets/icons/Chevron-back.png'),
   chevronBackWhite_icon: require('../assets/icons/chevron-left.png'),
+  color_icon: require('../assets/icons/Swatches.png'),
+  size_icon: require('../assets/icons/size.png'),
+  local_icon: require('../assets/icons/local.png'),
+  location_icon: require('../assets/icons/Location-pin.png'),
+  cartAdd_icon: require('../assets/icons/cartAdd.png'),
+
   // coin: require('./icons/coin.png'),
   // placeholder: require('./icons/placeholder.png'),
   // star: require('./icons/Star.png'),
