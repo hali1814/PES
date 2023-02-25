@@ -3,10 +3,10 @@ import React from 'react';
 import Product from './src/pages/product/Product';
 import Loading from './src/pages/loading/Loading';
 import Onboarding from './src/pages/onboarding/Onboarding';
-import PESCategories from './src/components/PESCategories';
 import Shop from './src/pages/shop/Shop';
 import Voucher from './src/pages/voucher/Voucher';
 import Detail from './src/pages/detail/Detail';
+import OrderConfirmation from './src/pages/ orderconfirmation/ OrderConfirmation';
 
 const App = () => {
   return (
@@ -14,10 +14,10 @@ const App = () => {
       {/* <Product /> */}
       {/* <Loading /> */}
       {/* <Onboarding /> */}
-      {/* <PESCategories /> */}
       {/* <Shop /> */}
       {/* <Voucher /> */}
-      <Detail />
+      {/* <Detail /> */}
+      <OrderConfirmation />
     </View>
   );
 };

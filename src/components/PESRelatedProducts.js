@@ -2,6 +2,7 @@ import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import color from '../styles/colors';
 import {images} from '../assets';
+import Fonts from '../assets/fonts/fonts';
 
 const PESRelatedProducts = ({
   imageProducts,
@@ -21,7 +22,9 @@ const PESRelatedProducts = ({
       </View>
       <View style={styles.DetailStyle}>
         <Text style={styles.TextStyle1}>{title}</Text>
-        <Text style={styles.TextStyle2}>{description}</Text>
+        <Text numberOfLines={2} style={styles.TextStyle2}>
+          {description}
+        </Text>
         <Text style={styles.TextStyle3}>{money}đ</Text>
       </View>
       <View style={styles.ContainerImgUser}>
@@ -51,6 +54,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     flexDirection: 'column',
     paddingRight: 20,
+    justifyContent: 'space-between',
   },
   UserStyle: {
     width: 24,
@@ -62,21 +66,21 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   TextStyle1: {
-    fontWeight: '600',
+    fontFamily: Fonts.Work_SemiBold,
     fontSize: 14,
     justifyContent: 'center',
     alignItems: 'center',
   },
   TextStyle2: {
-    fontWeight: '400',
+    fontFamily: Fonts.Work_Regular,
+    color: color.TEXT_SECOND,
     fontSize: 14,
     alignItems: 'center',
-    marginTop: 6,
   },
   TextStyle3: {
-    fontWeight: '600',
+    fontFamily: Fonts.Work_SemiBold,
     fontSize: 15,
-    marginTop: 6,
+
     alignItems: 'center',
   },
 });

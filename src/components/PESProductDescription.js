@@ -1,6 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {icons} from '../assets';
+import Fonts from '../assets/fonts/fonts';
 
 const PESProductDescription = ({icon, text1, text2}) => {
   return (
@@ -31,6 +32,6 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 8,
     fontSize: 14,
-    fontWeight: '400',
+    fontFamily: Fonts.Work_Regular,
   },
 });

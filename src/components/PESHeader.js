@@ -4,7 +4,7 @@ import {icons} from '../assets';
 import color from '../styles/colors';
 import {textsPES} from '../constants/string';
 
-const PESHeader = () => {
+const PESHeader = ({title}) => {
   return (
     <View style={styles.Container}>
       <View style={styles.imageContainer}>
@@ -14,7 +14,7 @@ const PESHeader = () => {
         />
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.titleText}>{textsPES.titleHeaderVoucher}</Text>
+        <Text style={styles.titleText}>{title}</Text>
       </View>
     </View>
   );

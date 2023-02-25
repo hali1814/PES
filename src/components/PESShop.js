@@ -1,6 +1,7 @@
 import {View, Text, Image, StyleSheet} from 'react-native';
 import React from 'react';
 import color from '../styles/colors';
+import Fonts from '../assets/fonts/fonts';
 
 const PESShop = ({imgUri, txtShop, txt2Shop}) => {
   return (
@@ -34,13 +35,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'justify',
     fontSize: 12,
-    fontWeight: '400',
+    fontFamily: Fonts.Work_Regular,
   },
   txtPESShop2: {
     marginLeft: 4,
     alignSelf: 'center',
     textAlign: 'justify',
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Fonts.Work_Medium,
   },
 });

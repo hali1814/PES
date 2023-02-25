@@ -1,0 +1,77 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Manrope-Bold.ttf",
+      "sha1": "fd4744b003e034fdf9ff433985088600ed4c6b19"
+    },
+    {
+      "path": "src/assets/fonts/Manrope-ExtraBold.ttf",
+      "sha1": "98f54dbb2530a2599e8e1f97eaa3b97fb1799aeb"
+    },
+    {
+      "path": "src/assets/fonts/Manrope-ExtraLight.ttf",
+      "sha1": "d92ce9c383405bef2329644bbbd7d3cd0c8e93a3"
+    },
+    {
+      "path": "src/assets/fonts/Manrope-Light.ttf",
+      "sha1": "110a9ccc864b37e8df9581b5ab2b21a116a91e64"
+    },
+    {
+      "path": "src/assets/fonts/Manrope-Medium.ttf",
+      "sha1": "fcafcd59b8a4a2fd66b28434307e2bb0d8f0f1c9"
+    },
+    {
+      "path": "src/assets/fonts/Manrope-Regular.ttf",
+      "sha1": "7e862264836329a059f38d0fc66b22a4936402e8"
+    },
+    {
+      "path": "src/assets/fonts/Manrope-SemiBold.ttf",
+      "sha1": "96b5b6af6b63a1f74978e1e10ff3471304a7de46"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-Black.ttf",
+      "sha1": "5147ae4f5b0ec11dc9ce6afb24e26c1bcb9f913d"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-Bold.ttf",
+      "sha1": "048d6d2ced2cd4a4513e19ce9765c96896039087"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-ExtraBold.ttf",
+      "sha1": "83e6e490d0bd85263e7fd13e8de21c72d27e6740"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-ExtraLight.ttf",
+      "sha1": "da7b8d9c8690ab9578701bd344a0a6e2d779d119"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-Italic.ttf",
+      "sha1": "6d80f9c07a8435971af04b7b3b93f0da832aa0f6"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-Light.ttf",
+      "sha1": "7072fb1da403cc0618804b71b72b4df5a8b3647d"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-Medium.ttf",
+      "sha1": "a8cf94376a573ae2c43d0457a28b4357e9808946"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-Regular.ttf",
+      "sha1": "89a5d38e1316b70da48e9475628023264af74783"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-SemiBold.ttf",
+      "sha1": "f12114ffb09b58990f7aab420b592c3e4315ff95"
+    },
+    {
+      "path": "src/assets/fonts/WorkSans-Thin.ttf",
+      "sha1": "bf150c5dc03745ef7342e7c6882451dba2539724"
+    },
+    {
+      "path": "src/assets/fonts/note.txt",
+      "sha1": "b787b3f6694906042d9f84442eda6d40e69926e6"
+    }
+  ]
+}

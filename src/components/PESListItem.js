@@ -2,6 +2,7 @@ import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import color from '../styles/colors';
 import {icons} from '../assets';
+import Fonts from '../assets/fonts/fonts';
 
 const PESListItem = ({item}) => {
   return (
@@ -11,7 +12,9 @@ const PESListItem = ({item}) => {
         <View style={styles.saleContainer}>
           <Image source={icons.tagSale_icon} style={styles.imgSale} />
           <View style={{alignSelf: 'center', marginLeft: 4}}>
-            <Text style={{color: '#FFB208'}}>{item.sale}</Text>
+            <Text style={{color: '#FFB208', fontFamily: Fonts.Work_Medium}}>
+              {item.sale}
+            </Text>
           </View>
         </View>
       </View>
@@ -19,7 +22,9 @@ const PESListItem = ({item}) => {
         <Image source={item.img} style={styles.imgProduct} />
       </View>
       <View style={styles.headerTextContainer}>
-        <Text style={styles.textName}>{item.name}</Text>
+        <Text numberOfLines={2} style={styles.textName}>
+          {item.name}
+        </Text>
         <Text style={styles.textAbout}>{item.about}</Text>
         <View
           style={{
@@ -27,9 +32,9 @@ const PESListItem = ({item}) => {
             width: '100%',
           }}>
           <Text style={styles.textPrice}>{item.price} đ</Text>
-          <View style={styles.imgContainer}>
+          {/* <View style={styles.imgContainer}>
             <Image source={icons.heart_icon} style={{width: 20, height: 20}} />
-          </View>
+          </View> */}
         </View>
       </View>
     </TouchableOpacity>
@@ -75,19 +80,19 @@ const styles = StyleSheet.create({
   },
   textName: {
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: Fonts.Work_SemiBold,
     color: color.BLACK,
   },
   textAbout: {
     marginTop: 4,
     height: 40,
     fontSize: 14,
-    fontWeight: '400',
+    fontFamily: Fonts.Work_Regular,
     color: color.TEXT_SECOND,
   },
   textPrice: {
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: Fonts.Work_SemiBold,
     alignContent: 'center',
   },
   imgContainer: {

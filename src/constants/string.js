@@ -8,9 +8,15 @@ export const textsPES = {
   txtShopname: 'Vua Hàng Hiệu',
   txtPhone: '091233322',
   txtVoucher: 'VOUCHER CỦA SHOP',
+  txtVoucherDetail: 'VOUCHER FREESHIP SỬ DỤNG ĐƠN HÀNG TỪ 500K',
   txtDetail: 'Chi tiết',
   titleHeaderVoucher: 'Voucher',
   txtUse: 'Sử dụng',
+  titleShoes: 'Giày MLB Bigball Chunky Mesh New Màu Trắng',
+  txtlabel: 'Giày Authentic',
+  numberMoney: '1.333.333',
+  identificationText:
+    'Vui lòng định danh tài khoản để hoàn tất thủ tục mua hàng',
 };
 
 // hint trong textinput

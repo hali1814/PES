@@ -17,7 +17,7 @@ const Voucher = () => {
   return (
     <SafeAreaView
       style={{backgroundColor: color.BACKGROUDITEM, height: '100%'}}>
-      <PESHeader />
+      <PESHeader title={'Voucher'} />
       <PESVoucher
         img={images.momovoucher_image}
         saleup="Sale up-to"

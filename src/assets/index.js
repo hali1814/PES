@@ -19,7 +19,7 @@ const icons = {
   size_icon: require('../assets/icons/size.png'),
   local_icon: require('../assets/icons/local.png'),
   location_icon: require('../assets/icons/Location-pin.png'),
-  cartAdd_icon: require('../assets/icons/cartAdd.png'),
+  cartAdd_icon: require('../assets/icons/add-to-cart.png'),
 
   // coin: require('./icons/coin.png'),
   // placeholder: require('./icons/placeholder.png'),

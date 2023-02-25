@@ -31,11 +31,8 @@ const Onboarding = () => {
           />
           <Text style={TextOnboarding}>{textsPES.txtOnboarding}</Text>
           <View style={ViewButton}>
-            <PESButon on_press={() => null} btn_text={textsPES.login} />
-            <PESButtonOutline
-              on_press={() => null}
-              btn_text={textsPES.register}
-            />
+            <PESButon on_press={() => null} btn_text={textsPES.register} />
+            <PESButtonOutline on_press={() => null} btn_text={textsPES.login} />
           </View>
         </View>
       </View>

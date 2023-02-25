@@ -1,3 +1,5 @@
+import Fonts from '../../../assets/fonts/fonts';
+
 export const containerOnboarding = {
   backgroundColor: '#ffff',
   position: 'relative',
@@ -17,7 +19,7 @@ export const TextOnboarding = {
   textAlign: 'center',
   alignItems: 'center',
   fontSize: 14,
-  fontWeight: '400',
+  fontFamily: Fonts.Man_Regular,
 };
 export const ViewButton = {
   marginTop: 48,

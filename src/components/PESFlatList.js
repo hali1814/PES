@@ -57,6 +57,7 @@ export const PESFlatList = () => {
   ];
   return (
     <FlatList
+      pagingEnabled
       data={DATA}
       numColumns={2}
       keyExtractor={item => item.id}
