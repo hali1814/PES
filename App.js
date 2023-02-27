@@ -10,20 +10,14 @@ import MyProfileDetail from './src/pages/profile/MyProfileDetail'
 import ChangePassword from './src/pages/profile/ChangePassword'
 import ChangeAddress from './src/pages/profile/ChangeAddress'
 import AddAddress from './src/pages/profile/AddAddress'
+import { NavigationContainer } from "@react-navigation/native";
+import MyTab from './src/navigation'
 
 const App = () => {
   return (
-    <View>
-      {/* <Login/> */}
-      {/* <Profile/> */}
-      {/* <Voucher/> */}
-      {/* <MyFeedback /> */}
-      {/* <CustomerSupport /> */}
-      {/* <MyProfileDetail /> */}
-      {/* <ChangePassword /> */}
-      {/* <ChangeAddress /> */}
-      <AddAddress />
-    </View>
+    <NavigationContainer>
+      <MyTab />
+    </NavigationContainer>
   )
 }
 
