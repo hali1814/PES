@@ -4,11 +4,11 @@ import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
 
-const Voucher = () => {
+const Voucher = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.pop() }}>
                     <Image source={icons.backIcon} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Voucher</Text>

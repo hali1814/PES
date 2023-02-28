@@ -28,11 +28,11 @@ const DATA = [
     },
 ]
 
-const ChangeAddress = () => {
+const ChangeAddress = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.goBack()}>
                     <Image source={icons.backIcon} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Thay đổi địa chỉ</Text>
@@ -51,7 +51,7 @@ const ChangeAddress = () => {
                         </TouchableOpacity>
                     )}
                 />
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity onPress={()=>{navigation.push('AddAddress')}} style={styles.button}>
                     <Text style={({ fontSize: 16, fontWeight: '500', lineHeight: 22, color: colorsPES.white })}>Thêm địa chỉ</Text>
                 </TouchableOpacity>
             </View>
@@ -67,7 +67,7 @@ export default ChangeAddress
 const styles = StyleSheet.create({
 
     saveButton: {
-        marginTop: 176,
+        marginTop: 150,
         backgroundColor: colorsPES.borderColorBlue,
         paddingVertical: 11,
         justifyContent: 'center',

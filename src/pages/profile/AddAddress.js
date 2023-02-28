@@ -6,11 +6,11 @@ import colorsPES from '../../constants/colors';
 
 
 
-const AddAddress = () => {
+const AddAddress = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.goBack()}>
                     <Image source={icons.backIcon} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Thay đổi địa chỉ</Text>
@@ -34,7 +34,7 @@ export default AddAddress
 const styles = StyleSheet.create({
 
     addButton: {
-        marginTop: 541,
+        marginTop: 490,
         backgroundColor: colorsPES.borderColorBlue,
         paddingVertical: 11,
         justifyContent: 'center',

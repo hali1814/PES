@@ -6,7 +6,7 @@ import colorsPES from '../../constants/colors';
 
 
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container} >
             <View style={styles.headerContainer}>
@@ -16,7 +16,7 @@ const Profile = () => {
                         <Image source={icons.notificationIcon} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.userInforContainer}>
+                <TouchableOpacity onPress={() => { navigation.push('MyProfileDetail') }} style={styles.userInforContainer}>
                     <View style={styles.userInfor}>
                         <View style={styles.avatar}>
                             <Image source={images.avatar} resizeMode='contain' />
@@ -61,44 +61,44 @@ const Profile = () => {
                 <Text style={({ marginTop: 16, fontWeight: '600', fontSize: 15, lineHeight: 20, color: colorsPES.blackText })}>Tiện ích</Text>
                 <View style={styles.ulityListContainer}>
                     <View style={styles.topList}>
-                        <TouchableOpacity style={styles.ulityItem}>
+                        <TouchableOpacity onPress={() => navigation.push('Voucher')} style={styles.ulityItem}>
                             <Image source={icons.superVoucherIcon} />
-                            <Text style={({textAlign: 'center'})}>Gói siêu voucher</Text>
+                            <Text style={({ textAlign: 'center' })}>Gói siêu voucher</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.ulityItem}>
                             <Image source={icons.gameIcon} />
-                            <Text style={({textAlign: 'center'})}>Game PES</Text>
+                            <Text style={({ textAlign: 'center' })}>Game PES</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.ulityItem}>
                             <Image source={icons.coinEarnIcon} />
-                            <Text style={({textAlign: 'center'})}>Play to Earn Xu</Text>
+                            <Text style={({ textAlign: 'center' })}>Play to Earn Xu</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.ulityItem}>
                             <Image source={icons.heartIcon} />
-                            <Text style={({textAlign: 'center'})}>Sản phẩm yêu thích</Text>
+                            <Text style={({ textAlign: 'center' })}>Sản phẩm yêu thích</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.botList}>
-                        <TouchableOpacity style={styles.ulityItem}>
+                        <TouchableOpacity onPress={() => { navigation.push('MyFeedback') }} style={styles.ulityItem}>
                             <Image source={icons.likeIcon} />
-                            <Text style={({textAlign: 'center'})}>Đánh giá của tôi</Text>
+                            <Text style={({ textAlign: 'center' })}>Đánh giá của tôi</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.ulityItem}>
                             <Image source={icons.clockIcon} />
-                            <Text style={({textAlign: 'center'})}>Lịch sử mua hàng</Text>
+                            <Text style={({ textAlign: 'center' })}>Lịch sử mua hàng</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.ulityItem}>
                             <Image source={icons.customerSupportIcon} />
-                            <Text style={({textAlign: 'center'})}>Hỗ trợ khách hàng</Text>
+                            <Text style={({ textAlign: 'center' })}>Hỗ trợ khách hàng</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.ulityItem}>
+                        <TouchableOpacity onPress={() => { navigation.push('MyProfileDetail') }} style={styles.ulityItem}>
                             <Image source={icons.userIcon} />
-                            <Text style={({textAlign: 'center'})}>Thông tin cá nhân</Text>
+                            <Text style={({ textAlign: 'center' })}>Thông tin cá nhân</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
-            <View  style={styles.coinVoucherContainer}>
+            <View style={styles.coinVoucherContainer}>
                 <TouchableOpacity>
                     <Image source={images.coinVoucherImage} resizeMode='cover' />
                 </TouchableOpacity>
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         color: colorsPES.white,
         lineHeight: 18,
         marginTop: 8,
-        textAlign : 'center',
+        textAlign: 'center',
     },
 
 

@@ -37,11 +37,13 @@ const DATA = [
 
 
 
-const MyFeedback = () => {
+const MyFeedback = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
-                <Image source={icons.backIcon} />
+                <TouchableOpacity onPress={() => { navigation.pop() }}>
+                    <Image source={icons.backIcon} />
+                </TouchableOpacity>
                 <Text style={styles.headerText}>Đánh giá của tôi</Text>
             </View>
             <FlatList
@@ -78,14 +80,14 @@ const styles = StyleSheet.create({
 
     ratingContainer: {
         flexDirection: 'row',
-        justifyContent : 'center',
+        justifyContent: 'center',
     },
 
     priceDetail: {
         marginTop: 6,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        alignItems : 'center',
+        alignItems: 'center',
     },
 
     productDetail: {

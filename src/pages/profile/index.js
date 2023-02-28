@@ -6,6 +6,7 @@ import MyFeedback from "./MyFeedback";
 import MyProfileDetail from "./MyProfileDetail";
 import Profile from "./Profile";
 import Voucher from "./Voucher";
+import ProfileStackScreen from "../../navigation/ProfileStackScreen";
 
 
 export {
@@ -16,5 +17,6 @@ export {
     MyFeedback,
     MyProfileDetail,
     Profile,
-    Voucher
+    Voucher,
+    ProfileStackScreen
 }

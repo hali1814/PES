@@ -4,11 +4,13 @@ import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
 
-const MyProfileDetail = () => {
+const MyProfileDetail = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Image source={icons.backIcon} />
+                <TouchableOpacity onPress={()=>navigation.goBack()}>
+                    <Image source={icons.backIcon} />
+                </TouchableOpacity>
                 <Text style={styles.headerText}>Thông tin cá nhân</Text>
             </View>
             <View style={styles.body}>
@@ -27,7 +29,7 @@ const MyProfileDetail = () => {
                     <Text style={styles.titleText}>Email</Text>
                     <Text style={styles.contentText}>hoangquochung0209@gmail.com</Text>
                 </View>
-                <TouchableOpacity style={styles.addressDetail}>
+                <TouchableOpacity onPress={()=>{navigation.push('ChangeAddress')}} style={styles.addressDetail}>
                     <View style={styles.addressTitle}>
                         <Text style={styles.titleText}>Địa chỉ giao hàng</Text>
                         <View style={({
@@ -42,7 +44,7 @@ const MyProfileDetail = () => {
                         136/9B Đào Duy Anh, phường 15, Quận Tân Bình, TP.HCM
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.adjustContainer}>
+                <TouchableOpacity onPress={()=>{navigation.push('ChangePassword')}} style={styles.adjustContainer}>
                     <Text style={styles.adjustText}>Đổi mật khẩu</Text>
                     <Image source={icons.nextIconBlack} />
                 </TouchableOpacity>
@@ -68,8 +70,8 @@ const styles = StyleSheet.create({
         backgroundColor: colorsPES.borderColorBlue,
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal : 16,
-        borderRadius : 60,
+        marginHorizontal: 16,
+        borderRadius: 60,
     },
 
     adjustText: {

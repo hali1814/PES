@@ -3,13 +3,13 @@ import React from 'react'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import colorsPES from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import {
     Profile,
     AddAddress,
     ChangeAddress,
     ChangePassword,
-    Voucher
+    Voucher,
+    ProfileStackScreen
 
 } from "../pages/profile";
 
@@ -61,7 +61,7 @@ const MyTab = () => {
             <Tab.Screen name="Favorites" component={Profile} options={{ title: 'Yêu thích', headerTitleAlign: 'center' }} />
             <Tab.Screen name="Add" component={Profile} options={{ title: 'Thêm', headerTitleAlign: 'center' }} />
             <Tab.Screen name="Notification" component={Profile} options={{ title: 'Thông báo', headerTitleAlign: 'center' }} />
-            <Tab.Screen name="Profile" component={Profile} options={{ title: 'Tài khoản', headerTitleAlign: 'center' }} />
+            <Tab.Screen name="ProfileStack" component={ProfileStackScreen} options={{ title: 'Tài khoản', headerTitleAlign: 'center' }} />
         </Tab.Navigator>
     )
 }

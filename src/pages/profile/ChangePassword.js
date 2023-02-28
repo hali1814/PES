@@ -4,12 +4,12 @@ import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
 
-const ChangePassword = () => {
+const ChangePassword = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.headerContainer}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.goBack()}>
                         <Image source={icons.backIcon} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>Đổi mật khẩu</Text>
