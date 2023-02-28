@@ -11,7 +11,7 @@ import ChangePassword from './src/pages/profile/ChangePassword'
 import ChangeAddress from './src/pages/profile/ChangeAddress'
 import AddAddress from './src/pages/profile/AddAddress'
 import { NavigationContainer } from "@react-navigation/native";
-import MyTab from './src/navigation'
+import MyTab from './src/navigation/Index'
 
 const App = () => {
   return (

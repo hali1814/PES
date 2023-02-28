@@ -3,6 +3,7 @@ import React from 'react'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import colorsPES from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import {
     Profile,
     AddAddress,
@@ -29,7 +30,7 @@ const MyTab = () => {
                             iconName = focused ? 'ios-heart' : 'ios-heart-outline';
                             break;
                         case 'Add':
-                            iconName = focused ? 'add-circle' : 'add-circle-outline';
+                            iconName = focused ? 'add-circle' : 'add-circle';
                             break;
                         case 'Notification':
                             iconName = focused ? 'notifications' : 'notifications-outline';
@@ -43,9 +44,9 @@ const MyTab = () => {
                     return <Ionicons name={iconName} size={size} color={color} />;
                 },
                 tabBarActiveTintColor: colorsPES.borderColorBlue,
-                tabBarInactiveTintColor: colorsPES.grey,
+                tabBarInactiveTintColor: colorsPES.black,
                 tabBarStyle: {
-                    backgroundColor: colorsPES.borderColorPrimary,
+                    backgroundColor: colorsPES.white,
                     height: 65,
                     paddingBottom: 10,
                 },
@@ -57,10 +58,10 @@ const MyTab = () => {
             initialRouteName={'Add'}
         >
             <Tab.Screen name="Home" component={Profile} options={{ title: 'Trang chủ', headerTitleAlign: 'center' }} />
-            <Tab.Screen name="Favorites" component={AddAddress} options={{ title: 'Yêu thích', headerTitleAlign: 'center' }} />
-            <Tab.Screen name="Add" component={ChangeAddress} options={{ title: 'Thêm', headerTitleAlign: 'center' }} />
-            <Tab.Screen name="Notification" component={ChangePassword} options={{ title: 'Thông báo', headerTitleAlign: 'center' }} />
-            <Tab.Screen name="Profile" component={Voucher} options={{ title: 'Tài khoản', headerTitleAlign: 'center' }} />
+            <Tab.Screen name="Favorites" component={Profile} options={{ title: 'Yêu thích', headerTitleAlign: 'center' }} />
+            <Tab.Screen name="Add" component={Profile} options={{ title: 'Thêm', headerTitleAlign: 'center' }} />
+            <Tab.Screen name="Notification" component={Profile} options={{ title: 'Thông báo', headerTitleAlign: 'center' }} />
+            <Tab.Screen name="Profile" component={Profile} options={{ title: 'Tài khoản', headerTitleAlign: 'center' }} />
         </Tab.Navigator>
     )
 }
