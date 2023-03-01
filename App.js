@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import login from './src/pages'
+import React, { useEffect } from 'react'
 import Login from './src/pages/login/Login'
 import Profile from './src/pages/profile/Profile'
 import Voucher from './src/pages/profile/Voucher'
@@ -12,12 +11,29 @@ import ChangeAddress from './src/pages/profile/ChangeAddress'
 import AddAddress from './src/pages/profile/AddAddress'
 import { NavigationContainer } from "@react-navigation/native";
 import MyTab from './src/navigation/Index'
+import { login } from './src/api/authservice/UserService'
+
 
 const App = () => {
+
+  const checkLogin = async () => {
+    const data = await login('0918865377', '123')
+    console.log('===>', data)
+  }
+
+
+
+
+  useEffect(() => {
+    checkLogin()
+  }, [])
+
+
   return (
-    <NavigationContainer>
-      <MyTab />
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <MyTab />
+    // </NavigationContainer>
+    <Login />
   )
 }
 
