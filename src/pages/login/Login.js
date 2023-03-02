@@ -1,9 +1,19 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, ToastAndroid } from 'react-native'
+import React, { useState } from 'react'
 import colorsPES from '../../constants/colors';
 import { icons } from '../../assets';
+import { isValidPassword, isValidPhoneNumber } from '../../utils/Validations';
 
 const Login = () => {
+
+    const [errorPhoneNumber, setErrorPhoneNumber] = useState('')
+    const [errorPassword, setErrorPassword] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [password, setPassword] = useState('')
+    const isValidationOK = () => phoneNumber.length > 0 && password.length > 0
+        && isValidPhoneNumber(phoneNumber) == true
+        && isValidPassword(password) == true
+
     return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity>
@@ -21,8 +31,29 @@ const Login = () => {
                 <TextInput
                     placeholder='Nhập số điện thoại'
                     keyboardType='phone-pad'
+                    onChangeText={(text) => {
+                        setErrorPhoneNumber(isValidPhoneNumber(text) == true
+                            ? ''
+                            : 'Số điện thoại phải đủ 8 ký tự')
+                        setPhoneNumber(text)
+                    }}
                 />
             </View>
+            <Text style={{ color: 'red', fontSize: 14 }}>{errorPhoneNumber}</Text>
+            <View style={styles.InputContainer}>
+                <TextInput
+                    placeholder='Nhập mật khẩu'
+                    keyboardType='default'
+                    secureTextEntry={true}
+                    onChangeText={(text) => {
+                        setErrorPassword(isValidPassword(text) == true
+                            ? ''
+                            : 'Mật khẩu phải đủ 3 ký tự trở lên')
+                        setPassword(text)
+                    }}
+                />
+            </View>
+            <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
             <View style={styles.socialLoginContainer}>
                 <TouchableOpacity style={styles.googleLogin}>
                     <Image source={icons.googleIcon} />
@@ -36,7 +67,12 @@ const Login = () => {
             <TouchableOpacity style={styles.registerContainer}>
                 <Text style={styles.registerText}>Đăng ký tài khoản mới</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginButton}>
+            <TouchableOpacity
+                disabled={isValidationOK() == false}
+                style={[styles.loginButton,
+                { backgroundColor: isValidationOK() == false ? colorsPES.inActive : colorsPES.primary, }]}
+                onPress={() => console.log(phoneNumber, password)}
+            >
                 <Text style={styles.loginText}>Tiếp</Text>
             </TouchableOpacity>
             <View style={styles.termContainer}>
@@ -78,7 +114,6 @@ const styles = StyleSheet.create({
         marginTop: 8,
         borderWidth: 1,
         borderColor: colorsPES.borderColorBlue,
-        backgroundColor: colorsPES.primary,
         borderRadius: 60,
     },
 
@@ -130,6 +165,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 44,
         marginTop: 24,
+        marginBottom: 10,
         paddingHorizontal: 16,
         flexDirection: 'row',
         justifyContent: 'flex-start',
