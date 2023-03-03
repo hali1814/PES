@@ -10,7 +10,11 @@ const MyProfileDetail = ({ navigation }) => {
 
     const {
         onLogout,
+        isLoggedIn,
+        setIsLoggedIn
     } = useContext(UserContext)
+
+    const checkLogin = () => { }
 
     const logout = async () => {
         try {
@@ -18,7 +22,9 @@ const MyProfileDetail = ({ navigation }) => {
             const token = await AsyncStorage.getItem('token')
             const name = await AsyncStorage.getItem('name')
             console.log('token', token, 'name', name)
-            if (res == false) {
+            console.log(res)
+            setIsLoggedIn(!isLoggedIn)
+            if (res) {
                 alert('logout failed')
             }
         } catch (error) {

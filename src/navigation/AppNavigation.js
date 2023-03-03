@@ -15,7 +15,7 @@ const AppNavigation = () => {
     return (
         <NavigationContainer>
             {
-                token.length > 0 ? <UserNavigation /> : <MyTab />
+                isLoggedIn == false ? <UserNavigation /> : <MyTab />
             }
         </NavigationContainer>
     )

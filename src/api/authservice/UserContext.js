@@ -33,7 +33,10 @@ export const UserContextProvider = (props) => {
     const onLogout = async () => {
         try {
             const res = await logout();
-            if (res.error == false) {
+            const token = AsyncStorage.getItem('token');
+            console.log(token)
+            console.log(res)
+            if (res.status == 'success') {
                 await AsyncStorage.removeItem('token')
             }
         } catch (e) {
@@ -44,7 +47,7 @@ export const UserContextProvider = (props) => {
 
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user, onLogout }}
+            value={{ isLoggedIn, onLogin, user, onLogout,setIsLoggedIn }}
         >
             {children}
         </UserContext.Provider>
