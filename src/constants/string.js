@@ -1,6 +1,7 @@
 const textsPES = {
     login: 'Đăng nhập',
-    register: 'Đăng ký'
+    register: 'Đăng ký',
+    
 }
 
 
