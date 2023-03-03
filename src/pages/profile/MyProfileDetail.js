@@ -1,14 +1,46 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, Alert } from 'react-native'
+import React, { useContext } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
+import { UserContext } from '../../api/authservice/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyProfileDetail = ({ navigation }) => {
+
+    const {
+        onLogout,
+    } = useContext(UserContext)
+
+    const logout = async () => {
+        try {
+            const res = await onLogout()
+            const token = await AsyncStorage.getItem('token')
+            const name = await AsyncStorage.getItem('name')
+            console.log('token', token, 'name', name)
+            if (res == false) {
+                alert('logout failed')
+            }
+        } catch (error) {
+            console.log('error', error)
+        }
+    }
+
+    LogoutAlert = () =>
+        Alert.alert('Thông báo!', 'Bạn có chắc chắn muốn đăng xuất', [
+            {
+                text: 'hủy',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            { text: 'Đồng ý', onPress: () => logout() },
+        ]);
+
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image source={icons.backIcon} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Thông tin cá nhân</Text>
@@ -29,7 +61,7 @@ const MyProfileDetail = ({ navigation }) => {
                     <Text style={styles.titleText}>Email</Text>
                     <Text style={styles.contentText}>hoangquochung0209@gmail.com</Text>
                 </View>
-                <TouchableOpacity onPress={()=>{navigation.push('ChangeAddress')}} style={styles.addressDetail}>
+                <TouchableOpacity onPress={() => { navigation.push('ChangeAddress') }} style={styles.addressDetail}>
                     <View style={styles.addressTitle}>
                         <Text style={styles.titleText}>Địa chỉ giao hàng</Text>
                         <View style={({
@@ -44,12 +76,16 @@ const MyProfileDetail = ({ navigation }) => {
                         136/9B Đào Duy Anh, phường 15, Quận Tân Bình, TP.HCM
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{navigation.push('ChangePassword')}} style={styles.adjustContainer}>
+                <TouchableOpacity onPress={() => { navigation.push('ChangePassword') }} style={styles.adjustContainer}>
                     <Text style={styles.adjustText}>Đổi mật khẩu</Text>
                     <Image source={icons.nextIconBlack} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.adjustContainer}>
                     <Text style={styles.adjustText}>Tài khoản/ Thẻ ngân hàng</Text>
+                    <Image source={icons.nextIconBlack} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={LogoutAlert} style={styles.adjustContainer}>
+                    <Text style={[styles.adjustText, { color: colorsPES.red }]}>Đăng xuất</Text>
                     <Image source={icons.nextIconBlack} />
                 </TouchableOpacity>
             </View>
@@ -65,7 +101,7 @@ export default MyProfileDetail
 const styles = StyleSheet.create({
 
     button: {
-        marginTop: 100,
+        marginTop: 50,
         paddingVertical: 11,
         backgroundColor: colorsPES.borderColorBlue,
         justifyContent: 'center',

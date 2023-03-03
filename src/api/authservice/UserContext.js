@@ -1,4 +1,4 @@
-import { login } from "./UserService";
+import { login, logout } from "./UserService";
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -14,7 +14,9 @@ export const UserContextProvider = (props) => {
             const res = await login(userName, password);
             if (res.error == false) {
                 const token = res.data.token;
+                const name = res.data.nickName;
                 await AsyncStorage.setItem('token', token);
+                await AsyncStorage.setItem('name', name);
                 setUser(user);
                 setIsLoggedIn(true);
                 return true;
@@ -28,9 +30,22 @@ export const UserContextProvider = (props) => {
         return false;
     }
 
+    const onLogout = async () => {
+        try {
+            const res = await logout();
+            if (res.error == false) {
+                await AsyncStorage.removeItem('token')
+                setIsLoggedIn(false)
+            }
+        } catch (e) {
+            console.log('onLogout error', e);
+        }
+        return false;
+    }
+
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user }}
+            value={{ isLoggedIn, onLogin, user, onLogout }}
         >
             {children}
         </UserContext.Provider>

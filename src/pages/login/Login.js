@@ -16,16 +16,19 @@ const Login = (props) => {
         && isValidPhoneNumber(phoneNumber) == true
         && isValidPassword(password) == true;
 
-    const { onLogin } = useContext(UserContext)
+    const {
+        onLogin,
+    } = useContext(UserContext)
 
     const login = async () => {
         try {
             const res = await onLogin(phoneNumber, password)
             const token = await AsyncStorage.getItem('token', token)
+            const name = await AsyncStorage.getItem('name', name)
             if (!token) {
                 alert('het han dang nhap su dung');
             }
-            console.log('token: ' + token)
+            console.log('token: ' + token, 'name: ' + name)
             if (res == false) {
                 alert('Login failed');
             }
@@ -33,6 +36,8 @@ const Login = (props) => {
             console.log('error', error)
         }
     }
+
+
 
     return (
         <SafeAreaView style={styles.container}>

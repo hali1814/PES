@@ -3,9 +3,15 @@ import React, { useContext } from 'react';
 import UserNavigation from '../api/authservice/UserNavigation';
 import MyTab from './Index';
 import { UserContext } from '../api/authservice/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppNavigation = () => {
     const { isLoggedIn } = useContext(UserContext)
+    const token = AsyncStorage.getItem('token');
+    if(token){
+        isLoggedIn == true 
+    }
+
     return (
         <NavigationContainer>
             {
