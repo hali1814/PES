@@ -41,9 +41,9 @@ const Login = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
                 <Image source={icons.backIcon} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <View style={styles.titleContainer}>
                 <Text style={styles.title}> Nhập số điện thoại</Text>
             </View>
@@ -100,7 +100,7 @@ const Login = (props) => {
                 { backgroundColor: isValidationOK() == false ? colorsPES.inActive : colorsPES.primary, }]}
                 onPress={login}
             >
-                <Text style={styles.loginText}>Tiếp</Text>
+                <Text style={styles.loginText}>Đăng nhập</Text>
             </TouchableOpacity>
             <View style={styles.termContainer}>
                 <Text style={styles.termText}>

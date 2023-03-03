@@ -79,8 +79,8 @@ const Register = ({ navigation }) => {
                     <Text>FACEBOOK</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.registerContainer}>
-                <Text style={styles.registerText}>Đăng ký tài khoản mới</Text>
+            <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.registerContainer}>
+                <Text style={styles.registerText}>Bạn đã có tài khoản ? Đăng nhập ngay</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 disabled={isValidationOK() == false}
@@ -88,7 +88,7 @@ const Register = ({ navigation }) => {
                 { backgroundColor: isValidationOK() == false ? colorsPES.inActive : colorsPES.primary, }]}
                 onPress={() => console.log(phoneNumber, password)}
             >
-                <Text style={styles.loginText}>Tiếp</Text>
+                <Text style={styles.loginText}>Đăng ký</Text>
             </TouchableOpacity>
             <View style={styles.termContainer}>
                 <Text style={styles.termText}>
