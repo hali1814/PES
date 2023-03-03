@@ -36,7 +36,7 @@ const MyTab = () => {
                             iconName = focused ? 'notifications' : 'notifications-outline';
                             break;
                         case 'Profile':
-                            iconName = focused ? 'person' : 'person-outline';
+                            iconName = focused ? 'people' : 'people-outline';
                             break;
                         default:
                             break;
@@ -44,7 +44,7 @@ const MyTab = () => {
                     return <Ionicons name={iconName} size={size} color={color} />;
                 },
                 tabBarActiveTintColor: colorsPES.borderColorBlue,
-                tabBarInactiveTintColor: colorsPES.black,
+                tabBarInactiveTintColor: colorsPES.inActive,
                 tabBarStyle: {
                     backgroundColor: colorsPES.white,
                     height: 65,
@@ -55,7 +55,7 @@ const MyTab = () => {
                 },
                 headerShown: false,
             })}
-            initialRouteName={'Add'}
+            initialRouteName={'ProfileStack'}
         >
             <Tab.Screen name="Home" component={Profile} options={{ title: 'Trang chủ', headerTitleAlign: 'center' }} />
             <Tab.Screen name="Favorites" component={Profile} options={{ title: 'Yêu thích', headerTitleAlign: 'center' }} />

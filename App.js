@@ -1,44 +1,48 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
-import Login from './src/pages/login/Login'
-import Profile from './src/pages/profile/Profile'
-import Voucher from './src/pages/profile/Voucher'
-import MyFeedback from './src/pages/profile/MyFeedback'
-import CustomerSupport from './src/pages/profile/CustomerSupport'
-import MyProfileDetail from './src/pages/profile/MyProfileDetail'
-import ChangePassword from './src/pages/profile/ChangePassword'
-import ChangeAddress from './src/pages/profile/ChangeAddress'
-import AddAddress from './src/pages/profile/AddAddress'
+import {
+  Login,
+  Register
+} from "./src/pages/login";
+
 import { NavigationContainer } from "@react-navigation/native";
+
 import MyTab from './src/navigation/Index'
 import { login } from './src/api/authservice/UserService'
+import UserNavigation from './src/api/authservice/UserNavigation';
+import AppNavigation from './src/navigation/AppNavigation';
+import { UserContextProvider } from './src/api/authservice/UserContext';
 
 
 const App = () => {
 
-  const checkLogin = async () => {
-    const data = await login('0918865377', '123')
-    console.log('===>', data)
-  }
+  // const checkLogin = async () => {
+  //   const data = await login('', '123')
+  //   console.log('===>', data)
+  // }
 
 
 
 
-  useEffect(() => {
-    checkLogin()
-  }, [])
+  // useEffect(() => {
+  //   checkLogin()
+  // }, [])
 
 
   return (
     // <NavigationContainer>
     //   <MyTab />
     // </NavigationContainer>
-    <Login />
+
+    // <Register/>
+    // <NavigationContainer>
+    //   <UserNavigation />
+    // </NavigationContainer>
+    <UserContextProvider>
+      <AppNavigation />
+    </UserContextProvider>
   )
 }
 
 export default App
 
-const styles = StyleSheet.create({
-
-})

@@ -1,56 +1,37 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, ToastAndroid } from 'react-native'
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import colorsPES from '../../constants/colors';
 import { icons } from '../../assets';
 import { isValidPassword, isValidPhoneNumber } from '../../utils/Validations';
-import { UserContext } from '../../api/authservice/UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = (props) => {
-    const { navigation } = props;
+const Register = ({ navigation }) => {
+
     const [errorPhoneNumber, setErrorPhoneNumber] = useState('')
     const [errorPassword, setErrorPassword] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [password, setPassword] = useState('')
     const isValidationOK = () => phoneNumber.length > 0 && password.length > 0
         && isValidPhoneNumber(phoneNumber) == true
-        && isValidPassword(password) == true;
-
-    const { onLogin } = useContext(UserContext)
-
-    const login = async () => {
-        try {
-            const res = await onLogin(phoneNumber, password)
-            const token = await AsyncStorage.getItem('token', token)
-            if (!token) {
-                alert('het han dang nhap su dung');
-            }
-            console.log('token: ' + token)
-            if (res == false) {
-                alert('Login failed');
-            }
-        } catch (error) {
-            console.log('error', error)
-        }
-    }
+        && isValidPassword(password) == true
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => { navigation.push('Login') }}
+            >
                 <Image source={icons.backIcon} />
             </TouchableOpacity>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}> Nhập số điện thoại</Text>
             </View>
             <View style={styles.welcomeContainer}>
-                <Text style={styles.welcome}> Rất vui khi bạn đã quay trở lại với chúng tôi !</Text>
+                <Text style={styles.welcome}>Chào mừng bạn đến với PES SHOP !</Text>
             </View>
             <View style={styles.InputContainer}>
                 <Image source={icons.vietnamIcon} />
                 <Text style={StyleSheet.create({ marginRight: 10 })}>+84</Text>
                 <TextInput
                     placeholder='Nhập số điện thoại'
-                    value={phoneNumber}
                     keyboardType='phone-pad'
                     onChangeText={(text) => {
                         setErrorPhoneNumber(isValidPhoneNumber(text) == true
@@ -64,7 +45,6 @@ const Login = (props) => {
             <View style={styles.InputContainer}>
                 <TextInput
                     placeholder='Nhập mật khẩu'
-                    value={password}
                     keyboardType='default'
                     secureTextEntry={true}
                     onChangeText={(text) => {
@@ -76,6 +56,19 @@ const Login = (props) => {
                 />
             </View>
             <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
+            <View style={styles.InputContainer}>
+                <TextInput
+                    placeholder='Nhập lại mật khẩu'
+                    keyboardType='default'
+                    secureTextEntry={true}
+                    onChangeText={(text) => {
+                        setErrorPassword(isValidPassword(text) == true
+                            ? ''
+                            : 'Mật khẩu phải đủ 3 ký tự trở lên')
+                        setPassword(text)
+                    }}
+                />
+            </View>
             <View style={styles.socialLoginContainer}>
                 <TouchableOpacity style={styles.googleLogin}>
                     <Image source={icons.googleIcon} />
@@ -86,14 +79,14 @@ const Login = (props) => {
                     <Text>FACEBOOK</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => { navigation.push('Register') }} style={styles.registerContainer}>
+            <TouchableOpacity style={styles.registerContainer}>
                 <Text style={styles.registerText}>Đăng ký tài khoản mới</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 disabled={isValidationOK() == false}
                 style={[styles.loginButton,
                 { backgroundColor: isValidationOK() == false ? colorsPES.inActive : colorsPES.primary, }]}
-                onPress={login}
+                onPress={() => console.log(phoneNumber, password)}
             >
                 <Text style={styles.loginText}>Tiếp</Text>
             </TouchableOpacity>
@@ -106,7 +99,7 @@ const Login = (props) => {
     )
 }
 
-export default Login
+export default Register
 
 const styles = StyleSheet.create({
 
@@ -148,7 +141,7 @@ const styles = StyleSheet.create({
     registerContainer: {
         width: '100%',
         height: 44,
-        marginTop: 200,
+        marginTop: 110,
         justifyContent: 'center',
         alignItems: 'center',
     },
