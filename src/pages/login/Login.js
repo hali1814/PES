@@ -25,7 +25,7 @@ const Login = (props) => {
             const res = await onLogin(phoneNumber, password)
             const token = await AsyncStorage.getItem('token', token)
             const name = await AsyncStorage.getItem('name', name)
-            if (!token) {
+            if (token.length === null) {
                 alert('het han dang nhap su dung');
             }
             console.log('token: ' + token, 'name: ' + name)

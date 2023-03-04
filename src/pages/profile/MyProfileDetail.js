@@ -14,16 +14,13 @@ const MyProfileDetail = ({ navigation }) => {
         setIsLoggedIn
     } = useContext(UserContext)
 
-    const checkLogin = () => { }
-
     const logout = async () => {
         try {
             const res = await onLogout()
             const token = await AsyncStorage.getItem('token')
-            const name = await AsyncStorage.getItem('name')
-            console.log('token', token, 'name', name)
+            console.log('token', token)
             console.log(res)
-            setIsLoggedIn(!isLoggedIn)
+            // setIsLoggedIn(!isLoggedIn)
             if (res) {
                 alert('logout failed')
             }

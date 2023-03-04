@@ -12,6 +12,9 @@ import {
     ProfileStackScreen
 
 } from "../pages/profile";
+import {
+    Product
+} from "../pages/product";
 
 const Tab = createBottomTabNavigator()
 
@@ -35,8 +38,8 @@ const MyTab = () => {
                         case 'Notification':
                             iconName = focused ? 'notifications' : 'notifications-outline';
                             break;
-                        case 'Profile':
-                            iconName = focused ? 'people' : 'people-outline';
+                        case 'ProfileStack':
+                            iconName = focused ? 'person' : 'person-outline';
                             break;
                         default:
                             break;
@@ -57,7 +60,7 @@ const MyTab = () => {
             })}
             initialRouteName={'ProfileStack'}
         >
-            <Tab.Screen name="Home" component={Profile} options={{ title: 'Trang chủ', headerTitleAlign: 'center' }} />
+            <Tab.Screen name="Home" component={Product} options={{ title: 'Trang chủ', headerTitleAlign: 'center' }} />
             <Tab.Screen name="Favorites" component={Profile} options={{ title: 'Yêu thích', headerTitleAlign: 'center' }} />
             <Tab.Screen name="Add" component={Profile} options={{ title: 'Thêm', headerTitleAlign: 'center' }} />
             <Tab.Screen name="Notification" component={Profile} options={{ title: 'Thông báo', headerTitleAlign: 'center' }} />

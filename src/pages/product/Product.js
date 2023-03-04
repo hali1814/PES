@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import color from '../../styles/colors';
-import {PESFlatList} from '../../components/PESFlatList';
+import { PESFlatList } from '../../components/PESFlatList';
 import {
   flatlistContainer,
   headerContainer,
@@ -19,18 +19,18 @@ import {
   userName,
   userNameContainer,
 } from './components/styles';
-import {textsPES} from '../../constants/string';
-import {icons, images} from '../../assets';
+import { textsPES } from '../../constants/string';
+import { icons, images } from '../../assets';
 import PESCategories from '../../components/PESCategories';
 const width = Dimensions.get('screen').width / 2 - 30;
 
 const Product = () => {
   return (
-    <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
-      <View style={{flexDirection: 'column'}}>
+    <SafeAreaView style={{ width: '100%', backgroundColor: '#F0F2F5' }}>
+      <View style={{ flexDirection: 'column' }}>
         <View style={headerContainer}>
-          <View style={{flexDirection: 'row'}}>
-            <Image source={icons.user_icon} style={{width: 32, height: 32}} />
+          <View style={{ flexDirection: 'row' }}>
+            <Image source={icons.user_icon} style={{ width: 32, height: 32 }} />
             <View style={userNameContainer}>
               <Text style={helloText}>{textsPES.txtHello}</Text>
               <Text style={userName}>{textsPES.txtUsername}</Text>

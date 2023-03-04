@@ -6,11 +6,14 @@ import { UserContext } from '../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppNavigation = () => {
-    const { setIsLoggedIn, isLoggedIn } = useContext(UserContext)
-    const token = AsyncStorage.getItem('token');
-    if (token.length > 0) {
-        isLoggedIn == true
-    }
+    const { isLoggedIn, setIsLoggedIn } = useContext(UserContext)
+    // const token = AsyncStorage.getItem('token');
+    // if (token.length !== null) {
+    //     isLoggedIn == true
+    // } else {
+    //     isLoggedIn == false
+    // }
+    
 
     return (
         <NavigationContainer>

@@ -12,17 +12,19 @@ export const UserContextProvider = (props) => {
     const onLogin = async (userName, password) => {
         try {
             const res = await login(userName, password);
-            if (res.error == false) {
+            if (res.status == 'success') {
                 const token = res.data.token;
-                const name = res.data.nickName;
-                await AsyncStorage.setItem('token', token);
-                await AsyncStorage.setItem('name', name);
-                setUser(user);
-                setIsLoggedIn(true);
-                return true;
+                if (token) {
+                    await AsyncStorage.setItem('token', token);
+                    setIsLoggedIn(true);
+                    return true;
+                } else {
+                    setIsLoggedIn(false);
+                    return false;
+                }
             } else {
-                setIsLoggedIn(false);
-                return false;
+                // setIsLoggedIn(false);
+                // // return false;
             }
         } catch (e) {
             console.log('onLogin error', e);
@@ -38,6 +40,7 @@ export const UserContextProvider = (props) => {
             console.log(res)
             if (res.status == 'success') {
                 await AsyncStorage.removeItem('token')
+                setIsLoggedIn(false)
             }
         } catch (e) {
             console.log('onLogout error', e);
@@ -47,7 +50,7 @@ export const UserContextProvider = (props) => {
 
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user, onLogout,setIsLoggedIn }}
+            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn }}
         >
             {children}
         </UserContext.Provider>
