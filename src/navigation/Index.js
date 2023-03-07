@@ -58,7 +58,7 @@ const MyTab = () => {
                 },
                 headerShown: false,
             })}
-            initialRouteName={'ProfileStack'}
+            initialRouteName={'Home'}
         >
             <Tab.Screen name="Home" component={Product} options={{ title: 'Trang chủ', headerTitleAlign: 'center' }} />
             <Tab.Screen name="Favorites" component={Profile} options={{ title: 'Yêu thích', headerTitleAlign: 'center' }} />

@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     registerContainer: {
         width: '100%',
         height: 44,
-        marginTop: 110,
+        marginTop: 50,
         justifyContent: 'center',
         alignItems: 'center',
     },

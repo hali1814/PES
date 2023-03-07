@@ -12,3 +12,8 @@ export const logout = async () => {
     return result;
 }
 
+export const getUserInfor = async () => {
+    const result = await customAxios().get('/api/profiles')
+    return result;
+}
+

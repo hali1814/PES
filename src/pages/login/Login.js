@@ -24,11 +24,10 @@ const Login = (props) => {
         try {
             const res = await onLogin(phoneNumber, password)
             const token = await AsyncStorage.getItem('token', token)
-            const name = await AsyncStorage.getItem('name', name)
             if (token.length === null) {
                 alert('het han dang nhap su dung');
             }
-            console.log('token: ' + token, 'name: ' + name)
+            console.log('token: ' + token)
             if (res == false) {
                 alert('Login failed');
             }
@@ -60,7 +59,7 @@ const Login = (props) => {
                     onChangeText={(text) => {
                         setErrorPhoneNumber(isValidPhoneNumber(text) == true
                             ? ''
-                            : 'Số điện thoại phải đủ 8 ký tự')
+                            : 'Số điện thoại phải đủ 10 ký tự')
                         setPhoneNumber(text)
                     }}
                 />
@@ -97,7 +96,12 @@ const Login = (props) => {
             <TouchableOpacity
                 disabled={isValidationOK() == false}
                 style={[styles.loginButton,
-                { backgroundColor: isValidationOK() == false ? colorsPES.inActive : colorsPES.primary, }]}
+                {
+                    backgroundColor: isValidationOK() == false
+                        ? colorsPES.inActive
+                        : colorsPES.primary,
+                }]
+                }
                 onPress={login}
             >
                 <Text style={styles.loginText}>Đăng nhập</Text>
@@ -153,7 +157,7 @@ const styles = StyleSheet.create({
     registerContainer: {
         width: '100%',
         height: 44,
-        marginTop: 200,
+        marginTop: 150,
         justifyContent: 'center',
         alignItems: 'center',
     },
