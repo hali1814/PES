@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, FlatList } from 'react-native'
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
-
+import { UserContext } from '../../api/authservice/UserContext';
 
 const DATA = [
     {
@@ -28,30 +28,57 @@ const DATA = [
     },
 ]
 
-const ChangeAddress = ({ navigation }) => {
+const ChangeAddress = ({ navigation, route }) => {
+
+    const { address } = route.params
+
+    const {
+        onGetUserInfor,
+        user
+    } = useContext(UserContext)
+
+    useEffect(() => {
+        onGetUserInfor();
+        console.log('address ===>', user.address)
+        return () => { }
+    }, [])
+
+    const renderItem = ({ item }) => {
+        const { _id, address } = item
+        return (
+            <TouchableOpacity style={styles.listContainer}>
+                <View style={styles.listTitle}>
+                    <Text style={({ fontSize: 13, fontWeight: '400', color: colorsPES.transText })}>Địa chỉ giao hàng</Text>
+                    <Image source={icons.checkedIcon} />
+                </View>
+                <Text style={styles.addressText}>{address}</Text>
+            </TouchableOpacity>
+        )
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image source={icons.backIcon} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Thay đổi địa chỉ</Text>
             </View>
             <View style={styles.body}>
                 <FlatList
-                    data={DATA}
-                    keyExtractor={item => item.id}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity style={styles.listContainer}>
-                            <View style={styles.listTitle}>
-                                <Text style={({ fontSize: 13, fontWeight: '400', color: colorsPES.transText })}>Địa chỉ giao hàng</Text>
-                                <Image source={item.check} />
-                            </View>
-                            <Text style={styles.addressText}>{item.address}</Text>
-                        </TouchableOpacity>
-                    )}
+                    data={user}
+                    // renderItem={({ item }) => (
+                    //     <TouchableOpacity style={styles.listContainer}>
+                    //         <View style={styles.listTitle}>
+                    //             <Text style={({ fontSize: 13, fontWeight: '400', color: colorsPES.transText })}>Địa chỉ giao hàng</Text>
+                    //             <Image source={icons.checkedIcon} />
+                    //         </View>
+                    //         <Text style={styles.addressText}>{item.address}</Text>
+                    //     </TouchableOpacity>
+                    // )}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item._id}
                 />
-                <TouchableOpacity onPress={()=>{navigation.push('AddAddress')}} style={styles.button}>
+                <TouchableOpacity onPress={() => { navigation.push('AddAddress') }} style={styles.button}>
                     <Text style={({ fontSize: 16, fontWeight: '500', lineHeight: 22, color: colorsPES.white })}>Thêm địa chỉ</Text>
                 </TouchableOpacity>
             </View>

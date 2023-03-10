@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView, Modal, Alert } from 'react-native'
 import React, { useState, useContext } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
@@ -23,14 +23,18 @@ const ChangePassword = ({ navigation }) => {
         onChangePassword,
     } = useContext(UserContext)
 
+    const showSuccessAlert = () => {
+        Alert.alert('change password successfully')
+    }
+
     const ChangeUserPassword = async () => {
         try {
             const res = await onChangePassword(password, newPassword)
             if (res == false) {
                 alert('change password failed')
             } else {
-                alert('change password successfully')
-                navigation.navigate('Profile')
+                showSuccessAlert()
+                setTimeout(() => { navigation.navigate('Profile') }, 1500)
             }
         } catch (error) {
             alert('change password failed')
@@ -54,6 +58,7 @@ const ChangePassword = ({ navigation }) => {
                         style={styles.input}
                         placeholder='Mật khẩu hiện tại'
                         value={password}
+                        secureTextEntry={true}
                         onChangeText={(text) => {
                             setErrorPassword(isValidPassword(text) == true
                                 ? ''
@@ -66,12 +71,20 @@ const ChangePassword = ({ navigation }) => {
                         style={styles.input}
                         placeholder='Nhập mật khẩu mới'
                         value={newPassword}
-                        onChangeText={(text) => setNewPassword(text)}
+                        secureTextEntry={true}
+                        onChangeText={(text) => {
+                            setErrorNewPassword(isValidNewPassword(text) == true || isValidNewPassword(text) != password
+                                ? ''
+                                : 'Mật khẩu không được trùng')
+                            setNewPassword(text)
+                        }}
                     />
+                    <Text style={{ color: 'red', fontSize: 14 }}>{errorNewPassword}</Text>
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập lại mật khẩu mới'
                         value={confirmPassword}
+                        secureTextEntry={true}
                         onChangeText={(text) => setConfirmPassword(text)}
                     />
                     <TouchableOpacity

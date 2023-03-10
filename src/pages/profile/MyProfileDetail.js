@@ -61,7 +61,7 @@ const MyProfileDetail = ({ navigation }) => {
                 </View>
                 <View style={styles.body}>
                     <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50 })}>
-                        <Image style={({ width: 80, height: 80 })} source={{ uri: user.avatar }} />
+                        <Image style={({ width: 80, height: 80, borderRadius: 50 })} source={{ uri: user.avatar }} />
                     </View>
                     <View style={styles.inforDetail}>
                         <Text style={styles.titleText}>Tên của bạn</Text>
@@ -75,7 +75,7 @@ const MyProfileDetail = ({ navigation }) => {
                         <Text style={styles.titleText}>Email</Text>
                         <Text style={styles.contentText}>{user.email}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => { navigation.push('ChangeAddress') }} style={styles.addressDetail}>
+                    <TouchableOpacity onPress={() => { navigation.push('ChangeAddress', { address: user.address }) }} style={styles.addressDetail}>
                         <View style={styles.addressTitle}>
                             <Text style={styles.titleText}>Địa chỉ giao hàng</Text>
                             <View style={({

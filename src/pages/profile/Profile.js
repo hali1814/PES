@@ -33,7 +33,7 @@ const Profile = ({ navigation }) => {
                 <TouchableOpacity onPress={() => { navigation.push('MyProfileDetail') }} style={styles.userInforContainer}>
                     <View style={styles.userInfor}>
                         <View style={styles.avatar}>
-                            <Image source={images.avatar} resizeMode='contain' />
+                            <Image style={{ width: '100%', height: '100%', borderRadius: 100 }} source={{ uri: user.avatar }} resizeMode='cover' />
                         </View>
                         <View style={styles.userNameContainer}>
                             <Text style={styles.usernameText}>{user.nickName}</Text>
