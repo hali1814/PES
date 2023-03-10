@@ -1,10 +1,23 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
+import { UserContext } from '../../api/authservice/UserContext';
 
 const Voucher = ({ navigation }) => {
+
+    const {
+        ongetVoucher,
+        voucher
+    } = useContext(UserContext)
+
+    useEffect(() => {
+        ongetVoucher()
+        return () => { }
+    }, [])
+
+
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>

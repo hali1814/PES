@@ -23,3 +23,8 @@ export const ChangePassword = async (password, newPassword) => {
     return result
 }
 
+export const getVoucher = async () => {
+    const result = await customAxios().get('/api/vouchers')
+    return result
+}
+

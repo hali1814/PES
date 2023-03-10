@@ -2,7 +2,8 @@ import {
     login,
     logout,
     getUserInfor,
-    ChangePassword
+    ChangePassword,
+    getVoucher
 } from "./UserService";
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,6 +14,7 @@ export const UserContextProvider = (props) => {
     const { children } = props;
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState([]);
+    const [voucher, setVoucher] = useState([])
 
     const onLogin = async (userName, password) => {
         try {
@@ -65,6 +67,20 @@ export const UserContextProvider = (props) => {
         return false;
     }
 
+    const ongetVoucher = async () => {
+        try {
+            const res = await getVoucher()
+            if (res.status == 'success') {
+                setVoucher(res.data)
+                console.log('Voucher ====>', voucher)
+            }
+            console.log()
+        } catch (error) {
+            console.log('onGetVoucher error', error);
+            throw error
+        }
+    }
+
     const onGetUserInfor = async () => {
         try {
             const res = await getUserInfor()
@@ -81,7 +97,7 @@ export const UserContextProvider = (props) => {
 
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword }}
+            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher }}
         >
             {children}
         </UserContext.Provider>
