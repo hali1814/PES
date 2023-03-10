@@ -1,3 +1,4 @@
+import Fonts from '../../../assets/fonts/fonts';
 import color from '../../../styles/colors';
 
 export const headerContainer = {
@@ -85,7 +86,7 @@ export const showReaching = {
 };
 export const voucherContainer = {
   height: 36,
-  backgroundColor: 'rgba(255,101,129,0.20)',
+  backgroundColor: '#ffe3e1',
   paddingHorizontal: 12,
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -94,6 +95,6 @@ export const voucherContainer = {
 };
 export const txtVoucher = {
   fontSize: 13,
-  fontWeight: '600',
   color: color.MAIN,
+  fontFamily: Fonts.Work_SemiBold,
 };

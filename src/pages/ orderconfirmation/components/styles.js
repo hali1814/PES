@@ -6,15 +6,12 @@ const Orderstyles = StyleSheet.create({
     width: '100%',
   },
   userBG: {
-    height: '100%',
     backgroundColor: color.WHITE,
     borderRadius: 4,
     paddingHorizontal: 12,
     paddingVertical: 16,
   },
   scrollContainer: {
-    height: '100%',
-    backgroundColor: color.TEXT_SECOND,
     paddingHorizontal: 12,
     paddingVertical: 12,
   },

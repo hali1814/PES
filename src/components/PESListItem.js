@@ -19,7 +19,7 @@ const PESListItem = ({item}) => {
         </View>
       </View>
       <View style={{marginTop: 8}}>
-        <Image source={item.img} style={styles.imgProduct} />
+        <Image source={{}} style={styles.imgProduct} />
       </View>
       <View style={styles.headerTextContainer}>
         <Text numberOfLines={2} style={styles.textName}>

@@ -70,6 +70,10 @@
       "sha1": "bf150c5dc03745ef7342e7c6882451dba2539724"
     },
     {
+      "path": "src/assets/fonts/fonts.js",
+      "sha1": "76776ef9752889ab5ee6c8e039f86d1a43283ebe"
+    },
+    {
       "path": "src/assets/fonts/note.txt",
       "sha1": "b787b3f6694906042d9f84442eda6d40e69926e6"
     }

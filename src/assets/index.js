@@ -20,12 +20,31 @@ const icons = {
   local_icon: require('../assets/icons/local.png'),
   location_icon: require('../assets/icons/Location-pin.png'),
   cartAdd_icon: require('../assets/icons/add-to-cart.png'),
-
-  // coin: require('./icons/coin.png'),
-  // placeholder: require('./icons/placeholder.png'),
-  // star: require('./icons/Star.png'),
-  // back: require('./icons/back.png'),
-  // google: require('./icons/google.png'),
+  backIcon: require('../assets/icons/backIcon.png'),
+  vietnamIcon: require('../assets/icons/vietnamIcon.png'),
+  googleIcon: require('../assets/icons/googleIcon.png'),
+  facebookIcon: require('../assets/icons/facebookIcon.png'),
+  notificationIcon: require('../assets/icons/notificationIcon.png'),
+  nextIcon: require('../assets/icons/nextIcon.png'),
+  awaitingConfirmIcon: require('../assets/icons/awaitingConfirmIcon.png'),
+  awaitingBillIcon: require('../assets/icons/awaitingBillIcon.png'),
+  onDeliveryIcon: require('../assets/icons/onDeliveryIcon.png'),
+  ratingIcon: require('../assets/icons/ratingIcon.png'),
+  crowIcon: require('../assets/icons/crowIcon.png'),
+  superVoucherIcon: require('../assets/icons/superVoucherIcon.png'),
+  gameIcon: require('../assets/icons/gameIcon.png'),
+  coinEarnIcon: require('../assets/icons/coinEarnIcon.png'),
+  heartIcon: require('../assets/icons/heartIcon.png'),
+  likeIcon: require('../assets/icons/likeIcon.png'),
+  clockIcon: require('../assets/icons/clockIcon.png'),
+  customerSupportIcon: require('../assets/icons/customerSupportIcon.png'),
+  userIcon: require('../assets/icons/userIcon.png'),
+  checkedIcon: require('../assets/icons/checkedIcon.png'),
+  unCheckedIcon: require('../assets/icons/unCheckedIcon.png'),
+  nextIconBlack: require('../assets/icons/nextIconBlack.png'),
+  payIcon: require('../assets/icons/pay.png'),
+  payMomoIcon: require('../assets/icons/momo.png'),
+  payZaloIcon: require('../assets/icons/zalopay.png'),
 };
 
 const images = {
@@ -37,55 +56,15 @@ const images = {
   momovoucher_image: require('../assets/images/momo.png'),
   zalopayvoucher_image: require('../assets/images/zalopay.png'),
   detail_image: require('../assets/images/detail.png'),
-  // slide1_iamge: require('./images/slide1.png'),
-  // slide2_iamge: require('./images/slide2.jpg'),
-  // slide3_iamge: require('./images/slide3.jpg'),
-  // notification_image: require('./images/IconNotification.png'),
-  // Bee: require('./images/bee.png'),
-  // beePoly: require('./images/beepoly.png'),
+  backgroundImage: require('../assets/images/backgroundImage.png'),
+  vectorBG: require('../assets/images/vectorBG.png'),
+  vectorBG2: require('../assets/images/vectorBG2.png'),
+  avatar: require('../assets/images/avatar.png'),
+  memberImage: require('../assets/images/memberImage.png'),
+  coinVoucherImage: require('../assets/images/coinVoucherImage.png'),
+  superVoucherImage: require('../assets/images/superVoucherImage.png'),
+  hoodieImage: require('../assets/images/hoodieImage.png'),
+  ratingStarImage: require('../assets/images/ratingStarImage.png'),
 };
 
-export {images, icons};
-// export { icons, images };
-
-
-const icons = {
-    backIcon: require('../assets/icons/backIcon.png'),
-    vietnamIcon: require('../assets/icons/vietnamIcon.png'),
-    googleIcon: require('../assets/icons/googleIcon.png'),
-    facebookIcon: require('../assets/icons/facebookIcon.png'),
-    notificationIcon : require('../assets/icons/notificationIcon.png'),
-    nextIcon : require('../assets/icons/nextIcon.png'),
-    awaitingConfirmIcon : require('../assets/icons/awaitingConfirmIcon.png'),
-    awaitingBillIcon : require('../assets/icons/awaitingBillIcon.png'),
-    onDeliveryIcon : require('../assets/icons/onDeliveryIcon.png'),
-    ratingIcon : require('../assets/icons/ratingIcon.png'),
-    crowIcon : require('../assets/icons/crowIcon.png'),
-    superVoucherIcon : require('../assets/icons/superVoucherIcon.png'),
-    gameIcon : require('../assets/icons/gameIcon.png'),
-    coinEarnIcon : require('../assets/icons/coinEarnIcon.png'),
-    heartIcon : require('../assets/icons/heartIcon.png'),
-    likeIcon : require('../assets/icons/likeIcon.png'),
-    clockIcon : require('../assets/icons/clockIcon.png'),
-    customerSupportIcon : require('../assets/icons/customerSupportIcon.png'),
-    userIcon : require('../assets/icons/userIcon.png'),
-    checkedIcon : require('../assets/icons/checkedIcon.png'),
-    unCheckedIcon : require('../assets/icons/unCheckedIcon.png'),
-    nextIconBlack : require('../assets/icons/nextIconBlack.png'),
-}
-
-const images = {
-    backgroundImage : require('../assets/images/backgroundImage.png'),
-    vectorBG : require('../assets/images/vectorBG.png'),
-    vectorBG2 : require('../assets/images/vectorBG2.png'),
-    avatar : require('../assets/images/avatar.png'),
-    memberImage : require('../assets/images/memberImage.png'),
-    coinVoucherImage : require('../assets/images/coinVoucherImage.png'),
-    superVoucherImage : require('../assets/images/superVoucherImage.png'),
-    hoodieImage : require('../assets/images/hoodieImage.png'),
-    ratingStarImage : require('../assets/images/ratingStarImage.png'),
-}
-
-
-
-export { icons, images }
+export {icons, images};

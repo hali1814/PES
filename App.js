@@ -35,10 +35,10 @@ const App = () => {
       {/* <Shop /> */}
       {/* <Voucher /> */}
       {/* <Detail /> */}
-      {/* <OrderConfirmation /> */}
-      <UserContextProvider>
+      <OrderConfirmation />
+      {/* <UserContextProvider>
         <AppNavigation />
-      </UserContextProvider>
+      </UserContextProvider> */}
     </View>
   );
 };
