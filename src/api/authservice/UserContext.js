@@ -1,7 +1,8 @@
 import {
     login,
     logout,
-    getUserInfor
+    getUserInfor,
+    ChangePassword
 } from "./UserService";
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,6 +31,22 @@ export const UserContextProvider = (props) => {
             console.log('onLogin error', e);
         }
         return false;
+    }
+
+    const onChangePassword = async (password, newPassword) => {
+        try {
+            const res = await ChangePassword(password, newPassword)
+            if (res.status == 'success') {
+                const message = res.data
+                console.log('message ===>', message)
+                return true
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.log('on change password failed', error)
+        }
+        return false
     }
 
     const onLogout = async () => {
@@ -64,7 +81,7 @@ export const UserContextProvider = (props) => {
 
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor }}
+            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword }}
         >
             {children}
         </UserContext.Provider>

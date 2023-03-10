@@ -1,15 +1,49 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
+import {
+    isValidPassword,
+    isValidNewPassword
+} from '../../utils/Validations';
+
+import { UserContext } from '../../api/authservice/UserContext';
+
+
 
 const ChangePassword = ({ navigation }) => {
+    const [password, setPassword] = useState('')
+    const [errorPassword, setErrorPassword] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [errorNewPassword, setErrorNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    const {
+        onChangePassword,
+    } = useContext(UserContext)
+
+    const ChangeUserPassword = async () => {
+        try {
+            const res = await onChangePassword(password, newPassword)
+            if (res == false) {
+                alert('change password failed')
+            } else {
+                alert('change password successfully')
+                navigation.navigate('Profile')
+            }
+        } catch (error) {
+            alert('change password failed')
+            console.log('change password failed: ' + error)
+            throw error
+        }
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.headerContainer}>
-                    <TouchableOpacity onPress={()=>navigation.goBack()}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Image source={icons.backIcon} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>Đổi mật khẩu</Text>
@@ -19,16 +53,31 @@ const ChangePassword = ({ navigation }) => {
                     <TextInput
                         style={styles.input}
                         placeholder='Mật khẩu hiện tại'
+                        value={password}
+                        onChangeText={(text) => {
+                            setErrorPassword(isValidPassword(text) == true
+                                ? ''
+                                : 'Mật khẩu phải đủ 3 ký tự trở lên')
+                            setPassword(text)
+                        }}
                     />
+                    <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập mật khẩu mới'
+                        value={newPassword}
+                        onChangeText={(text) => setNewPassword(text)}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập lại mật khẩu mới'
+                        value={confirmPassword}
+                        onChangeText={(text) => setConfirmPassword(text)}
                     />
-                    <TouchableOpacity style={styles.buttonUpdate}>
+                    <TouchableOpacity
+                        onPress={ChangeUserPassword}
+                        style={styles.buttonUpdate}
+                    >
                         <Text style={({ fontSize: 16, fontWeight: '500', color: colorsPES.white })}>Cập nhật</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonForget}>

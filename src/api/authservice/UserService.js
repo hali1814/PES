@@ -17,3 +17,9 @@ export const getUserInfor = async () => {
     return result;
 }
 
+export const ChangePassword = async (password, newPassword) => {
+    const data = { password: password, newPassword: newPassword }
+    const result = await customAxios().post('/api/change_password', data)
+    return result
+}
+

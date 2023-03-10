@@ -1,12 +1,26 @@
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, SafeAreaView } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
+import { UserContext } from '../../api/authservice/UserContext';
 
 
 
 const Profile = ({ navigation }) => {
+
+    const {
+        onGetUserInfor,
+        user,
+        setUser
+    } = useContext(UserContext)
+
+    useEffect(() => {
+        onGetUserInfor()
+        return () => { }
+    }, [])
+
+
     return (
         <SafeAreaView style={styles.container} >
             <View style={styles.headerContainer}>
@@ -22,7 +36,7 @@ const Profile = ({ navigation }) => {
                             <Image source={images.avatar} resizeMode='contain' />
                         </View>
                         <View style={styles.userNameContainer}>
-                            <Text style={styles.usernameText}>Hoàng Quốc Hưng</Text>
+                            <Text style={styles.usernameText}>{user.nickName}</Text>
                             <Text style={StyleSheet.create({ fontWeight: '400', fontSize: 11, color: colorsPES.white })}>Xem/chỉnh sửa thông tin cá nhân</Text>
                         </View>
                     </View>
