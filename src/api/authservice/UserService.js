@@ -1,6 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import customAxios from "../helper/Axios";
 
+export const register = async (userName, password, date, address, nickName, email) => {
+    const data = { userName: userName, password: password, date: date, address: address, nickName: nickName, email: email };
+    const result = await customAxios().post('/api/register', data)
+    return result
+}
+
 export const login = async (userName, password) => {
     const data = { userName: userName, password: password };
     const result = await customAxios().post('/api/login', data);

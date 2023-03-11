@@ -3,7 +3,8 @@ import {
     logout,
     getUserInfor,
     ChangePassword,
-    getVoucher
+    getVoucher,
+    register
 } from "./UserService";
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,6 +16,21 @@ export const UserContextProvider = (props) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState([]);
     const [voucher, setVoucher] = useState([])
+
+    const onRegister = async (userName, password, date, address, nickName, email) => {
+        try {
+            const res = await register(userName, password, date, address, nickName, email)
+            if (res.status == 'success') {
+                const message = res.data.message
+                console.log('message ==>', message)
+                return true
+            }
+        } catch (error) {
+            console.log('onRegister error', error)
+            throw error
+        }
+        return false
+    }
 
     const onLogin = async (userName, password) => {
         try {
@@ -88,6 +104,10 @@ export const UserContextProvider = (props) => {
             if (res.status == 'success') {
                 setUser(res.data)
                 console.log(res.data)
+            } else if (res.status == 'inactive') {
+                const message = res.data.message
+                console.log('message ==> ', message)
+                return false
             }
         } catch (error) {
             console.log('onGetUserInfor error', error);
@@ -97,7 +117,7 @@ export const UserContextProvider = (props) => {
 
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher }}
+            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher, onRegister }}
         >
             {children}
         </UserContext.Provider>
