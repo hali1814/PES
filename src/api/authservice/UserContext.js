@@ -4,12 +4,13 @@ import {
     getUserInfor,
     ChangePassword,
     getVoucher,
-    register
+    register,
+    changeProfile
 } from "./UserService";
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const UserContext = React.createContext();
+export const UserContext = createContext();
 
 export const UserContextProvider = (props) => {
     const { children } = props;
@@ -67,6 +68,21 @@ export const UserContextProvider = (props) => {
         return false
     }
 
+    const onChangeProfile = async (avatar, date, address, nickName, email) => {
+        try {
+            const res = await changeProfile(avatar, date, address, nickName, email)
+            if (res.status == 'success') {
+                console.log('change profile ===>', res.data.message)
+                return true
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.log('error', error)
+            throw error
+        }
+    }
+
     const onLogout = async () => {
         try {
             const res = await logout();
@@ -84,13 +100,13 @@ export const UserContextProvider = (props) => {
     }
 
     const ongetVoucher = async () => {
+
         try {
             const res = await getVoucher()
             if (res.status == 'success') {
                 setVoucher(res.data)
                 console.log('Voucher ====>', voucher)
             }
-            console.log()
         } catch (error) {
             console.log('onGetVoucher error', error);
             throw error
@@ -117,7 +133,7 @@ export const UserContextProvider = (props) => {
 
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher, onRegister }}
+            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher, onRegister, setVoucher, onChangeProfile }}
         >
             {children}
         </UserContext.Provider>

@@ -1,11 +1,14 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, Alert } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, Alert, StatusBar } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
 import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
+import {
+    UpdateProfileDialog
+} from '../../components'
 
 const MyProfileDetail = ({ navigation }) => {
 
@@ -16,6 +19,7 @@ const MyProfileDetail = ({ navigation }) => {
         user,
         setUser,
         onGetUserInfor,
+        onChangeProfile
     } = useContext(UserContext)
 
     useEffect(() => {
@@ -49,10 +53,38 @@ const MyProfileDetail = ({ navigation }) => {
             { text: 'Đồng ý', onPress: () => logout() },
         ]);
 
+    const [visible, setVisible] = useState(false);
+
+    const showDialog = () => {
+        setVisible(true);
+    };
+
+    const hideDialog = () => {
+        setVisible(false);
+    };
+
+    const [avatar, setAvatar] = useState('')
+    const [date, setDate] = useState('')
+    const [address, setAddress] = useState('')
+    const [nickName, setNickName] = useState('')
+    const [email, setEmail] = useState('')
+
+    const updateProfile = async () => {
+        try {
+            const res = await onChangeProfile()
+        } catch (error) {
+            console.log('change profile failed', error);
+        }
+    }
+
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <SafeAreaView style={styles.container}>
+                <StatusBar
+                    backgroundColor='#FFFFFF'
+                    barStyle='dark-content'
+                />
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Image source={icons.backIcon} />
@@ -103,9 +135,24 @@ const MyProfileDetail = ({ navigation }) => {
                         <Image source={icons.nextIconBlack} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={({ fontSize: 16, fontWeight: '500', color: colorsPES.white })}>Lưu</Text>
+                <TouchableOpacity
+                    onPress={showDialog}
+                    style={styles.button}
+                >
+                    <Text style={({ fontSize: 16, fontWeight: '500', color: colorsPES.white })}>Cập nhật</Text>
                 </TouchableOpacity>
+                <UpdateProfileDialog
+                    visible={visible}
+                    onClose={hideDialog}
+                    onUpdate={updateProfile}
+                    title="Cập nhật thông tin người dùng"
+                    name="Tên"
+                    email='Email'
+                    date='Ngày sinh'
+                    closeText="Đóng"
+                    updateText='Cập nhật'
+                    address='Địa chỉ'
+                />
             </SafeAreaView>
         </ScrollView >
     )
@@ -191,6 +238,6 @@ const styles = StyleSheet.create({
     },
 
     container: {
-
+        backgroundColor: colorsPES.white
     },
 })

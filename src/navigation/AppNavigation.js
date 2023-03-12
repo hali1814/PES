@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import UserNavigation from '../api/authservice/UserNavigation';
-import MyTab from './Index';
+import AppStackScreen from './Index';
 import { UserContext } from '../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,7 +18,7 @@ const AppNavigation = () => {
     return (
         <NavigationContainer>
             {
-                isLoggedIn == false ? <UserNavigation /> : <MyTab />
+                isLoggedIn == false ? <UserNavigation /> : <AppStackScreen />
             }
         </NavigationContainer>
     )

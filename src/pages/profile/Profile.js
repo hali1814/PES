@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, SafeAreaView, StatusBar } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
@@ -23,6 +23,10 @@ const Profile = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container} >
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor={colorsPES.white}
+            />
             <View style={styles.headerContainer}>
                 <Image source={images.vectorBG} style={styles.vectorBG} />
                 <View style={styles.notificationContainer}>

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, ToastAndroid } from 'react-native'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, StatusBar } from 'react-native'
 import React, { useState, useContext } from 'react'
 import colorsPES from '../../constants/colors';
 import { icons } from '../../assets';
@@ -43,6 +43,11 @@ const Login = (props) => {
             {/* <TouchableOpacity>
                 <Image source={icons.backIcon} />
             </TouchableOpacity> */}
+
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor={colorsPES.white}
+            />
             <View style={styles.titleContainer}>
                 <Text style={styles.title}> Nhập số điện thoại</Text>
             </View>
@@ -234,7 +239,8 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        marginHorizontal: 16,
-        marginTop: 16
+        paddingHorizontal: 16,
+        paddingTop: 16,
+        backgroundColor: colorsPES.white
     }
 })

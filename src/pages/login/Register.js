@@ -266,7 +266,8 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        marginHorizontal: 16,
-        marginTop: 16
+        paddingHorizontal: 16,
+        paddingTop: 16,
+        backgroundColor : colorsPES.white
     }
 })
