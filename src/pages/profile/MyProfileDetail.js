@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, Alert, StatusBar } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, Alert, StatusBar, Modal, TextInput } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
@@ -7,11 +7,11 @@ import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
-    UpdateProfileDialog
+    SuccessDialog
 } from '../../components'
 
-const MyProfileDetail = ({ navigation }) => {
-
+const MyProfileDetail = (props) => {
+    const { navigation } = props
     const {
         onLogout,
         isLoggedIn,
@@ -54,6 +54,13 @@ const MyProfileDetail = ({ navigation }) => {
         ]);
 
     const [visible, setVisible] = useState(false);
+    const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+    const handleSuccess = () => {
+        setSuccessDialogVisible(true);
+    };
+    const handleSuccessDialogClose = () => {
+        setSuccessDialogVisible(false);
+    };
 
     const showDialog = () => {
         setVisible(true);
@@ -71,9 +78,17 @@ const MyProfileDetail = ({ navigation }) => {
 
     const updateProfile = async () => {
         try {
-            const res = await onChangeProfile()
+            const res = await onChangeProfile(avatar, date, address, nickName, email)
+            if (res == false) {
+                // alert('updateProfile failed')
+                handleSuccess()
+            } else {
+
+                setTimeout(() => { navigation.navigate('Profile'), 2000 })
+            }
         } catch (error) {
             console.log('change profile failed', error);
+            throw error
         }
     }
 
@@ -92,7 +107,7 @@ const MyProfileDetail = ({ navigation }) => {
                     <Text style={styles.headerText}>Thông tin cá nhân</Text>
                 </View>
                 <View style={styles.body}>
-                    <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50 })}>
+                    <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: colorsPES.grey })}>
                         <Image style={({ width: 80, height: 80, borderRadius: 50 })} source={{ uri: user.avatar }} />
                     </View>
                     <View style={styles.inforDetail}>
@@ -141,17 +156,63 @@ const MyProfileDetail = ({ navigation }) => {
                 >
                     <Text style={({ fontSize: 16, fontWeight: '500', color: colorsPES.white })}>Cập nhật</Text>
                 </TouchableOpacity>
-                <UpdateProfileDialog
+                <Modal
                     visible={visible}
-                    onClose={hideDialog}
-                    onUpdate={updateProfile}
-                    title="Cập nhật thông tin người dùng"
-                    name="Tên"
-                    email='Email'
-                    date='Ngày sinh'
-                    closeText="Đóng"
-                    updateText='Cập nhật'
-                    address='Địa chỉ'
+                    animationType="slide"
+                    transparent
+                >
+                    <View style={styles.containerModal}>
+                        <View style={styles.content}>
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={styles.title}>Cập nhật thông tin người dùng</Text>
+                            </View>
+                            <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
+                                <Image style={{ height: 80, width: 80 }}
+                                    source={images.avatar}
+                                />
+                            </View>
+                            <TextInput
+                                style={styles.text}
+                                placeholder='Tên :'
+                                value={nickName}
+                                onChangeText={(text) => { setNickName(text) }}
+                            />
+                            <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
+                            <TextInput
+                                style={styles.text}
+                                placeholder='Ngày tháng năm sinh :'
+                                value={date}
+                                onChangeText={(text) => { setDate(text) }}
+                            />
+                            <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
+                            <TextInput
+                                style={styles.text}
+                                placeholder='Email :'
+                                value={email}
+                                onChangeText={(text) => { setEmail(text) }}
+                            />
+                            <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
+                            <TextInput
+                                style={styles.text}
+                                placeholder='Địa chỉ :'
+                                value={address}
+                                onChangeText={(text) => { setAddress(text) }}
+                            />
+                            <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                                <TouchableOpacity onPress={hideDialog} style={styles.buttonModal}>
+                                    <Text style={styles.closeText}>Hủy</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={updateProfile} style={[styles.buttonModal, {}]}>
+                                    <Text style={styles.updateText}>Cập nhật</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+                <SuccessDialog
+                    visible={successDialogVisible}
+                    onPress={handleSuccessDialogClose}
                 />
             </SafeAreaView>
         </ScrollView >
@@ -161,6 +222,44 @@ const MyProfileDetail = ({ navigation }) => {
 export default MyProfileDetail
 
 const styles = StyleSheet.create({
+
+    containerModal: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        paddingHorizontal: 10,
+    },
+    content: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 15
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: colorsPES.borderColorBlue,
+        textTransform: 'uppercase',
+    },
+    text: {
+        fontSize: 16,
+        color: colorsPES.blackText
+    },
+    buttonModal: {
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    closeText: {
+        color: colorsPES.red,
+        fontSize: 16,
+        fontWeight: '700'
+    },
+    updateText: {
+        color: colorsPES.borderColorBlue,
+        fontSize: 16,
+        fontWeight: '700'
+    },
 
     button: {
         marginTop: 10,

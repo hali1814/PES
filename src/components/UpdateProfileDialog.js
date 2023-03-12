@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import colorsPES from '../constants/colors';
 
 export default function Dialog(props) {
-    const { visible, onClose, title, name, date, email, address, closeText, onUpdate, updateText } = props;
+    const { visible, onClose, title, nameHint, dateHint, emailHint, addressHint, closeText, onUpdate, updateText } = props;
+    
+
 
     return (
         <Modal
@@ -16,10 +18,10 @@ export default function Dialog(props) {
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={style.title}>{title}</Text>
                     </View>
-                    <TextInput style={style.text} placeholder={name} />
-                    <TextInput style={style.text} placeholder={date} />
-                    <TextInput style={style.text} placeholder={email} />
-                    <TextInput style={style.text} placeholder={address} />
+                    <TextInput style={style.text} placeholder={nameHint} />
+                    <TextInput style={style.text} placeholder={dateHint} />
+                    <TextInput style={style.text} placeholder={emailHint} />
+                    <TextInput style={style.text} placeholder={addressHint} />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                         <TouchableOpacity onPress={onClose} style={style.button}>
                             <Text style={style.closeText}>{closeText}</Text>
@@ -28,7 +30,6 @@ export default function Dialog(props) {
                             <Text style={style.updateText}>{updateText}</Text>
                         </TouchableOpacity>
                     </View>
-
                 </View>
             </View>
         </Modal>

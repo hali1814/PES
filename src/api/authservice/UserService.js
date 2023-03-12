@@ -36,7 +36,7 @@ export const getVoucher = async () => {
 
 export const changeProfile = async (avatar, date, address, nickName, email) => {
     const data = { avatar: avatar, date: date, address: address, nickName: nickName, email: email }
-    const result = await customAxios().post('/update/profiles', data)
+    const result = await customAxios().post('/api/update/profiles', data)
     return result
 }
 
