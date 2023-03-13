@@ -8,7 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, useContext} from 'react';
 import color from '../../styles/colors';
 import {icons, images} from '../../assets';
 import {
@@ -48,11 +48,20 @@ import PESShop from '../../components/PESShop';
 import PESProductDescription from '../../components/PESProductDescription';
 import PESRelatedProducts from '../../components/PESRelatedProducts';
 import Fonts from '../../assets/fonts/fonts';
+import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 const {width: screenWidth} = Dimensions.get('window');
 
-const Detail = () => {
-  const [imageList, setImageList] = useState([]);
+const Detail = props => {
   const [currentImage, setCurrentImage] = useState(1);
+  const {route, navigation} = props;
+  const {_id} = route.params;
+  const {onGetDetail, detail} = useContext(ProductContext);
+  const [imageList, setImageList] = useState(detail.images);
+  console.log('sss', imageList);
+  useEffect(() => {
+    onGetDetail(_id);
+  }, []);
+
   useEffect(() => {
     const data = [
       {
@@ -94,7 +103,7 @@ const Detail = () => {
         ),
       },
     ];
-    setImageList(data);
+    setImageList(detail.images);
   }, []);
 
   //Bộ đếm số ảnh
@@ -129,6 +138,7 @@ const Detail = () => {
         <View>
           <ScrollView
             horizontal
+            showsHorizontalScrollIndicator={false}
             pagingEnabled
             onScroll={handleScroll}
             contentContainerStyle={{
@@ -136,11 +146,15 @@ const Detail = () => {
               height: 375,
             }}>
             {imageList.map((e, index) => (
-              <View key={index.toString()}>{e.image}</View>
+              <View key={index.toString()}>{e.images}</View>
             ))}
           </ScrollView>
           <SafeAreaView style={SafeAreaContainer}>
-            <TouchableOpacity style={{paddingHorizontal: 16}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Products');
+              }}
+              style={{paddingHorizontal: 16}}>
               <Image
                 source={icons.chevronBackWhite_icon}
                 style={{width: 24, height: 24}}
@@ -166,7 +180,7 @@ const Detail = () => {
         <View style={productsBG}>
           <View style={{width: '100%'}}>
             <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 18}}>
-              {textsPES.titleShoes}
+              {detail.name}
             </Text>
           </View>
           <View style={labelContainer}>

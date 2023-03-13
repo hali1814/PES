@@ -1,37 +1,49 @@
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import color from '../styles/colors';
 import {icons} from '../assets';
 import Fonts from '../assets/fonts/fonts';
+import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
+import Detail from '../pages/detail/Detail';
 
-const PESListItem = ({item}) => {
+const PESListItem = props => {
+  const {item, navigation, onPress} = props;
   return (
-    <TouchableOpacity onPress={() => {}} style={styles.Container}>
+    <TouchableOpacity
+      onPress={() => onPress(item._id)}
+      style={styles.Container}>
       <View style={styles.headerContainer}>
-        <Image source={icons.user_icon} style={{width: 24, height: 24}} />
         <View style={styles.saleContainer}>
           <Image source={icons.tagSale_icon} style={styles.imgSale} />
-          <View style={{alignSelf: 'center', marginLeft: 4}}>
+          <View
+            style={{
+              alignSelf: 'center',
+              marginLeft: 4,
+              width: '100%',
+              alignContent: 'flex-end',
+            }}>
             <Text style={{color: '#FFB208', fontFamily: Fonts.Work_Medium}}>
-              {item.sale}
+              {item.sale}%
             </Text>
           </View>
         </View>
       </View>
       <View style={{marginTop: 8}}>
-        <Image source={{}} style={styles.imgProduct} />
+        <Image source={{uri: item.images[0]}} style={styles.imgProduct} />
       </View>
       <View style={styles.headerTextContainer}>
-        <Text numberOfLines={2} style={styles.textName}>
+        <Text numberOfLines={1} style={styles.textName}>
           {item.name}
         </Text>
-        <Text style={styles.textAbout}>{item.about}</Text>
+        <Text numberOfLines={2} style={styles.textAbout}>
+          {item.description}
+        </Text>
         <View
           style={{
             flexDirection: 'row',
             width: '100%',
           }}>
-          <Text style={styles.textPrice}>{item.price} đ</Text>
+          <Text style={styles.textPrice}>{item.stock[0].price} đ</Text>
           {/* <View style={styles.imgContainer}>
             <Image source={icons.heart_icon} style={{width: 20, height: 20}} />
           </View> */}
@@ -46,12 +58,13 @@ export default PESListItem;
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    padding: 12,
     backgroundColor: color.WHITE,
     marginHorizontal: 10,
     marginBottom: 16,
     borderRadius: 4,
     flexDirection: 'column',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -79,13 +92,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   textName: {
+    textTransform: 'capitalize',
     fontSize: 15,
     fontFamily: Fonts.Work_SemiBold,
     color: color.BLACK,
   },
   textAbout: {
     marginTop: 4,
-    height: 40,
     fontSize: 14,
     fontFamily: Fonts.Work_Regular,
     color: color.TEXT_SECOND,

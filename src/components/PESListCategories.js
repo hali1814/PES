@@ -1,9 +1,15 @@
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import color from '../styles/colors';
 import {icons} from '../assets';
+import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 
 const PESListCategories = ({item}) => {
+  const {onGetAllGenre, genres} = useContext(ProductContext);
+  useEffect(() => {
+    onGetAllGenre();
+  }, []);
+
   return (
     <TouchableOpacity onPress={() => {}} style={styles.Container}>
       <View
@@ -15,8 +21,8 @@ const PESListCategories = ({item}) => {
           paddingVertical: 8,
           height: '100%',
         }}>
-        <Image source={item.imagee} style={styles.imgProduct} />
-        <Text style={styles.textName}>{item.nameCategories}</Text>
+        <Image source={{uri: item.images}} style={styles.imgProduct} />
+        <Text style={styles.textName}>{item.label}</Text>
       </View>
     </TouchableOpacity>
   );

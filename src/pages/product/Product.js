@@ -9,49 +9,33 @@ import {
   FlatList,
 } from 'react-native';
 import color from '../../styles/colors';
-import { PESFlatList } from '../../components/PESFlatList';
+import {PESFlatList} from '../../components/PESFlatList';
 import {
   flatlistContainer,
   headerContainer,
-  helloText,
   imgVoucher,
   imgVoucher2,
-  userName,
-  userNameContainer,
 } from './components/styles';
-import { textsPES } from '../../constants/string';
-import { icons, images } from '../../assets';
+import {textsPES} from '../../constants/string';
+import {icons, images} from '../../assets';
 import PESCategories from '../../components/PESCategories';
 import {TextInput} from 'react-native-gesture-handler';
 import Fonts from '../../assets/fonts/fonts';
 const width = Dimensions.get('screen').width / 2 - 30;
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PESListItem from '../../components/PESListItem';
 import customAxios from '../../api/helper/Axios';
+import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 
-const Product = () => {
-  const [products, setProducts] = useState([]);
-
+const Product = ({navigation, onPress}) => {
+  const {onGetAllProducts, products} = useContext(ProductContext);
   useEffect(() => {
-    const axiosInstance = customAxios();
-    axiosInstance
-      .get('/api/products/all')
-      .then(response => {
-        // Modify the response to include image URLs
-        const productsWithImages = response.data.map(product => ({
-          ...product,
-          imageUrls: product.images.map(image => `http://pes.store/${image}`),
-        }));
-        setProducts(productsWithImages);
-      })
-      .catch(error => console.log(error));
+    onGetAllProducts();
   }, []);
-
   return (
-    <SafeAreaView style={{ width: '100%', backgroundColor: '#F0F2F5' }}>
-      <View style={{ flexDirection: 'column' }}>
+    <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
+      <View style={{flexDirection: 'column'}}>
         <View style={headerContainer}>
-<<<<<<< HEAD
           <View
             style={{
               backgroundColor: color.WHITE,
@@ -70,14 +54,6 @@ const Product = () => {
               }}
               placeholder="Bạn muốn tìm kiếm sản phẩm?"
             />
-=======
-          <View style={{ flexDirection: 'row' }}>
-            <Image source={icons.user_icon} style={{ width: 32, height: 32 }} />
-            <View style={userNameContainer}>
-              <Text style={helloText}>{textsPES.txtHello}</Text>
-              <Text style={userName}>{textsPES.txtUsername}</Text>
-            </View>
->>>>>>> quocHung
           </View>
 
           <Image
@@ -114,11 +90,10 @@ const Product = () => {
           <PESCategories />
         </View>
         <View style={flatlistContainer}>
-          <FlatList
-            data={products}
-            numColumns={2}
-            keyExtractor={item => item._id.toString()}
-            renderItem={({item}) => <PESListItem item={item} />}
+          <PESFlatList
+            onPress={_id => {
+              navigation.navigate('Detail', {_id});
+            }}
           />
         </View>
       </View>

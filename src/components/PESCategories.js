@@ -1,8 +1,9 @@
 import {FlatList} from 'react-native';
 
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useContext} from 'react';
 import {icons} from '../assets';
 import PESListCategories from './PESListCategories';
+import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 
 const PESCategories = () => {
   const DATA = [
@@ -27,13 +28,18 @@ const PESCategories = () => {
       imagee: require('../assets/images/shoes3.png'),
     },
   ];
+  const {onGetAllGenre, genres} = useContext(ProductContext);
+  // console.log('sssss=======', genres);
+  useEffect(() => {
+    onGetAllGenre();
+  }, []);
 
   return (
     <FlatList
-      data={DATA}
+      data={genres}
       horizontal={true}
       showsHorizontalScrollIndicator={false}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item._id}
       renderItem={({item}) => <PESListCategories item={item} />}
     />
   );
