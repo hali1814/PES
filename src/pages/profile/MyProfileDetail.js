@@ -6,6 +6,7 @@ import colorsPES from '../../constants/colors';
 import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons'
 import {
     SuccessDialog
 } from '../../components'
@@ -166,11 +167,27 @@ const MyProfileDetail = (props) => {
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={styles.title}>Cập nhật thông tin người dùng</Text>
                             </View>
-                            <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
+                            <TouchableOpacity style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBottom: 10,
+                                flexDirection: 'row'
+                            }}
+                            >
                                 <Image style={{ height: 80, width: 80 }}
                                     source={images.avatar}
                                 />
-                            </View>
+                                <View style={{
+                                    position: 'absolute',
+                                    bottom: 0,
+                                    marginLeft: 20
+                                }}>
+                                    <Icon
+                                        name="camera-outline" size={30}
+                                        color="#4F8EF7"
+                                    />
+                                </View>
+                            </TouchableOpacity>
                             <TextInput
                                 style={styles.text}
                                 placeholder='Tên :'
