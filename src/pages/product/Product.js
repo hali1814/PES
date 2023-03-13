@@ -51,7 +51,6 @@ const Product = () => {
     <SafeAreaView style={{ width: '100%', backgroundColor: '#F0F2F5' }}>
       <View style={{ flexDirection: 'column' }}>
         <View style={headerContainer}>
-<<<<<<< HEAD
           <View
             style={{
               backgroundColor: color.WHITE,
@@ -70,14 +69,6 @@ const Product = () => {
               }}
               placeholder="Bạn muốn tìm kiếm sản phẩm?"
             />
-=======
-          <View style={{ flexDirection: 'row' }}>
-            <Image source={icons.user_icon} style={{ width: 32, height: 32 }} />
-            <View style={userNameContainer}>
-              <Text style={helloText}>{textsPES.txtHello}</Text>
-              <Text style={userName}>{textsPES.txtUsername}</Text>
-            </View>
->>>>>>> quocHung
           </View>
 
           <Image

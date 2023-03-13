@@ -7,8 +7,12 @@ import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons'
+import DatePicker from 'react-native-datepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import {
-    SuccessDialog
+    SuccessDialog,
+    FailDialog
 } from '../../components'
 
 const MyProfileDetail = (props) => {
@@ -56,11 +60,20 @@ const MyProfileDetail = (props) => {
 
     const [visible, setVisible] = useState(false);
     const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+    const [failedDialogVisible, setFailedDialogVisible] = useState(false);
+
     const handleSuccess = () => {
         setSuccessDialogVisible(true);
     };
     const handleSuccessDialogClose = () => {
         setSuccessDialogVisible(false);
+    };
+
+    const handleFailed = () => {
+        setFailedDialogVisible(true);
+    };
+    const handleFailedDialogClose = () => {
+        setFailedDialogVisible(false);
     };
 
     const showDialog = () => {
@@ -76,22 +89,31 @@ const MyProfileDetail = (props) => {
     const [address, setAddress] = useState('')
     const [nickName, setNickName] = useState('')
     const [email, setEmail] = useState('')
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const updateProfile = async () => {
         try {
             const res = await onChangeProfile(avatar, date, address, nickName, email)
             if (res == false) {
-                // alert('updateProfile failed')
-                handleSuccess()
+                handleFailed()
             } else {
-
                 setTimeout(() => { navigation.navigate('Profile'), 2000 })
+                handleSuccess()
             }
         } catch (error) {
             console.log('change profile failed', error);
             throw error
         }
     }
+
+    const handleDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShowDatePicker(false);
+        setDate(currentDate);
+    };
+
+
+
 
 
     return (
@@ -122,6 +144,10 @@ const MyProfileDetail = (props) => {
                     <View style={styles.inforDetail}>
                         <Text style={styles.titleText}>Email</Text>
                         <Text style={styles.contentText}>{user.email}</Text>
+                    </View>
+                    <View style={styles.inforDetail}>
+                        <Text style={styles.titleText}>Ngày sinh</Text>
+                        <Text style={styles.contentText}>{user.date}</Text>
                     </View>
                     <TouchableOpacity onPress={() => { navigation.push('ChangeAddress', { address: user.address }) }} style={styles.addressDetail}>
                         <View style={styles.addressTitle}>
@@ -174,19 +200,25 @@ const MyProfileDetail = (props) => {
                                 flexDirection: 'row'
                             }}
                             >
-                                <Image style={{ height: 80, width: 80 }}
-                                    source={images.avatar}
-                                />
-                                <View style={{
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    marginLeft: 20
-                                }}>
-                                    <Icon
-                                        name="camera-outline" size={30}
-                                        color="#4F8EF7"
+                                <View>
+                                    <Image style={{ height: 80, width: 80 }}
+                                        source={images.avatar}
                                     />
+                                    <View style={{
+                                        position: 'absolute',
+                                        bottom: -15,
+                                        right: -5,
+                                        padding: 8,
+                                        backgroundColor: colorsPES.grey,
+                                        borderRadius: 20
+                                    }}>
+                                        <Icon
+                                            name="camera" size={20}
+                                            color="#5865F2"
+                                        />
+                                    </View>
                                 </View>
+
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.text}
@@ -195,12 +227,33 @@ const MyProfileDetail = (props) => {
                                 onChangeText={(text) => { setNickName(text) }}
                             />
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
-                            <TextInput
-                                style={styles.text}
-                                placeholder='Ngày tháng năm sinh :'
-                                value={date}
-                                onChangeText={(text) => { setDate(text) }}
-                            />
+
+                            <TouchableOpacity
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+                                onPress={() => { setShowDatePicker(true) }}
+                            >
+                                <TextInput
+                                    style={[styles.textDate, {}]}
+                                    placeholder="Ngày sinh"
+                                    value={date ? date.toLocaleDateString() : ''}
+                                    editable={false}
+                                />
+                                <Icon
+                                    name="chevron-forward-outline"
+                                    color="#4F8EF7"
+                                    size={30}
+                                />
+                            </TouchableOpacity>
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={date || new Date()}
+                                    mode="date"
+                                    dateFormat='year month day'
+                                    display="inline"
+                                    onChange={handleDateChange}
+                                />
+                            )}
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
                             <TextInput
                                 style={styles.text}
@@ -230,6 +283,12 @@ const MyProfileDetail = (props) => {
                 <SuccessDialog
                     visible={successDialogVisible}
                     onPress={handleSuccessDialogClose}
+                    message="Cập nhật hồ sơ thành công !"
+                />
+                <FailDialog
+                    visible={failedDialogVisible}
+                    onPress={handleFailedDialogClose}
+                    message="Cập nhật hồ sơ thất bại !"
                 />
             </SafeAreaView>
         </ScrollView >
@@ -259,6 +318,10 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
     },
     text: {
+        fontSize: 16,
+        color: colorsPES.blackText
+    },
+    textDate: {
         fontSize: 16,
         color: colorsPES.blackText
     },
