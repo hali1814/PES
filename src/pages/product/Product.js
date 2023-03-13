@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import color from '../../styles/colors';
-import {PESFlatList} from '../../components/PESFlatList';
+import { PESFlatList } from '../../components/PESFlatList';
 import {
   flatlistContainer,
   headerContainer,
@@ -19,8 +19,8 @@ import {
   userName,
   userNameContainer,
 } from './components/styles';
-import {textsPES} from '../../constants/string';
-import {icons, images} from '../../assets';
+import { textsPES } from '../../constants/string';
+import { icons, images } from '../../assets';
 import PESCategories from '../../components/PESCategories';
 import {TextInput} from 'react-native-gesture-handler';
 import Fonts from '../../assets/fonts/fonts';
@@ -48,9 +48,10 @@ const Product = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
-      <View style={{flexDirection: 'column'}}>
+    <SafeAreaView style={{ width: '100%', backgroundColor: '#F0F2F5' }}>
+      <View style={{ flexDirection: 'column' }}>
         <View style={headerContainer}>
+<<<<<<< HEAD
           <View
             style={{
               backgroundColor: color.WHITE,
@@ -69,6 +70,14 @@ const Product = () => {
               }}
               placeholder="Bạn muốn tìm kiếm sản phẩm?"
             />
+=======
+          <View style={{ flexDirection: 'row' }}>
+            <Image source={icons.user_icon} style={{ width: 32, height: 32 }} />
+            <View style={userNameContainer}>
+              <Text style={helloText}>{textsPES.txtHello}</Text>
+              <Text style={userName}>{textsPES.txtUsername}</Text>
+            </View>
+>>>>>>> quocHung
           </View>
 
           <Image

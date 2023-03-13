@@ -1,15 +1,53 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView, Modal, Alert } from 'react-native'
+import React, { useState, useContext } from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
+import {
+    isValidPassword,
+    isValidNewPassword
+} from '../../utils/Validations';
+
+import { UserContext } from '../../api/authservice/UserContext';
+
+
 
 const ChangePassword = ({ navigation }) => {
+    const [password, setPassword] = useState('')
+    const [errorPassword, setErrorPassword] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [errorNewPassword, setErrorNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    const {
+        onChangePassword,
+    } = useContext(UserContext)
+
+    const showSuccessAlert = () => {
+        Alert.alert('change password successfully')
+    }
+
+    const ChangeUserPassword = async () => {
+        try {
+            const res = await onChangePassword(password, newPassword)
+            if (res == false) {
+                alert('change password failed')
+            } else {
+                showSuccessAlert()
+                setTimeout(() => { navigation.navigate('Profile') }, 1500)
+            }
+        } catch (error) {
+            alert('change password failed')
+            console.log('change password failed: ' + error)
+            throw error
+        }
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.headerContainer}>
-                    <TouchableOpacity onPress={()=>navigation.goBack()}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Image source={icons.backIcon} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>Đổi mật khẩu</Text>
@@ -19,16 +57,40 @@ const ChangePassword = ({ navigation }) => {
                     <TextInput
                         style={styles.input}
                         placeholder='Mật khẩu hiện tại'
+                        value={password}
+                        secureTextEntry={true}
+                        onChangeText={(text) => {
+                            setErrorPassword(isValidPassword(text) == true
+                                ? ''
+                                : 'Mật khẩu phải đủ 3 ký tự trở lên')
+                            setPassword(text)
+                        }}
                     />
+                    <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập mật khẩu mới'
+                        value={newPassword}
+                        secureTextEntry={true}
+                        onChangeText={(text) => {
+                            setErrorNewPassword(isValidNewPassword(text) == true || isValidNewPassword(text) != password
+                                ? ''
+                                : 'Mật khẩu không được trùng')
+                            setNewPassword(text)
+                        }}
                     />
+                    <Text style={{ color: 'red', fontSize: 14 }}>{errorNewPassword}</Text>
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập lại mật khẩu mới'
+                        value={confirmPassword}
+                        secureTextEntry={true}
+                        onChangeText={(text) => setConfirmPassword(text)}
                     />
-                    <TouchableOpacity style={styles.buttonUpdate}>
+                    <TouchableOpacity
+                        onPress={ChangeUserPassword}
+                        style={styles.buttonUpdate}
+                    >
                         <Text style={({ fontSize: 16, fontWeight: '500', color: colorsPES.white })}>Cập nhật</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonForget}>
