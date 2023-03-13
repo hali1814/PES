@@ -6,26 +6,27 @@ import Shop from './src/pages/shop/Shop';
 import Voucher from './src/pages/voucher/Voucher';
 import Detail from './src/pages/detail/Detail';
 import OrderConfirmation from './src/pages/ orderconfirmation/ OrderConfirmation';
-import React, {useEffect} from 'react';
-import {Login, Register} from './src/pages/login';
-
+import React, {useEffect, useContext} from 'react';
+import {Login} from './src/pages/login';
 import {NavigationContainer} from '@react-navigation/native';
-
 import MyTab from './src/navigation/Index';
 import {login} from './src/api/authservice/UserService';
 import UserNavigation from './src/api/authservice/UserNavigation';
 import AppNavigation from './src/navigation/AppNavigation';
 import {UserContextProvider} from './src/api/authservice/UserContext';
+import {ProductContext} from './src/api/authservice/ProductAPI/ProductContext';
+import {UserContext} from './src/api/authservice/UserContext';
 
 const App = () => {
   // const checkLogin = async () => {
   //   const data = await login('', '123')
   //   console.log('===>', data)
-  // }
-
+  // // }
+  // const {onGetAllProducts} = useContext(ProductContext);
   // useEffect(() => {
-  //   checkLogin()
-  // }, [])
+  //   ProductContext();
+  //   return () => {};
+  // }, []);
 
   return (
     <View>
@@ -35,10 +36,11 @@ const App = () => {
       {/* <Shop /> */}
       {/* <Voucher /> */}
       {/* <Detail /> */}
-      <OrderConfirmation />
-      {/* <UserContextProvider>
+      {/* <OrderConfirmation /> */}
+      {/* <Login /> */}
+      <UserContextProvider>
         <AppNavigation />
-      </UserContextProvider> */}
+      </UserContextProvider>
     </View>
   );
 };

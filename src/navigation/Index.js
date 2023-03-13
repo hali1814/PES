@@ -12,6 +12,8 @@ import {
   Voucher,
   ProfileStackScreen,
 } from '../pages/profile';
+import Product from '../pages/product/Product';
+import Fonts from '../assets/fonts/fonts';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +37,7 @@ const MyTab = () => {
             case 'Notification':
               iconName = focused ? 'notifications' : 'notifications-outline';
               break;
-            case 'Profile':
+            case 'ProfileStack':
               iconName = focused ? 'people' : 'people-outline';
               break;
             default:
@@ -52,13 +54,14 @@ const MyTab = () => {
         },
         tabBarLabelStyle: {
           fontSize: 13,
+          fontFamily: Fonts.Work_Regular,
         },
         headerShown: false,
       })}
       initialRouteName={'ProfileStack'}>
       <Tab.Screen
         name="Home"
-        component={Profile}
+        component={Product}
         options={{title: 'Trang chủ', headerTitleAlign: 'center'}}
       />
       <Tab.Screen
