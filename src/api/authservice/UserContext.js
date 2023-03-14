@@ -5,7 +5,8 @@ import {
     ChangePassword,
     getVoucher,
     register,
-    changeProfile
+    changeProfile,
+    upload
 } from "./UserService";
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -94,7 +95,7 @@ export const UserContextProvider = (props) => {
                 setIsLoggedIn(false)
             }
         } catch (e) {
-console.log('onLogout error', e);
+            console.log('onLogout error', e);
         }
         return false;
     }
@@ -130,9 +131,22 @@ console.log('onLogout error', e);
         return null;
     }
 
+    const onUpload = async (image) => {
+        try {
+            const res = await upload(image);
+            console.log('ressssss', res)
+            if (res.error == false) {
+                return res.data;
+            }
+        } catch (e) {
+            console.log('Upload a image Failed', e);
+        }
+        return null;
+    }
+
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher, onRegister, setVoucher, onChangeProfile }}
+            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher, onRegister, setVoucher, onChangeProfile, onUpload }}
         >
             {children}
         </UserContext.Provider>

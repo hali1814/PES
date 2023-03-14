@@ -29,7 +29,8 @@ const MyProfileDetail = (props) => {
         user,
         setUser,
         onGetUserInfor,
-        onChangeProfile
+        onChangeProfile,
+        onUpload
     } = useContext(UserContext)
 
     const logout = async () => {
@@ -93,6 +94,11 @@ const MyProfileDetail = (props) => {
             setEmail(user.email)
         }
     }
+    const checkAvatar = () => {
+        if (avatar == "") {
+            setAvatar(user.avatar)
+        } else { avatar }
+    }
     const checkNickName = () => {
         if (nickName == "") {
             setNickName(user.nickName)
@@ -132,44 +138,47 @@ const MyProfileDetail = (props) => {
 
 
 
-    const openCamera = () => {
+    const openCamera = async () => {
         const options = {
             storageOptions: {
                 path: 'images',
                 mediaType: 'photo'
             },
-            includeBase64: true,
+            // includeBase64: true,
         };
-        launchCamera(options, response => {
-            console.log('Response', response)
+
+        launchCamera(options, async response => {
+            console.log('Response', response.assets)
             if (response.didCancel) {
                 console.log('User cancelled camera picker');
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
             } else {
                 // Call API to upload the image to the server
+                console.log('rs', response)
                 const formData = new FormData();
                 formData.append('image', {
-                    uri: response.uri,
-                    type: response.type,
-                    name: response.fileName,
+                    uri: response.assets[0].uri,
+                    type: response.assets[0].type,
+                    name: response.assets[0].fileName,
                 });
-                customAxios('multipart/form-data').post('/api/upLoadOne', formData)
-                    .then((response) => {
-                        console.log(response);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                console.log('uriiii', response.assets[0].uri)
+                const result = await onUpload(formData);
+                console.log('link hinh neeeeee', result);
+                setAvatar(result.link);
+                console.log(avatar)
             }
         });
     };
 
+
     useEffect(() => {
         onGetUserInfor();
-        checkEmail()
+        checkAvatar()
         checkNickName()
+        checkEmail()
         checkAddress()
+        
         return () => { }
     }, [])
 
@@ -187,6 +196,7 @@ const MyProfileDetail = (props) => {
             throw error
         }
     }
+
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -212,7 +222,7 @@ const MyProfileDetail = (props) => {
                     <Text style={styles.headerText}>Thông tin cá nhân</Text>
                 </View>
                 <View style={styles.body}>
-                    <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: colorsPES.grey })}>
+                    <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50 })}>
                         <Image style={({ width: 80, height: 80, borderRadius: 50 })} source={{ uri: user.avatar }} />
                     </View>
                     <View style={styles.inforDetail}>
@@ -286,8 +296,8 @@ const MyProfileDetail = (props) => {
                                 }}
                             >
                                 <View>
-                                    <Image style={{ height: 80, width: 80 }}
-                                        source={images.avatar}
+                                    <Image style={{ height: 80, width: 80, borderRadius: 50 }}
+                                        source={{ uri: avatar }}
                                     />
                                     <View style={{
                                         position: 'absolute',
