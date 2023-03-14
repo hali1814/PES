@@ -9,7 +9,10 @@ import {
 } from '../../utils/Validations';
 
 import { UserContext } from '../../api/authservice/UserContext';
-
+import {
+    SuccessDialog,
+    FailDialog,
+} from '../../components'
 
 
 const ChangePassword = ({ navigation }) => {
@@ -18,6 +21,8 @@ const ChangePassword = ({ navigation }) => {
     const [newPassword, setNewPassword] = useState('')
     const [errorNewPassword, setErrorNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+    const [failedDialogVisible, setFailedDialogVisible] = useState(false);
 
     const {
         onChangePassword,
@@ -27,13 +32,26 @@ const ChangePassword = ({ navigation }) => {
         Alert.alert('change password successfully')
     }
 
+    const handleSuccess = () => {
+        setSuccessDialogVisible(true);
+    };
+    const handleSuccessDialogClose = () => {
+        setSuccessDialogVisible(false);
+    };
+
+    const handleFailed = () => {
+        setFailedDialogVisible(true);
+    };
+    const handleFailedDialogClose = () => {
+        setFailedDialogVisible(false);
+    };
     const ChangeUserPassword = async () => {
         try {
             const res = await onChangePassword(password, newPassword)
             if (res == false) {
-                alert('change password failed')
+                handleFailed()
             } else {
-                showSuccessAlert()
+                handleSuccess()
                 setTimeout(() => { navigation.navigate('Profile') }, 1500)
             }
         } catch (error) {
@@ -96,6 +114,16 @@ const ChangePassword = ({ navigation }) => {
                     <TouchableOpacity style={styles.buttonForget}>
                         <Text style={({ fontSize: 15, fontWeight: '400', color: colorsPES.primary })}>Quên mật khẩu?</Text>
                     </TouchableOpacity>
+                    <SuccessDialog
+                        visible={successDialogVisible}
+                        onPress={handleSuccessDialogClose}
+                        message="Đổi mật khẩu thành công !"
+                    />
+                    <FailDialog
+                        visible={failedDialogVisible}
+                        onPress={handleFailedDialogClose}
+                        message="Đổi mật khẩu thất bại !"
+                    />
                 </View>
             </ScrollView>
         </SafeAreaView>
