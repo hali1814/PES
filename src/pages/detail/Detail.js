@@ -7,6 +7,7 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import React, {Component, useState, useEffect, useContext} from 'react';
 import color from '../../styles/colors';
@@ -49,80 +50,47 @@ import PESProductDescription from '../../components/PESProductDescription';
 import PESRelatedProducts from '../../components/PESRelatedProducts';
 import Fonts from '../../assets/fonts/fonts';
 import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+
 const {width: screenWidth} = Dimensions.get('window');
 
 const Detail = props => {
-  const [currentImage, setCurrentImage] = useState(1);
   const {route, navigation} = props;
   const {_id} = route.params;
+
   const {onGetDetail, detail} = useContext(ProductContext);
-  const [imageList, setImageList] = useState(detail.images);
-  console.log('sss', imageList);
+  const [imageList, setImageList] = useState([]);
+  const [currentImage, setCurrentImage] = useState(1);
+
   useEffect(() => {
     onGetDetail(_id);
-  }, []);
+  }, [_id]);
 
   useEffect(() => {
-    const data = [
-      {
-        image: (
-          <Image
-            source={{
-              uri: 'https://www.highsnobiety.com/static-assets/thumbor/odr-GZF4oeFP4GLy0xacOrF8LV4=/1600x1067/www.highsnobiety.com/static-assets/wp-content/uploads/2019/02/18160640/best-jordan-sneakers-2019-11.jpg',
-            }}
-            resizeMode="stretch"
-            style={styles.imageStyle}
-          />
-        ),
-      },
-      {
-        image: (
-          <Image
-            source={images.detail_image}
-            resizeMode="stretch"
-            style={styles.imageStyle}
-          />
-        ),
-      },
-      {
-        image: (
-          <Image
-            source={images.detail_image}
-            resizeMode="stretch"
-            style={styles.imageStyle}
-          />
-        ),
-      },
-      {
-        image: (
-          <Image
-            source={images.detail_image}
-            resizeMode="stretch"
-            style={styles.imageStyle}
-          />
-        ),
-      },
-    ];
-    setImageList(detail.images);
-  }, []);
+    if (detail.images) {
+      const images = detail.images.map(image => ({uri: image}));
+      setImageList(images);
+    }
+  }, [detail]);
 
   //Bộ đếm số ảnh
+  //Thay vì sử dụng Math.floor, chúng tôi đã sử dụng Math.ceil để đảm bảo rằng index được bắt đầu từ 1.
   const handleScroll = e => {
-    if (!e) {
+    const {nativeEvent} = e || {};
+    if (!nativeEvent || !nativeEvent.contentOffset) {
       return;
     }
-    const {nativeEvent} = e;
-    if (nativeEvent && nativeEvent.contentOffset) {
-      const currentOffset = nativeEvent.contentOffset.x;
-      let imageIndex = 0;
-      if (nativeEvent.contentOffset.x > 0) {
-        imageIndex = Math.floor(
-          (nativeEvent.contentOffset.x + screenWidth / 2) / screenWidth,
-        );
-      }
-      setCurrentImage(imageIndex);
-    }
+    const currentOffset = nativeEvent.contentOffset.x;
+    const imageIndex = Math.ceil(
+      (currentOffset + screenWidth / 2) / screenWidth,
+    );
+    setCurrentImage(imageIndex);
   };
+
+  const renderItem = ({item, index}) => (
+    <Image source={item} style={{width: screenWidth, height: 375}} />
+  );
+
+  const ShopID = detail.shop?.idShop || '';
 
   return (
     <View
@@ -136,19 +104,21 @@ const Detail = props => {
           justifyContent: 'flex-end',
         }}>
         <View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-            onScroll={handleScroll}
-            contentContainerStyle={{
-              width: screenWidth * imageList.length,
-              height: 375,
-            }}>
-            {imageList.map((e, index) => (
-              <View key={index.toString()}>{e.images}</View>
-            ))}
-          </ScrollView>
+          {imageList.length > 0 && (
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled
+              onScroll={handleScroll}
+              data={imageList}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={renderItem}
+              contentContainerStyle={{
+                width: screenWidth * imageList.length,
+                height: 375,
+              }}
+            />
+          )}
           <SafeAreaView style={SafeAreaContainer}>
             <TouchableOpacity
               onPress={() => {
@@ -188,7 +158,7 @@ const Detail = props => {
               <Text style={labelText}>{textsPES.txtlabel}</Text>
             </View>
             <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 20}}>
-              {textsPES.numberMoney}đ
+              {detail.stock[0].price}đ
             </Text>
           </View>
         </View>
@@ -223,17 +193,21 @@ const Detail = props => {
       </View>
       <ScrollView pagingEnabled>
         {/* AdminShop */}
-        <View key={[]} style={{paddingHorizontal: 12, marginTop: 8}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Shop', {ShopID});
+          }}
+          style={{paddingHorizontal: 12, marginTop: 8}}>
           <View style={ContainerShop}>
             <View style={headerContainerShop}>
               <TouchableOpacity style={{flexDirection: 'row'}}>
                 <Image
-                  source={images.user2_image}
-                  style={{width: 32, height: 32}}
+                  source={{uri: detail.shop.avatar}}
+                  style={{width: 32, height: 32, borderRadius: 360}}
                 />
                 <View style={userNameContainer}>
-                  <Text style={shopNameText}>{textsPES.txtShopname}</Text>
-                  <Text style={phoneText}>{textsPES.txtPhone}</Text>
+                  <Text style={shopNameText}>{detail.shop.nameShop}</Text>
+                  <Text style={phoneText}>{detail.owner}</Text>
                 </View>
               </TouchableOpacity>
               <View>
@@ -247,7 +221,7 @@ const Detail = props => {
               </View>
             </View>
 
-            <View style={{padding: 12}}>
+            <View style={{paddingHorizontal: 12}}>
               <View style={showReaching}>
                 <PESShop
                   imgUri={icons.shopBag_icon}
@@ -267,7 +241,7 @@ const Detail = props => {
               </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
         {/* Mô tả chi tiết */}
         <View style={descriptionContainer}>
           <View style={descriptionBG}>
@@ -297,13 +271,13 @@ const Detail = props => {
                   <PESProductDescription
                     icon={icons.color_icon}
                     text1={'Màu'}
-                    text2={'Trắng, xanh, vàng'}
+                    // text2={detail.stock[0].color}
                   />
                   <View style={{paddingTop: 8}}>
                     <PESProductDescription
                       icon={icons.size_icon}
                       text1={'Size'}
-                      text2={'37 - 45'}
+                      // text2={detail.stock.size}
                     />
                   </View>
                   <View style={{paddingTop: 8}}>

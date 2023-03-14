@@ -12,3 +12,7 @@ export const getDetail = async _id => {
   const result = await customAxios().get(`/api/product/${_id}`);
   return result;
 };
+export const getStore = async _id => {
+  const result = await customAxios().get(`/api/store/${_id}`);
+  return result;
+};

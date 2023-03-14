@@ -86,6 +86,7 @@ const Product = ({navigation, onPress}) => {
             width: '100%',
             height: 32,
             marginTop: 16,
+            paddingHorizontal: 12,
           }}>
           <PESCategories />
         </View>

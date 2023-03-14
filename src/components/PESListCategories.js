@@ -3,6 +3,7 @@ import React, {useEffect, useContext} from 'react';
 import color from '../styles/colors';
 import {icons} from '../assets';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
+import Fonts from '../assets/fonts/fonts';
 
 const PESListCategories = ({item}) => {
   const {onGetAllGenre, genres} = useContext(ProductContext);
@@ -15,14 +16,16 @@ const PESListCategories = ({item}) => {
       <View
         style={{
           width: '100%',
+          backgroundColor: color.WHITE,
           flexDirection: 'row',
-          alignItems: 'center',
           paddingHorizontal: 8,
-          paddingVertical: 8,
-          height: '100%',
+          paddingVertical: 4,
+          borderRadius: 60,
         }}>
         <Image source={{uri: item.images}} style={styles.imgProduct} />
-        <Text style={styles.textName}>{item.label}</Text>
+        <View style={{justifyContent: 'center', marginLeft: 4}}>
+          <Text style={styles.textName}>{item.label}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -32,16 +35,14 @@ export default PESListCategories;
 
 const styles = StyleSheet.create({
   Container: {
-    backgroundColor: color.WHITE,
-    marginHorizontal: 12,
-    borderRadius: 60,
+    justifyContent: 'center',
+    paddingLeft: 8,
   },
 
   imgProduct: {
     width: 24,
     resizeMode: 'cover',
     height: 24,
-    paddingLeft: 4,
   },
   headerTextContainer: {
     flexDirection: 'column',
@@ -51,9 +52,9 @@ const styles = StyleSheet.create({
   },
   textName: {
     fontSize: 14,
-    fontWeight: '600',
     color: color.TEXT_SECOND,
-    paddingLeft: 8,
+    textTransform: 'capitalize',
+    fontFamily: Fonts.Work_SemiBold,
   },
   textAbout: {
     marginTop: 4,

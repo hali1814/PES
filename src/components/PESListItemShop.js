@@ -6,7 +6,7 @@ import Fonts from '../assets/fonts/fonts';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Detail from '../pages/detail/Detail';
 
-const PESListItem = props => {
+const PESListItemShop = props => {
   const {item, navigation, onPress} = props;
   return (
     <TouchableOpacity
@@ -20,6 +20,7 @@ const PESListItem = props => {
               alignSelf: 'center',
               marginLeft: 4,
               width: '100%',
+              alignContent: 'flex-end',
             }}>
             <Text style={{color: '#FFB208', fontFamily: Fonts.Work_Medium}}>
               {item.sale}%
@@ -52,7 +53,7 @@ const PESListItem = props => {
   );
 };
 
-export default PESListItem;
+export default PESListItemShop;
 
 const styles = StyleSheet.create({
   Container: {
