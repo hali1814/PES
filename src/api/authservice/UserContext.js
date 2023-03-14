@@ -105,7 +105,6 @@ console.log('onLogout error', e);
             const res = await getVoucher()
             if (res.status == 'success') {
                 setVoucher(res.data)
-                console.log('Voucher ====>', voucher)
             }
         } catch (error) {
             console.log('onGetVoucher error', error);

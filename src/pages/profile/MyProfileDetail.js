@@ -7,12 +7,17 @@ import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons'
-import DatePicker from 'react-native-datepicker'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import customAxios from '../../api/helper/Axios';
+import ImagePicker from 'react-native-image-picker'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { PermissionsAndroid } from 'react-native';
+
 
 import {
     SuccessDialog,
-    FailDialog
+    FailDialog,
+    ConfirmDialog
 } from '../../components'
 
 const MyProfileDetail = (props) => {
@@ -26,12 +31,6 @@ const MyProfileDetail = (props) => {
         onGetUserInfor,
         onChangeProfile
     } = useContext(UserContext)
-
-    useEffect(() => {
-        onGetUserInfor();
-        return () => { }
-    }, [])
-
 
     const logout = async () => {
         try {
@@ -48,19 +47,17 @@ const MyProfileDetail = (props) => {
         }
     }
 
-    LogoutAlert = () =>
-        Alert.alert('Thông báo!', 'Bạn có chắc chắn muốn đăng xuất', [
-            {
-                text: 'hủy',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-            },
-            { text: 'Đồng ý', onPress: () => logout() },
-        ]);
-
     const [visible, setVisible] = useState(false);
     const [successDialogVisible, setSuccessDialogVisible] = useState(false);
     const [failedDialogVisible, setFailedDialogVisible] = useState(false);
+    const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+
+    const handleConfirm = () => {
+        setConfirmDialogVisible(true);
+    };
+    const handleConfirmDialogClose = () => {
+        setConfirmDialogVisible(false);
+    };
 
     const handleSuccess = () => {
         setSuccessDialogVisible(true);
@@ -90,6 +87,91 @@ const MyProfileDetail = (props) => {
     const [nickName, setNickName] = useState('')
     const [email, setEmail] = useState('')
     const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const checkEmail = () => {
+        if (email == "") {
+            setEmail(user.email)
+        }
+    }
+    const checkNickName = () => {
+        if (nickName == "") {
+            setNickName(user.nickName)
+        }
+    }
+    const checkAddress = () => {
+        if (address == "") {
+            setAddress(user.address)
+        }
+    }
+
+    async function requestCameraPermission() {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    title: 'Yêu cầu quyền truy cập vào máy ảnh',
+                    message: 'Ứng dụng này yêu cầu truy cập vào máy ảnh của bạn',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                openCamera()
+            } else {
+                console.log('Camera permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+
+
+
+
+
+
+
+    const openCamera = () => {
+        const options = {
+            storageOptions: {
+                path: 'images',
+                mediaType: 'photo'
+            },
+            includeBase64: true,
+        };
+        launchCamera(options, response => {
+            console.log('Response', response)
+            if (response.didCancel) {
+                console.log('User cancelled camera picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else {
+                // Call API to upload the image to the server
+                const formData = new FormData();
+                formData.append('image', {
+                    uri: response.uri,
+                    type: response.type,
+                    name: response.fileName,
+                });
+                customAxios('multipart/form-data').post('/api/upLoadOne', formData)
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        });
+    };
+
+    useEffect(() => {
+        onGetUserInfor();
+        checkEmail()
+        checkNickName()
+        checkAddress()
+        return () => { }
+    }, [])
 
     const updateProfile = async () => {
         try {
@@ -147,7 +229,7 @@ const MyProfileDetail = (props) => {
                     </View>
                     <View style={styles.inforDetail}>
                         <Text style={styles.titleText}>Ngày sinh</Text>
-                        <Text style={styles.contentText}>{user.date}</Text>
+                        <Text style={styles.contentText}>{user.date.slice(0, 10)}</Text>
                     </View>
                     <TouchableOpacity onPress={() => { navigation.push('ChangeAddress', { address: user.address }) }} style={styles.addressDetail}>
                         <View style={styles.addressTitle}>
@@ -172,7 +254,7 @@ const MyProfileDetail = (props) => {
                         <Text style={styles.adjustText}>Tài khoản/ Thẻ ngân hàng</Text>
                         <Image source={icons.nextIconBlack} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={LogoutAlert} style={styles.adjustContainer}>
+                    <TouchableOpacity onPress={handleConfirm} style={styles.adjustContainer}>
                         <Text style={[styles.adjustText, { color: colorsPES.red }]}>Đăng xuất</Text>
                         <Image source={icons.nextIconBlack} />
                     </TouchableOpacity>
@@ -183,6 +265,7 @@ const MyProfileDetail = (props) => {
                 >
                     <Text style={({ fontSize: 16, fontWeight: '500', color: colorsPES.white })}>Cập nhật</Text>
                 </TouchableOpacity>
+                {/* Update Modal Dialog*/}
                 <Modal
                     visible={visible}
                     animationType="slide"
@@ -193,12 +276,14 @@ const MyProfileDetail = (props) => {
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={styles.title}>Cập nhật thông tin người dùng</Text>
                             </View>
-                            <TouchableOpacity style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: 10,
-                                flexDirection: 'row'
-                            }}
+                            <TouchableOpacity
+                                onPress={requestCameraPermission}
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginBottom: 10,
+                                    flexDirection: 'row'
+                                }}
                             >
                                 <View>
                                     <Image style={{ height: 80, width: 80 }}
@@ -222,7 +307,7 @@ const MyProfileDetail = (props) => {
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.text}
-                                placeholder='Tên :'
+                                placeholder={`Tên : ${nickName}`}
                                 value={nickName}
                                 onChangeText={(text) => { setNickName(text) }}
                             />
@@ -234,7 +319,7 @@ const MyProfileDetail = (props) => {
                             >
                                 <TextInput
                                     style={[styles.textDate, {}]}
-                                    placeholder="Ngày sinh"
+                                    placeholder={`Ngày sinh : ${user.date.slice(0, 10)}`}
                                     value={date ? date.toLocaleDateString() : ''}
                                     editable={false}
                                 />
@@ -257,14 +342,14 @@ const MyProfileDetail = (props) => {
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
                             <TextInput
                                 style={styles.text}
-                                placeholder='Email :'
+                                placeholder={`email : ${email}`}
                                 value={email}
                                 onChangeText={(text) => { setEmail(text) }}
                             />
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
                             <TextInput
                                 style={styles.text}
-                                placeholder='Địa chỉ :'
+                                placeholder={`Địa chỉ : ${address}`}
                                 value={address}
                                 onChangeText={(text) => { setAddress(text) }}
                             />
@@ -289,6 +374,12 @@ const MyProfileDetail = (props) => {
                     visible={failedDialogVisible}
                     onPress={handleFailedDialogClose}
                     message="Cập nhật hồ sơ thất bại !"
+                />
+                <ConfirmDialog
+                    visible={confirmDialogVisible}
+                    onCancelPress={handleConfirmDialogClose}
+                    onPress={logout}
+                    message="Bạn chắc chắn muốn đăng xuất ?"
                 />
             </SafeAreaView>
         </ScrollView >

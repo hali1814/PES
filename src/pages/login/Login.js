@@ -5,6 +5,7 @@ import { icons } from '../../assets';
 import { isValidPassword, isValidPhoneNumber } from '../../utils/Validations';
 import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FailDialog, SuccessDialog } from '../../components';
 
 const Login = (props) => {
     const { navigation } = props;
@@ -15,6 +16,20 @@ const Login = (props) => {
     const isValidationOK = () => phoneNumber.length > 0 && password.length > 0
         && isValidPhoneNumber(phoneNumber) == true
         && isValidPassword(password) == true;
+    const [failedDialogVisible, setFailedDialogVisible] = useState(false);
+    const handleFailed = () => {
+        setFailedDialogVisible(true);
+    };
+    const handleFailedDialogClose = () => {
+        setFailedDialogVisible(false);
+    };
+    const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+    const handleSuccess = () => {
+        setFailedDialogVisible(true);
+    };
+    const handleSuccessDialogClose = () => {
+        setFailedDialogVisible(false);
+    };
 
     const {
         onLogin,
@@ -24,13 +39,13 @@ const Login = (props) => {
         try {
             const res = await onLogin(phoneNumber, password)
             const token = await AsyncStorage.getItem('token', token)
-            if (token.length === null) {
-                alert('het han dang nhap su dung');
-            }
+            // if (token.length === null) {
+            //     alert('het han dang nhap su dung');
+            // }
             console.log('token: ' + token)
             if (res == false) {
-                alert('Login failed');
-            }
+                handleFailed()
+            } else { handleSuccess() }
         } catch (error) {
             console.log('error', error)
         }
@@ -72,7 +87,7 @@ const Login = (props) => {
             <Text style={{ color: 'red', fontSize: 14 }}>{errorPhoneNumber}</Text>
             <View style={styles.InputContainer}>
                 <TextInput
-placeholder='Nhập mật khẩu'
+                    placeholder='Nhập mật khẩu'
                     value={password}
                     keyboardType='default'
                     secureTextEntry={true}
@@ -115,6 +130,16 @@ placeholder='Nhập mật khẩu'
                 <Text style={styles.termText}>
                     Chấp nhận mọi Điều khoản sử dụng & Chính sách bảo mật khi đăng nhập sử dụng dịch vụ của chúng tôi
                 </Text>
+                <FailDialog
+                    visible={failedDialogVisible}
+                    onPress={handleFailedDialogClose}
+                    message="Đăng nhập không thành công, xin hãy thử lại!"
+                />
+                <SuccessDialog
+                    visible={successDialogVisible}
+                    onPress={handleSuccessDialogClose}
+                    message="Đăng nhập thành công"
+                />
             </View>
         </SafeAreaView>
     )
@@ -168,7 +193,7 @@ const styles = StyleSheet.create({
     },
 
     facebookLogin: {
-width: '40%',
+        width: '40%',
         height: '100%',
         borderWidth: 1,
         borderColor: colorsPES.borderColorBlue,
