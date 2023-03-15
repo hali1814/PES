@@ -73,8 +73,8 @@ const Shop = props => {
             <View style={headerContainerShop}>
               <View style={{flexDirection: 'row'}}>
                 <Image
-                  source={images.user2_image}
-                  style={{width: 32, height: 32}}
+                  source={{uri: store.avatar}}
+                  style={{width: 32, height: 32, borderRadius: 360}}
                 />
                 <View style={userNameContainer}>
                   <Text style={shopNameText}>{store.nameShop}</Text>

@@ -9,13 +9,12 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, {Component, useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import color from '../../styles/colors';
 import {icons, images} from '../../assets';
 import {
   addCartButton,
   buyButton,
-  buyButtonText,
   buyContainer,
   buyText,
   ContainerShop,
@@ -202,12 +201,12 @@ const Detail = props => {
             <View style={headerContainerShop}>
               <TouchableOpacity style={{flexDirection: 'row'}}>
                 <Image
-                  source={{uri: detail.shop.avatar}}
+                  // source={{uri: detail.shop.avatar}}
                   style={{width: 32, height: 32, borderRadius: 360}}
                 />
                 <View style={userNameContainer}>
-                  <Text style={shopNameText}>{detail.shop.nameShop}</Text>
-                  <Text style={phoneText}>{detail.owner}</Text>
+                  {/* <Text style={shopNameText}>{detail.shop.nameShop}</Text> */}
+                  {/* <Text style={phoneText}>{detail.owner}</Text> */}
                 </View>
               </TouchableOpacity>
               <View>

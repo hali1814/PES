@@ -40,7 +40,7 @@ const Product = ({navigation, onPress}) => {
             style={{
               backgroundColor: color.WHITE,
               borderRadius: 16,
-              width: '90%',
+              width: '80%',
               height: 36,
             }}>
             <TextInput
@@ -55,15 +55,28 @@ const Product = ({navigation, onPress}) => {
               placeholder="Bạn muốn tìm kiếm sản phẩm?"
             />
           </View>
-
-          <Image
-            source={icons.search_icon}
-            style={{
-              width: 24,
-              height: 24,
-              tintColor: color.MAIN,
-            }}
-          />
+          {/* card */}
+          <TouchableOpacity>
+            <Image
+              source={icons.cardIcon}
+              style={{
+                width: 24,
+                height: 24,
+                tintColor: color.MAIN,
+              }}
+            />
+          </TouchableOpacity>
+          {/* search */}
+          <TouchableOpacity>
+            <Image
+              source={icons.search_icon}
+              style={{
+                width: 24,
+                height: 24,
+                tintColor: color.MAIN,
+              }}
+            />
+          </TouchableOpacity>
         </View>
         <View>
           <ScrollView
