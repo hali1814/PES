@@ -4,7 +4,12 @@ import colorsPES from '../../constants/colors';
 import { icons } from '../../assets';
 import { isValidPassword, isValidPhoneNumber } from '../../utils/Validations';
 import { ScrollView } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { UserContext } from '../../api/authservice/UserContext';
+import { Picker } from '@react-native-picker/picker';
+import { SuccessDialog, FailDialog } from '../../components';
+import Fonts from '../../assets/fonts/fonts';
 
 const Register = ({ navigation }) => {
 
@@ -15,23 +20,145 @@ const Register = ({ navigation }) => {
     const [date, setDate] = useState('')
     const [address, setAddress] = useState('')
     const [nickName, setNickName] = useState('')
+    const [errorNickName, setErrorNickName] = useState('')
     const [email, setEmail] = useState('')
-    // const isValidationOK = () => phoneNumber.length > 0 && password.length > 0
-    //     && isValidPhoneNumber(phoneNumber) == true
-    //     && isValidPassword(password) == true
+    const [errorEmail, setErrorEmail] = useState('')
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
-    const {
-        onRegister
-    } = useContext(UserContext)
+    const cities = [
+        "An Giang",
+        "Bà Rịa - Vũng Tàu",
+        "Bạc Liêu",
+        "Bắc Kạn",
+        "Bắc Giang",
+        "Bắc Ninh",
+        "Bến Tre",
+        "Bình Dương",
+        "Bình Định",
+        "Bình Phước",
+        "Bình Thuận",
+        "Cà Mau",
+        "Cao Bằng",
+        "Cần Thơ",
+        "Đà Nẵng",
+        "Đắk Lắk",
+        "Đắk Nông",
+        "Điện Biên",
+        "Đồng Nai",
+        "Đồng Tháp",
+        "Gia Lai",
+        "Hà Giang",
+        "Hà Nam",
+        "Hà Nội",
+        "Hà Tĩnh",
+        "Hải Dương",
+        "Hải Phòng",
+        "Hậu Giang",
+        "Hòa Bình",
+        "Hưng Yên",
+        "Khánh Hòa",
+        "Kiên Giang",
+        "Kon Tum",
+        "Lai Châu",
+        "Lâm Đồng",
+        "Lạng Sơn",
+        "Lào Cai",
+        "Long An",
+        "Nam Định",
+        "Nghệ An",
+        "Ninh Bình",
+        "Ninh Thuận",
+        "Phú Thọ",
+        "Phú Yên",
+        "Quảng Bình",
+        "Quảng Nam",
+        "Quảng Ngãi",
+        "Quảng Ninh",
+        "Quảng Trị",
+        "Sóc Trăng",
+        "Sơn La",
+        "Tây Ninh",
+        "Thái Bình",
+        "Thái Nguyên",
+        "Thanh Hóa",
+        "Thừa Thiên Huế",
+        "Tiền Giang",
+        "Trà Vinh",
+        "Tuyên Quang",
+        "Vĩnh Long",
+        "Vĩnh Phúc",
+        "Yên Bái"
+    ];
+
+    const isValidNickName = () => {
+        if (nickName == '' || nickName.length <= 2) {
+            setErrorNickName('Tên phải trên 2 ký tự và không được để trống !')
+        } else {
+            setErrorNickName('')
+        }
+    }
+    const handleNickNameChange = (text) => {
+        setNickName(text)
+        isValidNickName(text)
+    }
+
+    const validateEmail = (text) => {
+        // Kiểm tra tính hợp lệ của email
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (regex.test(text) == false) {
+            setErrorEmail('Sai định dạng Email')
+        } else {
+            setErrorEmail('')
+        }
+    }
+
+    const handleEmailChange = (text) => {
+        setEmail(text)
+        validateEmail(text)
+    }
+
+    const isValidationOK = () => {
+        if (nickName.length > 0 && email.length > 0 && errorNickName == ''
+            && phoneNumber.length > 0 && password.length > 0 && errorEmail == ''
+            && errorPassword == '' && errorPhoneNumber == ''
+        ) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    const handleDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShowDatePicker(false);
+        setDate(currentDate);
+    };
+    const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+    const [failedDialogVisible, setFailedDialogVisible] = useState(false);
+
+    const handleSuccess = () => {
+        setSuccessDialogVisible(true);
+    };
+    const handleSuccessDialogClose = () => {
+        setSuccessDialogVisible(false);
+    };
+
+    const handleFailed = () => {
+        setFailedDialogVisible(true);
+    };
+    const handleFailedDialogClose = () => {
+        setFailedDialogVisible(false);
+    };
+
 
     const register = async () => {
         try {
             const res = await onRegister(phoneNumber, password, date, address, nickName, email)
             if (res == false) {
-                alert('register failed')
+                handleFailed()
             } else {
-                alert('register successfully with phone number: ' + phoneNumber)
-                navigation.navigate('Login')
+                handleSuccess()
+                setTimeout(() => { navigation.navigate('Login') }, 2000)
             }
         } catch (error) {
             console.log('register failed: ', error)
@@ -39,8 +166,12 @@ const Register = ({ navigation }) => {
         }
     }
 
+    const {
+        onRegister
+    } = useContext(UserContext)
+
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <SafeAreaView style={styles.container}>
                 <TouchableOpacity
                     onPress={() => { navigation.push('Login') }}
@@ -54,8 +185,8 @@ const Register = ({ navigation }) => {
                     <Text style={styles.welcome}>Chào mừng bạn đến với PES SHOP !</Text>
                 </View>
                 <View style={styles.InputContainer}>
-                    <Image source={icons.vietnamIcon} />
-                    <Text style={StyleSheet.create({ marginRight: 10 })}>+84</Text>
+                    {/* <Image source={icons.vietnamIcon} />
+                    <Text style={StyleSheet.create({ marginRight: 10 })}>+84</Text> */}
                     <TextInput
                         placeholder='Nhập số điện thoại'
                         keyboardType='phone-pad'
@@ -84,38 +215,56 @@ const Register = ({ navigation }) => {
                     />
                 </View>
                 <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
-                <View style={styles.InputContainer}>
+                <TouchableOpacity onPress={() => { setShowDatePicker(true) }} style={styles.InputContainer}>
                     <TextInput
-                        placeholder='Ngày tháng năm sinh'
-                        keyboardType='number-pad'
-                        value={date}
-                        onChangeText={(text) => setDate(text)}
+                        style={[{ fontSize: 14, color: colorsPES.black }]}
+                        placeholder={`Ngày sinh : ${date.toString().slice(4, 13)}`}
+                        value={date ? date.toString().slice(4, 13) : ''}
+                        editable={false}
                     />
-                </View>
-                <View style={styles.InputContainer}>
-                    <TextInput
-                        placeholder='Địa chỉ'
-                        keyboardType='default'
-                        value={address}
-                        onChangeText={(text) => setAddress(text)}
+                    <Icon
+                        name="chevron-forward-outline"
+                        color="rgba(0,0,0,0.5)"
+                        size={20}
                     />
-                </View>
+                </TouchableOpacity>
+                {showDatePicker && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date || new Date()}
+                        mode="date"
+                        dateFormat='year month day'
+                        display="inline"
+                        onChange={handleDateChange}
+                    />
+                )}
+                <Picker
+                    style={styles.InputContainer}
+                    selectedValue={address}
+                    onValueChange={(itemValue) => setAddress(itemValue)}
+                >
+                    {cities.map((city) => (
+                        <Picker.Item key={city} label={city} value={city} />
+                    ))}
+                </Picker>
                 <View style={styles.InputContainer}>
                     <TextInput
                         placeholder='Tên bạn muốn sử dụng trong app'
                         keyboardType='default'
                         value={nickName}
-                        onChangeText={(text) => setNickName(text)}
+                        onChangeText={handleNickNameChange}
                     />
                 </View>
+                {errorNickName ? <Text style={{ color: colorsPES.red, fontSize: 15 }}>{errorNickName}</Text> : null}
                 <View style={styles.InputContainer}>
                     <TextInput
                         placeholder='Email'
                         keyboardType='default'
                         value={email}
-                        onChangeText={(text) => setEmail(text)}
+                        onChangeText={handleEmailChange}
                     />
                 </View>
+                {errorEmail ? <Text style={{ color: colorsPES.red, fontSize: 15 }}>{errorEmail}</Text> : null}
                 <View style={styles.socialLoginContainer}>
                     <TouchableOpacity style={styles.googleLogin}>
                         <Image source={icons.googleIcon} />
@@ -130,8 +279,14 @@ const Register = ({ navigation }) => {
                     <Text style={styles.registerText}>Bạn đã có tài khoản ? Đăng nhập ngay</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    // disabled={isValidationOK() == false}
-                    style={styles.loginButton}
+                    disabled={isValidationOK() == false}
+                    style={[styles.loginButton,
+                    {
+                        backgroundColor: isValidationOK() == false
+                            ? colorsPES.inActive
+                            : colorsPES.borderColorBlue
+                    }
+                    ]}
                     onPress={register}
                 >
                     <Text style={styles.loginText}>Đăng ký</Text>
@@ -141,6 +296,16 @@ const Register = ({ navigation }) => {
                         Chấp nhận mọi Điều khoản sử dụng & Chính sách bảo mật khi đăng nhập sử dụng dịch vụ của chúng tôi
                     </Text>
                 </View>
+                <SuccessDialog
+                    visible={successDialogVisible}
+                    onPress={handleSuccessDialogClose}
+                    message="Đăng ký thành công"
+                />
+                <FailDialog
+                    visible={failedDialogVisible}
+                    onPress={handleFailedDialogClose}
+                    message="Đăng ký thất bại (Số điện thoại này đã được đăng ký)"
+                />
             </SafeAreaView>
         </ScrollView>
     )
@@ -174,9 +339,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 8,
-        borderWidth: 1,
-        backgroundColor: colorsPES.borderColorBlue,
-        borderColor: colorsPES.borderColorBlue,
         borderRadius: 60,
     },
 
@@ -231,7 +393,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingHorizontal: 16,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'center',
         borderWidth: 1,
         borderRadius: 40,
@@ -268,6 +430,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 16,
         paddingTop: 16,
-        backgroundColor : colorsPES.white
+        backgroundColor: colorsPES.white
     }
 })

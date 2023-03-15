@@ -236,12 +236,6 @@ const MyProfileDetail = (props) => {
         }
     }
 
-
-
-
-
-
-
     const openCamera = async () => {
         const options = {
             storageOptions: {
@@ -345,21 +339,14 @@ const MyProfileDetail = (props) => {
                         <Text style={styles.titleText}>Ngày sinh</Text>
                         <Text style={styles.contentText}>{user.date.slice(0, 10)}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => { navigation.push('ChangeAddress', { address: user.address }) }} style={styles.addressDetail}>
+                    <View style={styles.addressDetail}>
                         <View style={styles.addressTitle}>
                             <Text style={styles.titleText}>Địa chỉ giao hàng</Text>
-                            <View style={({
-                                flexDirection: 'row', alignItems: 'center', backgroundColor: '#D3F3ED', paddingVertical: 4,
-                                paddingLeft: 15, paddingRight: 20, justifyContent: 'center', borderRadius: 10
-                            })}>
-                                <Text style={({ fontSize: 13, fontWeight: '400', color: '#24C4A4' })}>Thay đổi địa chỉ giao hàng</Text>
-                                <Image source={icons.nextIcon} />
-                            </View>
                         </View>
                         <Text style={styles.contentText}>
                             {user.address}
                         </Text>
-                    </TouchableOpacity>
+                    </View>
                     <TouchableOpacity onPress={() => { navigation.push('ChangePassword') }} style={styles.adjustContainer}>
                         <Text style={styles.adjustText}>Đổi mật khẩu</Text>
                         <Image source={icons.nextIconBlack} />
@@ -463,7 +450,7 @@ const MyProfileDetail = (props) => {
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
                             {errorEmail ? <Text style={{ color: colorsPES.red, fontSize: 15 }}>{errorEmail}</Text> : null}
                             <Picker
-                            style={{marginHorizontal:-10}}
+                                style={{ marginHorizontal: -10 }}
                                 selectedValue={address}
                                 onValueChange={(itemValue) => setAddress(itemValue)}
                             >
