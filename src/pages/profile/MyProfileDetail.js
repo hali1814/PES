@@ -8,8 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import customAxios from '../../api/helper/Axios';
-import ImagePicker from 'react-native-image-picker'
+import { Picker } from '@react-native-picker/picker';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PermissionsAndroid } from 'react-native';
 
@@ -86,8 +85,113 @@ const MyProfileDetail = (props) => {
     const [date, setDate] = useState('')
     const [address, setAddress] = useState('')
     const [nickName, setNickName] = useState('')
+    const [errorNickName, setErrorNickName] = useState('')
     const [email, setEmail] = useState('')
+    const [errorEmail, setErrorEmail] = useState('')
     const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const isValidNickName = () => {
+        if (nickName == '' || nickName.length <= 2) {
+            setErrorNickName('Tên phải trên 2 ký tự và không được để trống !')
+        } else {
+            setErrorNickName('')
+        }
+    }
+    const handleNickNameChange = (text) => {
+        setNickName(text)
+        isValidNickName(text)
+    }
+
+    const validateEmail = (text) => {
+        // Kiểm tra tính hợp lệ của email
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (regex.test(text) == false) {
+            setErrorEmail('Sai định dạng Email')
+        } else {
+            setErrorEmail('')
+        }
+    }
+
+    const handleEmailChange = (text) => {
+        setEmail(text)
+        validateEmail(text)
+    }
+
+    const cities = [
+        "An Giang",
+        "Bà Rịa - Vũng Tàu",
+        "Bạc Liêu",
+        "Bắc Kạn",
+        "Bắc Giang",
+        "Bắc Ninh",
+        "Bến Tre",
+        "Bình Dương",
+        "Bình Định",
+        "Bình Phước",
+        "Bình Thuận",
+        "Cà Mau",
+        "Cao Bằng",
+        "Cần Thơ",
+        "Đà Nẵng",
+        "Đắk Lắk",
+        "Đắk Nông",
+        "Điện Biên",
+        "Đồng Nai",
+        "Đồng Tháp",
+        "Gia Lai",
+        "Hà Giang",
+        "Hà Nam",
+        "Hà Nội",
+        "Hà Tĩnh",
+        "Hải Dương",
+        "Hải Phòng",
+        "Hậu Giang",
+        "Hòa Bình",
+        "Hưng Yên",
+        "Khánh Hòa",
+        "Kiên Giang",
+        "Kon Tum",
+        "Lai Châu",
+        "Lâm Đồng",
+        "Lạng Sơn",
+        "Lào Cai",
+        "Long An",
+        "Nam Định",
+        "Nghệ An",
+        "Ninh Bình",
+        "Ninh Thuận",
+        "Phú Thọ",
+        "Phú Yên",
+        "Quảng Bình",
+        "Quảng Nam",
+        "Quảng Ngãi",
+        "Quảng Ninh",
+        "Quảng Trị",
+        "Sóc Trăng",
+        "Sơn La",
+        "Tây Ninh",
+        "Thái Bình",
+        "Thái Nguyên",
+        "Thanh Hóa",
+        "Thừa Thiên Huế",
+        "Tiền Giang",
+        "Trà Vinh",
+        "Tuyên Quang",
+        "Vĩnh Long",
+        "Vĩnh Phúc",
+        "Yên Bái"
+    ];
+
+    const isValidationOK = () => {
+        if (nickName.length > 0 && email.length > 0 && errorNickName == ''
+            && errorEmail == ''
+        ) {
+            return true
+        } else {
+            return false
+        }
+    }
+
 
     const checkEmail = () => {
         if (email == "") {
@@ -97,7 +201,7 @@ const MyProfileDetail = (props) => {
     const checkAvatar = () => {
         if (avatar == "") {
             setAvatar(user.avatar)
-        } else { avatar }
+        } else { user.avatar }
     }
     const checkNickName = () => {
         if (nickName == "") {
@@ -178,7 +282,7 @@ const MyProfileDetail = (props) => {
         checkNickName()
         checkEmail()
         checkAddress()
-        
+
         return () => { }
     }, [])
 
@@ -284,7 +388,7 @@ const MyProfileDetail = (props) => {
                     <View style={styles.containerModal}>
                         <View style={styles.content}>
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={styles.title}>Cập nhật thông tin người dùng</Text>
+                                <Text style={styles.title}>Cập nhật thông tin cá nhân</Text>
                             </View>
                             <TouchableOpacity
                                 onPress={requestCameraPermission}
@@ -319,10 +423,10 @@ const MyProfileDetail = (props) => {
                                 style={styles.text}
                                 placeholder={`Tên : ${nickName}`}
                                 value={nickName}
-                                onChangeText={(text) => { setNickName(text) }}
+                                onChangeText={handleNickNameChange}
                             />
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
-
+                            {errorNickName ? <Text style={{ color: colorsPES.red, fontSize: 15 }}>{errorNickName}</Text> : null}
                             <TouchableOpacity
                                 style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
                                 onPress={() => { setShowDatePicker(true) }}
@@ -330,7 +434,7 @@ const MyProfileDetail = (props) => {
                                 <TextInput
                                     style={[styles.textDate, {}]}
                                     placeholder={`Ngày sinh : ${user.date.slice(0, 10)}`}
-                                    value={date ? date.toLocaleDateString() : ''}
+                                    value={date ? user.date.slice(0, 10) : ''}
                                     editable={false}
                                 />
                                 <Icon
@@ -354,22 +458,37 @@ const MyProfileDetail = (props) => {
                                 style={styles.text}
                                 placeholder={`email : ${email}`}
                                 value={email}
-                                onChangeText={(text) => { setEmail(text) }}
+                                onChangeText={handleEmailChange}
                             />
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
-                            <TextInput
-                                style={styles.text}
-                                placeholder={`Địa chỉ : ${address}`}
-                                value={address}
-                                onChangeText={(text) => { setAddress(text) }}
-                            />
+                            {errorEmail ? <Text style={{ color: colorsPES.red, fontSize: 15 }}>{errorEmail}</Text> : null}
+                            <Picker
+                            style={{marginHorizontal:-10}}
+                                selectedValue={address}
+                                onValueChange={(itemValue) => setAddress(itemValue)}
+                            >
+                                {cities.map((city) => (
+                                    <Picker.Item key={city} label={city} value={city} />
+                                ))}
+                            </Picker>
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                                 <TouchableOpacity onPress={hideDialog} style={styles.buttonModal}>
                                     <Text style={styles.closeText}>Hủy</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={updateProfile} style={[styles.buttonModal, {}]}>
-                                    <Text style={styles.updateText}>Cập nhật</Text>
+                                <TouchableOpacity
+                                    disabled={isValidationOK() == false}
+                                    onPress={updateProfile}
+                                    style={[styles.buttonModal, {}]}
+                                >
+                                    <Text style={[
+                                        styles.updateText,
+                                        {
+                                            color: isValidationOK() == false
+                                                ? colorsPES.inActive
+                                                : colorsPES.borderColorBlue
+                                        }]}
+                                    >Cập nhật</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -437,7 +556,6 @@ const styles = StyleSheet.create({
         fontWeight: '700'
     },
     updateText: {
-        color: colorsPES.borderColorBlue,
         fontSize: 16,
         fontWeight: '700'
     },

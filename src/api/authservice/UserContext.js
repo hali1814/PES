@@ -56,6 +56,7 @@ export const UserContextProvider = (props) => {
     const onChangePassword = async (password, newPassword) => {
         try {
             const res = await ChangePassword(password, newPassword)
+            console.log('change pass ===> ', res)
             if (res.status == 'success') {
                 const message = res.data
                 console.log('message ===>', message)

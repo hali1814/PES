@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-start'
     },
 
     background: {
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 10,
         paddingBottom: 40,
-        borderRadius: 20,
+        borderBottomEndRadius: 20,
+        borderBottomStartRadius: 20
     },
     image: {
         width: 100,
