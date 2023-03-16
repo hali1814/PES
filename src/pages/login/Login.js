@@ -40,8 +40,7 @@ const Login = (props) => {
     };
 
     useEffect(() => {
-        setPhoneNumber('')
-        setPassword('')
+
     }, [])
     const {
         onLogin,
@@ -52,13 +51,13 @@ const Login = (props) => {
             const res = await onLogin(phoneNumber, password)
             const token = await AsyncStorage.getItem('token')
             console.log('token: ' + token)
-            if (res == false) {
-                handleFailed()
-            } else if (typeof res === 'string') {
+            if (res == true) {
+                handleSuccess()
+            } if (typeof res === 'string') {
                 handleConfirm()
             }
             else {
-                handleSuccess()
+                handleFailed()
             }
         } catch (error) {
             console.log('error', error)
@@ -160,7 +159,7 @@ const Login = (props) => {
                 <ConfirmDialog
                     visible={confirmDialogVisible}
                     onCancelPress={handleConfirmDialogClose}
-                    onPress={() => { navigation.navigate('OTP') }}
+                    onPress={() => { navigation.navigate('OTP', { phoneNumber: phoneNumber }) }}
                     message="Tài khoản của bạn chưa được kích hoạt"
                     confirmMessage='Nhập OTP'
                 />

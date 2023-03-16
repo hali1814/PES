@@ -179,9 +179,14 @@ const Register = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
             <SafeAreaView style={styles.container}>
                 <TouchableOpacity
-                    onPress={() => { navigation.push('Login') }}
+                    onPress={() => { navigation.navigate('Login') }}
                 >
-                    <Image source={icons.backIcon} />
+                    {/* <Image source={icons.backIcon} /> */}
+                    <Icon
+                        name='arrow-back-outline'
+                        size={30}
+                        color='#000000'
+                    />
                 </TouchableOpacity>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}> Nhập số điện thoại</Text>
