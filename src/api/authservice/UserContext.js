@@ -42,10 +42,14 @@ export const UserContextProvider = (props) => {
                 await AsyncStorage.setItem('token', token);
                 setIsLoggedIn(true);
                 return true;
+            } else if (res.status == 'inactive') {
+                const message = res.data.message
+                console.log('Message ===>', message)
+                return message
             }
             else {
                 setIsLoggedIn(false);
-                // return false;
+                return false;
             }
         } catch (e) {
             console.log('onLogin error', e);
@@ -117,7 +121,6 @@ export const UserContextProvider = (props) => {
     const onGetUserInfor = async () => {
         try {
             const res = await getUserInfor()
-            console.log('res', res);
             if (res.status == 'success') {
                 setUser(res.data)
                 console.log(res.data)

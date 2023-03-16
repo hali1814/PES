@@ -37,7 +37,7 @@ const Voucher = ({ navigation }) => {
                         </View>
                         <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
                             <Text style={{ fontSize: 14, color: colorsPES.borderColorBlue, marginBottom: 20, fontWeight: 'bold' }}>Số lượng còn lại : {item.quantity}</Text>
-                            <Text style={{ fontSize: 14, color: colorsPES.blackText }}>Mô tả : {item.description}</Text>
+                            <Text style={{ fontSize: 14, color: colorsPES.blackText, marginEnd: 20 }}>Mô tả : {item.description}</Text>
                         </View>
                     </TouchableOpacity>
                 )}

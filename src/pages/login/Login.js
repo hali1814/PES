@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, StatusBar } from 'react-native'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import colorsPES from '../../constants/colors';
 import { icons } from '../../assets';
 import { isValidPassword, isValidPhoneNumber } from '../../utils/Validations';
 import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FailDialog, SuccessDialog } from '../../components';
+import { FailDialog, SuccessDialog, ConfirmDialog } from '../../components';
 
 const Login = (props) => {
-    const { navigation } = props;
+    const { navigation, route } = props;
     const [errorPhoneNumber, setErrorPhoneNumber] = useState('')
     const [errorPassword, setErrorPassword] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
@@ -31,6 +31,18 @@ const Login = (props) => {
         setFailedDialogVisible(false);
     };
 
+    const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+    const handleConfirm = () => {
+        setConfirmDialogVisible(true);
+    };
+    const handleConfirmDialogClose = () => {
+        setConfirmDialogVisible(false);
+    };
+
+    useEffect(() => {
+        setPhoneNumber('')
+        setPassword('')
+    }, [])
     const {
         onLogin,
     } = useContext(UserContext)
@@ -38,18 +50,23 @@ const Login = (props) => {
     const login = async () => {
         try {
             const res = await onLogin(phoneNumber, password)
-            const token = await AsyncStorage.getItem('token', token)
-            // if (token.length === null) {
-            //     alert('het han dang nhap su dung');
-            // }
+            const token = await AsyncStorage.getItem('token')
             console.log('token: ' + token)
             if (res == false) {
                 handleFailed()
-            } else { handleSuccess() }
+            } else if (typeof res === 'string') {
+                handleConfirm()
+            }
+            else {
+                handleSuccess()
+            }
         } catch (error) {
             console.log('error', error)
         }
     }
+
+
+
 
 
 
@@ -139,6 +156,13 @@ const Login = (props) => {
                     visible={successDialogVisible}
                     onPress={handleSuccessDialogClose}
                     message="Đăng nhập thành công"
+                />
+                <ConfirmDialog
+                    visible={confirmDialogVisible}
+                    onCancelPress={handleConfirmDialogClose}
+                    onPress={() => { navigation.navigate('OTP') }}
+                    message="Tài khoản của bạn chưa được kích hoạt"
+                    confirmMessage='Nhập OTP'
                 />
             </View>
         </SafeAreaView>

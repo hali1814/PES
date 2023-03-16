@@ -14,8 +14,8 @@ export const login = async (userName, password) => {
 };
 
 export const logout = async () => {
-    const token = AsyncStorage.getItem('token');
-    const result = await customAxios().get('/api/logout', token);
+    // const token = AsyncStorage.getItem('token');
+    const result = await customAxios().get('/api/logout');
     return result;
 };
 

@@ -31,7 +31,7 @@ const AppStackScreen = () => {
                     backgroundColor: colorsPES.white
                 },
                 headerTintColor: colorsPES.background,
-                headerShown : false
+                headerShown: false
             }}
         >
             <appStack.Screen name="MyTab" component={MyTab} />
@@ -79,7 +79,7 @@ const MyTab = () => {
                 tabBarStyle: {
                     backgroundColor: colorsPES.white,
                     height: 65,
-paddingBottom: 10,
+                    paddingBottom: 10,
                 },
                 tabBarLabelStyle: {
                     fontSize: 13,

@@ -151,6 +151,7 @@ const Register = ({ navigation }) => {
     };
 
 
+
     const register = async () => {
         try {
             const res = await onRegister(phoneNumber, password, date, address, nickName, email)
@@ -158,12 +159,16 @@ const Register = ({ navigation }) => {
                 handleFailed()
             } else {
                 handleSuccess()
-                setTimeout(() => { navigation.navigate('Login') }, 2000)
+                setTimeout(onChangeScreen, 2000)
             }
         } catch (error) {
             console.log('register failed: ', error)
             throw error
         }
+    }
+
+    const onChangeScreen = () => {
+        navigation.navigate('Login', { phoneNumber1: phoneNumber })
     }
 
     const {
@@ -219,7 +224,7 @@ const Register = ({ navigation }) => {
                     <TextInput
                         style={[{ fontSize: 14, color: colorsPES.black }]}
                         placeholder={`Ngày sinh : ${date.toString().slice(4, 13)}`}
-                        value={date ? date.toString().slice(4, 13) : ''}
+                        value={date ? date.toString().slice(4, 15) : ''}
                         editable={false}
                     />
                     <Icon
@@ -233,7 +238,7 @@ const Register = ({ navigation }) => {
                         testID="dateTimePicker"
                         value={date || new Date()}
                         mode="date"
-                        dateFormat='year month day'
+                        dateFormat='day month year'
                         display="inline"
                         onChange={handleDateChange}
                     />

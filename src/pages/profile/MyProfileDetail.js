@@ -496,6 +496,7 @@ const MyProfileDetail = (props) => {
                     onCancelPress={handleConfirmDialogClose}
                     onPress={logout}
                     message="Bạn chắc chắn muốn đăng xuất ?"
+                    confirmMessage='Đăng xuất'
                 />
             </SafeAreaView>
         </ScrollView >

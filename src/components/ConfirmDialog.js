@@ -3,7 +3,7 @@ import { Modal, Image, TouchableOpacity, StyleSheet, View, Text } from 'react-na
 import colorsPES from '../constants/colors';
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default function ConfirmDialog({ visible, onPress, message, onCancelPress }) {
+export default function ConfirmDialog({ visible, onPress, message, onCancelPress, confirmMessage }) {
     return (
         <Modal visible={visible} animationType="slide" transparent>
             <View style={styles.container}>
@@ -25,7 +25,7 @@ export default function ConfirmDialog({ visible, onPress, message, onCancelPress
                             style={{ backgroundColor: colorsPES.grey, borderRadius: 20, width: 100, height: 50, justifyContent: 'center', alignItems: 'center' }}
                             onPress={onPress}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 'bold', color: colorsPES.red }}>Đăng xuất</Text>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold', color: colorsPES.red }}>{confirmMessage}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
+        paddingHorizontal: 10
     },
 
     background: {
@@ -48,8 +49,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 10,
         paddingBottom: 20,
-        borderBottomEndRadius: 20,
-        borderBottomStartRadius: 20
+        borderRadius: 10
     },
     image: {
         width: 100,
