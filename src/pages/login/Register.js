@@ -274,11 +274,11 @@ const Register = ({ navigation }) => {
                 {errorEmail ? <Text style={{ color: colorsPES.red, fontSize: 15 }}>{errorEmail}</Text> : null}
                 <View style={styles.socialLoginContainer}>
                     <TouchableOpacity style={styles.googleLogin}>
-                        <Image source={icons.googleIcon} />
+                        <Image style={{ width: 18, height: 18 }} source={icons.googleIcon} />
                         <Text>GOOGLE</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.facebookLogin}>
-                        <Image source={icons.facebookIcon} />
+                        <Image style={{ width: 18, height: 18 }} source={icons.facebookIcon} />
                         <Text>FACEBOOK</Text>
                     </TouchableOpacity>
                 </View>
