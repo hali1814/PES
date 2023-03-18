@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
+  StatusBar,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import color from '../../styles/colors';
@@ -49,15 +50,19 @@ import PESProductDescription from '../../components/PESProductDescription';
 import PESRelatedProducts from '../../components/PESRelatedProducts';
 import Fonts from '../../assets/fonts/fonts';
 import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import {formatPrice} from '../../utils/MoneyFormat';
 
 const {width: screenWidth} = Dimensions.get('window');
 
 const Detail = props => {
   const {route, navigation} = props;
+
   const {id} = route.params;
 
   const {onGetDetail, detail} = useContext(ProductContext);
+
   const [imageList, setImageList] = useState([]);
+
   const [currentImage, setCurrentImage] = useState(1);
 
   useEffect(() => {
@@ -91,12 +96,17 @@ const Detail = props => {
 
   const ShopID = detail.shop?.idShop || '';
 
+  // formatPrice
+  const price = detail && detail.stock[0].price;
+
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       style={{
         height: '100%',
         backgroundColor: color.BACKGROUDITEM,
       }}>
+      <StatusBar hidden={true} />
       <View
         style={{
           position: 'relative',
@@ -150,7 +160,13 @@ const Detail = props => {
       <View style={productsContainer}>
         <View style={productsBG}>
           <View style={{width: '100%'}}>
-            <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 18}}>
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 18,
+                textTransform: 'capitalize',
+                color: color.TEXT_PRIMARY,
+              }}>
               {detail.name}
             </Text>
           </View>
@@ -158,8 +174,13 @@ const Detail = props => {
             <View style={labelBG}>
               <Text style={labelText}>{textsPES.txtlabel}</Text>
             </View>
-            <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 20}}>
-              {detail && detail.stock[0].price}đ
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 20,
+                color: color.TEXT_PRIMARY,
+              }}>
+              {formatPrice(price)}
             </Text>
           </View>
         </View>
@@ -376,9 +397,7 @@ const Detail = props => {
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
             <View style={{height: 20, justifyContent: 'center'}}>
-              <Text style={payMoneyText}>
-                {detail && detail.stock[0].price}đ
-              </Text>
+              <Text style={payMoneyText}>{formatPrice(price)}</Text>
             </View>
           </View>
           {/* AddCart */}
