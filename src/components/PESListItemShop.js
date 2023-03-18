@@ -6,15 +6,15 @@ import Fonts from '../assets/fonts/fonts';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Detail from '../pages/detail/Detail';
 
-const PESListItem = props => {
+const PESListItemShop = props => {
   const {item, navigation, onPress} = props;
-
-  const navigationPush = () => {
-    navigation.push('Detail', {id: item._id});
+  const ProductShopID = item._id;
+  console.log('prooooIDDDDDDDDDD', ProductShopID);
+  const onPressShopDetail = () => {
+    navigation.navigate('ShopDetail', {ID: ProductShopID});
   };
-
   return (
-    <TouchableOpacity onPress={navigationPush} style={styles.Container}>
+    <TouchableOpacity onPress={onPressShopDetail} style={styles.Container}>
       <View style={styles.headerContainer}>
         <View style={styles.saleContainer}>
           <Image source={icons.tagSale_icon} style={styles.imgSale} />
@@ -23,6 +23,7 @@ const PESListItem = props => {
               alignSelf: 'center',
               marginLeft: 4,
               width: '100%',
+              alignContent: 'flex-end',
             }}>
             <Text style={{color: '#FFB208', fontFamily: Fonts.Work_Medium}}>
               {item.sale}%
@@ -55,7 +56,7 @@ const PESListItem = props => {
   );
 };
 
-export default PESListItem;
+export default PESListItemShop;
 
 const styles = StyleSheet.create({
   Container: {

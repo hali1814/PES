@@ -34,12 +34,11 @@
 // export { images, icons };
 // export { icons, images };
 
-
 const icons = {
   backIcon: require('../assets/icons/backIcon.png'),
   vietnamIcon: require('../assets/icons/vietnamIcon.png'),
-  googleIcon: require('../assets/icons/googleIcon.png'),
   facebookIcon: require('../assets/icons/facebookIcon.png'),
+  googleIcon: require('../assets/icons/google.png'),
   notificationIcon: require('../assets/icons/notificationIcon.png'),
   nextIcon: require('../assets/icons/nextIcon.png'),
   awaitingConfirmIcon: require('../assets/icons/awaitingConfirmIcon.png'),
@@ -78,7 +77,6 @@ const icons = {
   cartAdd_icon: require('../assets/icons/add-to-cart.png'),
   backIcon: require('../assets/icons/backIcon.png'),
   vietnamIcon: require('../assets/icons/vietnamIcon.png'),
-  googleIcon: require('../assets/icons/googleIcon.png'),
   facebookIcon: require('../assets/icons/facebookIcon.png'),
   notificationIcon: require('../assets/icons/notificationIcon.png'),
   nextIcon: require('../assets/icons/nextIcon.png'),
@@ -101,8 +99,9 @@ const icons = {
   payIcon: require('../assets/icons/pay.png'),
   payMomoIcon: require('../assets/icons/momo.png'),
   payZaloIcon: require('../assets/icons/zalopay.png'),
+  cardIcon: require('../assets/icons/Card.png'),
+  chatIcon: require('../assets/icons/chat.png'),
 };
-
 
 const images = {
   backgroundImage: require('../assets/images/backgroundImage.png'),
@@ -134,5 +133,3 @@ const images = {
 };
 
 export {icons, images};
-
-

@@ -1,5 +1,6 @@
 const color = {
   MAIN: '#5865F2',
+  MAINOP: 'rgba(88, 101, 242, 0.8)',
   TEXT_PRIMARY: '#0F294D',
   TEXT_SECOND: '#8592A6',
   BORDER_BOTTOM: '#E2EAF8',

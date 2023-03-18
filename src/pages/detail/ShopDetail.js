@@ -52,17 +52,17 @@ import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const Detail = props => {
+const ShopDetail = props => {
   const {route, navigation} = props;
-  const {id} = route.params;
+  const {ID} = route.params;
 
   const {onGetDetail, detail} = useContext(ProductContext);
   const [imageList, setImageList] = useState([]);
   const [currentImage, setCurrentImage] = useState(1);
 
   useEffect(() => {
-    onGetDetail(id);
-  }, [id]);
+    onGetDetail(ID);
+  }, [ID]);
 
   useEffect(() => {
     if (detail.images) {
@@ -91,6 +91,9 @@ const Detail = props => {
 
   const ShopID = detail.shop?.idShop || '';
 
+  const BackShop = () => {
+    navigation.goBack();
+  };
   return (
     <ScrollView
       style={{
@@ -120,9 +123,7 @@ const Detail = props => {
           )}
           <SafeAreaView style={SafeAreaContainer}>
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Products');
-              }}
+              onPress={BackShop}
               style={{paddingHorizontal: 16}}>
               <Image
                 source={icons.chevronBackWhite_icon}
@@ -272,13 +273,13 @@ const Detail = props => {
                   <PESProductDescription
                     icon={icons.color_icon}
                     text1={'Màu'}
-                    text2={detail && detail.stock[0].color}
+                    // text2={detail.stock[0].color}
                   />
                   <View style={{paddingTop: 8}}>
                     <PESProductDescription
                       icon={icons.size_icon}
                       text1={'Size'}
-                      text2={detail && detail.stock.size}
+                      // text2={detail.stock.size}
                     />
                   </View>
                   <View style={{paddingTop: 8}}>
@@ -400,7 +401,7 @@ const Detail = props => {
   );
 };
 
-export default Detail;
+export default ShopDetail;
 
 const styles = StyleSheet.create({
   imageStyle: {

@@ -16,6 +16,7 @@ import AppNavigation from './src/navigation/AppNavigation';
 import {UserContextProvider} from './src/api/authservice/UserContext';
 import {ProductContext} from './src/api/authservice/ProductAPI/ProductContext';
 import {UserContext} from './src/api/authservice/UserContext';
+import {ProductsContextProvider} from './src/api/authservice/ProductAPI/ProductContext';
 
 const App = () => {
   // const checkLogin = async () => {
@@ -29,19 +30,24 @@ const App = () => {
   // }, []);
 
   return (
-    <View>
-      {/* <Product /> */}
-      {/* <Loading /> */}
-      {/* <Onboarding /> */}
-      {/* <Shop /> */}
-      {/* <Voucher /> */}
-      {/* <Detail /> */}
-      {/* <OrderConfirmation /> */}
-      {/* <Login /> */}
-      <UserContextProvider>
+    <UserContextProvider>
+      <ProductsContextProvider>
         <AppNavigation />
-      </UserContextProvider>
-    </View>
+      </ProductsContextProvider>
+    </UserContextProvider>
+    // <View>
+    //   {/* <Product /> */}
+    //   {/* <Loading /> */}
+    //   {/* <Onboarding /> */}
+    //   {/* <Shop /> */}
+    //   {/* <Voucher /> */}
+    //   {/* <Detail /> */}
+    //   {/* <OrderConfirmation /> */}
+    //   {/* <Login /> */}
+    //   <UserContextProvider>
+    //     <AppNavigation />
+    //   </UserContextProvider>
+    // </View>
   );
 };
 // <NavigationContainer>

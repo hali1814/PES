@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  FlatList,
   Image,
   SafeAreaView,
   ScrollView,
@@ -7,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import color from '../../styles/colors';
 import {PESFlatList} from '../../components/PESFlatList';
 import {
@@ -30,8 +31,22 @@ import {icons, images} from '../../assets';
 import PESCategories from '../../components/PESCategories';
 import PESShop from '../../components/PESShop';
 const width = Dimensions.get('screen').width / 2 - 30;
+import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import PESListItem from '../../components/PESListItem';
+import PESListItemShop from '../../components/PESListItemShop';
 
-const Shop = () => {
+const Shop = props => {
+  const {route, navigation} = props;
+  const {ShopID} = route.params;
+
+  useEffect(() => {
+    onGetStore(ShopID);
+  }, []);
+
+  const {onGetStore, store} = useContext(ProductContext);
+
+  // const DetailShopID = store.products?._id;
+
   return (
     <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
       <View style={{flexDirection: 'column'}}>
@@ -58,12 +73,12 @@ const Shop = () => {
             <View style={headerContainerShop}>
               <View style={{flexDirection: 'row'}}>
                 <Image
-                  source={images.user2_image}
-                  style={{width: 32, height: 32}}
+                  source={{uri: store.avatar}}
+                  style={{width: 32, height: 32, borderRadius: 360}}
                 />
                 <View style={userNameContainer}>
-                  <Text style={shopNameText}>{textsPES.txtShopname}</Text>
-                  <Text style={phoneText}>{textsPES.txtPhone}</Text>
+                  <Text style={shopNameText}>{store.nameShop}</Text>
+                  <Text style={phoneText}>{store.owner}</Text>
                 </View>
               </View>
               <TouchableOpacity>
@@ -77,7 +92,7 @@ const Shop = () => {
               </TouchableOpacity>
             </View>
 
-            <View style={{padding: 12}}>
+            <View style={{paddingHorizontal: 12}}>
               <View style={showReaching}>
                 <PESShop
                   imgUri={icons.shopBag_icon}
@@ -130,7 +145,21 @@ const Shop = () => {
 
         {/* List Products */}
         <View style={flatlistContainer}>
-          <PESFlatList />
+          <FlatList
+            pagingEnabled
+            data={store.products}
+            numColumns={2}
+            keyExtractor={item => item._id}
+            renderItem={({item}) => (
+              <PESListItemShop
+                navigation={navigation}
+                // onPress={() =>
+                //   navigation.navigate('ShopDetail', {DetailShopID})
+                // }
+                item={item}
+              />
+            )}
+          />
         </View>
       </View>
     </SafeAreaView>
