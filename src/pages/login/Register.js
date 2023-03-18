@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, ToastAndroid } from 'react-native'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView } from 'react-native'
 import React, { useState, useContext } from 'react'
 import colorsPES from '../../constants/colors';
 import { icons } from '../../assets';
@@ -142,15 +142,12 @@ const Register = ({ navigation }) => {
     const handleSuccessDialogClose = () => {
         setSuccessDialogVisible(false);
     };
-
     const handleFailed = () => {
         setFailedDialogVisible(true);
     };
     const handleFailedDialogClose = () => {
         setFailedDialogVisible(false);
     };
-
-
 
     const register = async () => {
         try {

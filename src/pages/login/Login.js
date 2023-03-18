@@ -74,7 +74,6 @@ const Login = (props) => {
             {/* <TouchableOpacity>
                 <Image source={icons.backIcon} />
             </TouchableOpacity> */}
-
             <StatusBar
                 barStyle="dark-content"
                 backgroundColor={colorsPES.white}
