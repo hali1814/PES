@@ -44,6 +44,7 @@ const PESListItem = props => {
           style={{
             flexDirection: 'row',
             width: '100%',
+            justifyContent: 'flex-end',
           }}>
           <Text style={styles.textPrice}>{item.stock[0].price} đ</Text>
           {/* <View style={styles.imgContainer}>

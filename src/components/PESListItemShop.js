@@ -8,11 +8,13 @@ import Detail from '../pages/detail/Detail';
 
 const PESListItemShop = props => {
   const {item, navigation, onPress} = props;
+
   const ProductShopID = item._id;
-  console.log('prooooIDDDDDDDDDD', ProductShopID);
+
   const onPressShopDetail = () => {
     navigation.navigate('ShopDetail', {ID: ProductShopID});
   };
+
   return (
     <TouchableOpacity onPress={onPressShopDetail} style={styles.Container}>
       <View style={styles.headerContainer}>

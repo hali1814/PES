@@ -140,7 +140,9 @@ const Detail = props => {
         </View>
         <View style={counterContainer}>
           <View style={counterBG}>
-            <Text style={counterText}>{currentImage}/8</Text>
+            <Text style={counterText}>
+              {currentImage}/{imageList.length}
+            </Text>
           </View>
         </View>
       </View>
@@ -199,7 +201,7 @@ const Detail = props => {
           style={{paddingHorizontal: 12, marginTop: 8}}>
           <View style={ContainerShop}>
             <View style={headerContainerShop}>
-              <TouchableOpacity style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row'}}>
                 <Image
                   source={{uri: detail && detail.shop.avatar}}
                   style={{width: 32, height: 32, borderRadius: 360}}
@@ -210,7 +212,7 @@ const Detail = props => {
                   </Text>
                   <Text style={phoneText}>{detail && detail.owner}</Text>
                 </View>
-              </TouchableOpacity>
+              </View>
               <View>
                 <Image
                   source={icons.crown_icon}
@@ -278,7 +280,7 @@ const Detail = props => {
                     <PESProductDescription
                       icon={icons.size_icon}
                       text1={'Size'}
-                      text2={detail && detail.stock.size}
+                      text2={detail && detail.stock[0].size}
                     />
                   </View>
                   <View style={{paddingTop: 8}}>
@@ -374,7 +376,9 @@ const Detail = props => {
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
             <View style={{height: 20, justifyContent: 'center'}}>
-              <Text style={payMoneyText}>{'2.000.000'}đ</Text>
+              <Text style={payMoneyText}>
+                {detail && detail.stock[0].price}đ
+              </Text>
             </View>
           </View>
           {/* AddCart */}
