@@ -99,7 +99,8 @@ const icons = {
   payIcon: require('../assets/icons/pay.png'),
   payMomoIcon: require('../assets/icons/momo.png'),
   payZaloIcon: require('../assets/icons/zalopay.png'),
-  cardIcon: require('../assets/icons/Shopping.png'),
+  cardIcon: require('../assets/icons/Card.png'),
+  chatIcon: require('../assets/icons/chat.png'),
 };
 
 const images = {

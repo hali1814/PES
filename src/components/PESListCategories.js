@@ -7,20 +7,23 @@ import Fonts from '../assets/fonts/fonts';
 
 const PESListCategories = ({item}) => {
   const {onGetAllGenre, genres} = useContext(ProductContext);
+  // console.log('gennnnnnnnnnnnnnnnnnnnnnnnnnnre', genres);
   useEffect(() => {
     onGetAllGenre();
   }, []);
 
+  const onPressCategory = () => {};
+
   return (
-    <TouchableOpacity onPress={() => {}} style={styles.Container}>
+    <TouchableOpacity onPress={onPressCategory} style={styles.Container}>
       <View
         style={{
-          width: '100%',
           backgroundColor: color.WHITE,
           flexDirection: 'row',
-          paddingHorizontal: 8,
+          paddingHorizontal: 12,
           paddingVertical: 4,
           borderRadius: 60,
+          justifyContent: 'space-between',
         }}>
         <Image source={{uri: item.images}} style={styles.imgProduct} />
         <View style={{justifyContent: 'center', marginLeft: 4}}>

@@ -42,10 +42,10 @@ const Shop = props => {
   useEffect(() => {
     onGetStore(ShopID);
   }, []);
+
   const {onGetStore, store} = useContext(ProductContext);
 
-  const DetailShopID = store.products?._id || '';
-  console.log('uuuuuuuu', DetailShopID);
+  // const DetailShopID = store.products?._id;
 
   return (
     <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
@@ -152,7 +152,10 @@ const Shop = props => {
             keyExtractor={item => item._id}
             renderItem={({item}) => (
               <PESListItemShop
-                onPress={() => navigation.navigate('Detail', {DetailShopID})}
+                navigation={navigation}
+                // onPress={() =>
+                //   navigation.navigate('ShopDetail', {DetailShopID})
+                // }
                 item={item}
               />
             )}

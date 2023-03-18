@@ -6,30 +6,7 @@ import PESListCategories from './PESListCategories';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 
 const PESCategories = () => {
-  const DATA = [
-    {
-      id: 1,
-      nameCategories: 'Tất cả',
-      imagee: require('../assets/images/shoes3.png'),
-    },
-    {
-      id: 2,
-      nameCategories: 'Giày',
-      imagee: require('../assets/images/shoes3.png'),
-    },
-    {
-      id: 3,
-      nameCategories: 'Quần',
-      imagee: require('../assets/images/shoes3.png'),
-    },
-    {
-      id: 4,
-      nameCategories: 'Áo',
-      imagee: require('../assets/images/shoes3.png'),
-    },
-  ];
   const {onGetAllGenre, genres} = useContext(ProductContext);
-  // console.log('sssss=======', genres);
   useEffect(() => {
     onGetAllGenre();
   }, []);

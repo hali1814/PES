@@ -6,7 +6,7 @@ import Fonts from '../assets/fonts/fonts';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Detail from '../pages/detail/Detail';
 
-const PESListItem = props => {
+const PESListFlashSale = props => {
   const {item, navigation, onPress} = props;
 
   const navigationPush = () => {
@@ -55,7 +55,7 @@ const PESListItem = props => {
   );
 };
 
-export default PESListItem;
+export default PESListFlashSale;
 
 const styles = StyleSheet.create({
   Container: {

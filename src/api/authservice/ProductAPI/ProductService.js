@@ -16,3 +16,11 @@ export const getStore = async _id => {
   const result = await customAxios().get(`/api/store/${_id}`);
   return result;
 };
+export const getProductsByGenres = async _id => {
+  const result = await customAxios().get(`/api/products/genre/${_id}`);
+  return result;
+};
+export const getFlashSale = async () => {
+  const result = await customAxios().get(`/api/products/flash_sale`);
+  return result;
+};
