@@ -40,6 +40,7 @@ const Product = ({navigation, onPressProducts}) => {
   }, []);
 
   return (
+<<<<<<< HEAD
     <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
       <View style={{flexDirection: 'column'}}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -89,6 +90,11 @@ const Product = ({navigation, onPressProducts}) => {
             </View>
           </View>
           {/* FlashSale */}
+=======
+    <SafeAreaView style={{ width: '100%', backgroundColor: '#F0F2F5' }}>
+      <View style={{ flexDirection: 'column' }}>
+        <View style={headerContainer}>
+>>>>>>> quocHung
           <View
             style={{
               height: 238,
@@ -100,6 +106,7 @@ const Product = ({navigation, onPressProducts}) => {
             {/* TitleFlashSale */}
             <View
               style={{
+<<<<<<< HEAD
                 height: 48,
                 paddingVertical: 12,
               }}>
@@ -123,6 +130,17 @@ const Product = ({navigation, onPressProducts}) => {
                 )}
               />
             </View>
+=======
+                paddingHorizontal: 16,
+                borderWidth: 0.2,
+                borderColor: color.MAIN,
+                borderRadius: 16,
+                height: '100%',
+                fontFamily: Fonts.Man_Regular,
+              }}
+              placeholder="Bạn muốn tìm kiếm sản phẩm?"
+            />
+>>>>>>> quocHung
           </View>
 
           {/* Category */}

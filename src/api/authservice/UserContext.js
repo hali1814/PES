@@ -5,7 +5,8 @@ import {
     ChangePassword,
     getVoucher,
     register,
-    changeProfile
+    changeProfile,
+    upload
 } from "./UserService";
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -41,10 +42,14 @@ export const UserContextProvider = (props) => {
                 await AsyncStorage.setItem('token', token);
                 setIsLoggedIn(true);
                 return true;
+            } else if (res.status == 'inactive') {
+                const message = res.data.message
+                console.log('Message ===>', message)
+                return message
             }
             else {
                 setIsLoggedIn(false);
-                // return false;
+                return false;
             }
         } catch (e) {
             console.log('onLogin error', e);
@@ -55,6 +60,7 @@ export const UserContextProvider = (props) => {
     const onChangePassword = async (password, newPassword) => {
         try {
             const res = await ChangePassword(password, newPassword)
+            console.log('change pass ===> ', res)
             if (res.status == 'success') {
                 const message = res.data
                 console.log('message ===>', message)
@@ -94,7 +100,7 @@ export const UserContextProvider = (props) => {
                 setIsLoggedIn(false)
             }
         } catch (e) {
-console.log('onLogout error', e);
+            console.log('onLogout error', e);
         }
         return false;
     }
@@ -105,7 +111,6 @@ console.log('onLogout error', e);
             const res = await getVoucher()
             if (res.status == 'success') {
                 setVoucher(res.data)
-                console.log('Voucher ====>', voucher)
             }
         } catch (error) {
             console.log('onGetVoucher error', error);
@@ -116,7 +121,6 @@ console.log('onLogout error', e);
     const onGetUserInfor = async () => {
         try {
             const res = await getUserInfor()
-            console.log('res', res);
             if (res.status == 'success') {
                 setUser(res.data)
                 console.log(res.data)
@@ -131,9 +135,22 @@ console.log('onLogout error', e);
         return null;
     }
 
+    const onUpload = async (image) => {
+        try {
+            const res = await upload(image);
+            console.log('ressssss', res)
+            if (res.error == false) {
+                return res.data;
+            }
+        } catch (e) {
+            console.log('Upload a image Failed', e);
+        }
+        return null;
+    }
+
     return (
         <UserContext.Provider
-            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher, onRegister, setVoucher, onChangeProfile }}
+            value={{ isLoggedIn, onLogin, user, onLogout, setIsLoggedIn, onGetUserInfor, onChangePassword, ongetVoucher, voucher, onRegister, setVoucher, onChangeProfile, onUpload }}
         >
             {children}
         </UserContext.Provider>

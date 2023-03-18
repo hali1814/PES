@@ -15,7 +15,6 @@ const Voucher = ({ navigation }) => {
 
     useEffect(() => {
         ongetVoucher()
-
         return () => { }
     }, [])
 
@@ -27,19 +26,20 @@ const Voucher = ({ navigation }) => {
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Voucher</Text>
             </View>
-            <TouchableOpacity style={styles.imageContainer}>
-                <Image resizeMode='cover' source={images.superVoucherImage} />
-            </TouchableOpacity>
             <FlatList
                 data={voucher}
                 renderItem={({ item }) => (
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <TouchableOpacity style={styles.imageContainer}>
-                            <Image style={{ width: 200, height: 100 }} resizeMode='cover' source={{ uri: item.images }} />
-                        </TouchableOpacity>
-                        <Text style={{ fontSize: 14, color: colorsPES.borderColorBlue }}>Số lượng : {item.quantity}</Text>
-                        <Text style={{ fontSize: 14, color: colorsPES.borderColorBlue }}>Mô tả : {item.description}</Text>
-                    </View>
+                    <TouchableOpacity style={styles.VoucherContainer}>
+                        <View style={{ padding: 10, width: 100, height: 100, backgroundColor: colorsPES.red, justifyContent: 'center', borderRadius: 10, }}>
+                            <View style={styles.imageContainer}>
+                                <Image style={{ width: '100%', height: "100%" }} source={{ uri: item.images }} />
+                            </View>
+                        </View>
+                        <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
+                            <Text style={{ fontSize: 14, color: colorsPES.borderColorBlue, marginBottom: 20, fontWeight: 'bold' }}>Số lượng còn lại : {item.quantity}</Text>
+                            <Text style={{ fontSize: 14, color: colorsPES.blackText, marginEnd: 20 }}>Mô tả : {item.description}</Text>
+                        </View>
+                    </TouchableOpacity>
                 )}
             />
 
@@ -51,8 +51,14 @@ export default Voucher
 
 const styles = StyleSheet.create({
 
+    VoucherContainer: {
+        marginTop: 10,
+        backgroundColor: colorsPES.white,
+        borderRadius: 10,
+        flexDirection: 'row'
+    },
+
     imageContainer: {
-        marginTop: 22,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -67,13 +73,12 @@ const styles = StyleSheet.create({
 
     headerContainer: {
         flexDirection: 'row',
-        paddingHorizontal: 16,
         paddingVertical: 10,
         marginTop: 10,
         alignItems: 'center',
     },
 
     container: {
-        backgroundColor: colorsPES.white
+        paddingHorizontal: 10
     },
 })

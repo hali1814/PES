@@ -7,8 +7,16 @@ import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-picker/picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { PermissionsAndroid } from 'react-native';
+
+
 import {
-    SuccessDialog
+    SuccessDialog,
+    FailDialog,
+    ConfirmDialog
 } from '../../components'
 
 const MyProfileDetail = (props) => {
@@ -20,14 +28,9 @@ const MyProfileDetail = (props) => {
         user,
         setUser,
         onGetUserInfor,
-        onChangeProfile
+        onChangeProfile,
+        onUpload
     } = useContext(UserContext)
-
-    useEffect(() => {
-        onGetUserInfor();
-        return () => { }
-    }, [])
-
 
     const logout = async () => {
         try {
@@ -44,23 +47,30 @@ const MyProfileDetail = (props) => {
         }
     }
 
-    LogoutAlert = () =>
-        Alert.alert('Thông báo!', 'Bạn có chắc chắn muốn đăng xuất', [
-            {
-                text: 'hủy',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-            },
-            { text: 'Đồng ý', onPress: () => logout() },
-        ]);
-
     const [visible, setVisible] = useState(false);
     const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+    const [failedDialogVisible, setFailedDialogVisible] = useState(false);
+    const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+
+    const handleConfirm = () => {
+        setConfirmDialogVisible(true);
+    };
+    const handleConfirmDialogClose = () => {
+        setConfirmDialogVisible(false);
+    };
+
     const handleSuccess = () => {
         setSuccessDialogVisible(true);
     };
     const handleSuccessDialogClose = () => {
         setSuccessDialogVisible(false);
+    };
+
+    const handleFailed = () => {
+        setFailedDialogVisible(true);
+    };
+    const handleFailedDialogClose = () => {
+        setFailedDialogVisible(false);
     };
 
     const showDialog = () => {
@@ -75,23 +85,225 @@ const MyProfileDetail = (props) => {
     const [date, setDate] = useState('')
     const [address, setAddress] = useState('')
     const [nickName, setNickName] = useState('')
+    const [errorNickName, setErrorNickName] = useState('')
     const [email, setEmail] = useState('')
+    const [errorEmail, setErrorEmail] = useState('')
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const isValidNickName = () => {
+        if (nickName == '' || nickName.length <= 2) {
+            setErrorNickName('Tên phải trên 2 ký tự và không được để trống !')
+        } else {
+            setErrorNickName('')
+        }
+    }
+    const handleNickNameChange = (text) => {
+        setNickName(text)
+        isValidNickName(text)
+    }
+
+    const validateEmail = (text) => {
+        // Kiểm tra tính hợp lệ của email
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (regex.test(text) == false) {
+            setErrorEmail('Sai định dạng Email')
+        } else {
+            setErrorEmail('')
+        }
+    }
+
+    const handleEmailChange = (text) => {
+        setEmail(text)
+        validateEmail(text)
+    }
+
+    const cities = [
+        "An Giang",
+        "Bà Rịa - Vũng Tàu",
+        "Bạc Liêu",
+        "Bắc Kạn",
+        "Bắc Giang",
+        "Bắc Ninh",
+        "Bến Tre",
+        "Bình Dương",
+        "Bình Định",
+        "Bình Phước",
+        "Bình Thuận",
+        "Cà Mau",
+        "Cao Bằng",
+        "Cần Thơ",
+        "Đà Nẵng",
+        "Đắk Lắk",
+        "Đắk Nông",
+        "Điện Biên",
+        "Đồng Nai",
+        "Đồng Tháp",
+        "Gia Lai",
+        "Hà Giang",
+        "Hà Nam",
+        "Hà Nội",
+        "Hà Tĩnh",
+        "Hải Dương",
+        "Hải Phòng",
+        "Hậu Giang",
+        "Hòa Bình",
+        "Hưng Yên",
+        "Khánh Hòa",
+        "Kiên Giang",
+        "Kon Tum",
+        "Lai Châu",
+        "Lâm Đồng",
+        "Lạng Sơn",
+        "Lào Cai",
+        "Long An",
+        "Nam Định",
+        "Nghệ An",
+        "Ninh Bình",
+        "Ninh Thuận",
+        "Phú Thọ",
+        "Phú Yên",
+        "Quảng Bình",
+        "Quảng Nam",
+        "Quảng Ngãi",
+        "Quảng Ninh",
+        "Quảng Trị",
+        "Sóc Trăng",
+        "Sơn La",
+        "Tây Ninh",
+        "Thái Bình",
+        "Thái Nguyên",
+        "Thanh Hóa",
+        "Thừa Thiên Huế",
+        "Tiền Giang",
+        "Trà Vinh",
+        "Tuyên Quang",
+        "Vĩnh Long",
+        "Vĩnh Phúc",
+        "Yên Bái"
+    ];
+
+    const isValidationOK = () => {
+        if (nickName.length > 0 && email.length > 0 && errorNickName == ''
+            && errorEmail == ''
+        ) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+
+    const checkEmail = () => {
+        if (email == "") {
+            setEmail(user.email)
+        }
+    }
+    const checkAvatar = () => {
+        if (avatar == "") {
+            setAvatar(user.avatar)
+        } else { user.avatar }
+    }
+    const checkNickName = () => {
+        if (nickName == "") {
+            setNickName(user.nickName)
+        }
+    }
+    const checkAddress = () => {
+        if (address == "") {
+            setAddress(user.address)
+        }
+    }
+
+    async function requestCameraPermission() {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    title: 'Yêu cầu quyền truy cập vào máy ảnh',
+                    message: 'Ứng dụng này yêu cầu truy cập vào máy ảnh của bạn',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                openCamera()
+            } else {
+                console.log('Camera permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+
+    const openCamera = async () => {
+        const options = {
+            storageOptions: {
+                path: 'images',
+                mediaType: 'photo'
+            },
+            // includeBase64: true,
+        };
+
+        launchCamera(options, async response => {
+            console.log('Response', response.assets)
+            if (response.didCancel) {
+                console.log('User cancelled camera picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else {
+                // Call API to upload the image to the server
+                console.log('rs', response)
+                const formData = new FormData();
+                formData.append('image', {
+                    uri: response.assets[0].uri,
+                    type: response.assets[0].type,
+                    name: response.assets[0].fileName,
+                });
+                console.log('uriiii', response.assets[0].uri)
+                const result = await onUpload(formData);
+                console.log('link hinh neeeeee', result);
+                setAvatar(result.link);
+                console.log(avatar)
+            }
+        });
+    };
+
+
+    useEffect(() => {
+        onGetUserInfor();
+        checkAvatar()
+        checkNickName()
+        checkEmail()
+        checkAddress()
+
+        return () => { }
+    }, [])
 
     const updateProfile = async () => {
         try {
             const res = await onChangeProfile(avatar, date, address, nickName, email)
             if (res == false) {
-                // alert('updateProfile failed')
-                handleSuccess()
+                handleFailed()
             } else {
-
                 setTimeout(() => { navigation.navigate('Profile'), 2000 })
+                handleSuccess()
             }
         } catch (error) {
             console.log('change profile failed', error);
             throw error
         }
     }
+
+
+    const handleDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShowDatePicker(false);
+        setDate(currentDate);
+    };
+
+
+
 
 
     return (
@@ -108,7 +320,7 @@ const MyProfileDetail = (props) => {
                     <Text style={styles.headerText}>Thông tin cá nhân</Text>
                 </View>
                 <View style={styles.body}>
-                    <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: colorsPES.grey })}>
+                    <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50 })}>
                         <Image style={({ width: 80, height: 80, borderRadius: 50 })} source={{ uri: user.avatar }} />
                     </View>
                     <View style={styles.inforDetail}>
@@ -123,21 +335,18 @@ const MyProfileDetail = (props) => {
                         <Text style={styles.titleText}>Email</Text>
                         <Text style={styles.contentText}>{user.email}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => { navigation.push('ChangeAddress', { address: user.address }) }} style={styles.addressDetail}>
+                    <View style={styles.inforDetail}>
+                        <Text style={styles.titleText}>Ngày sinh</Text>
+                        <Text style={styles.contentText}>{user.date.slice(0, 10)}</Text>
+                    </View>
+                    <View style={styles.addressDetail}>
                         <View style={styles.addressTitle}>
                             <Text style={styles.titleText}>Địa chỉ giao hàng</Text>
-                            <View style={({
-                                flexDirection: 'row', alignItems: 'center', backgroundColor: '#D3F3ED', paddingVertical: 4,
-                                paddingLeft: 15, paddingRight: 20, justifyContent: 'center', borderRadius: 10
-                            })}>
-                                <Text style={({ fontSize: 13, fontWeight: '400', color: '#24C4A4' })}>Thay đổi địa chỉ giao hàng</Text>
-                                <Image source={icons.nextIcon} />
-                            </View>
                         </View>
                         <Text style={styles.contentText}>
                             {user.address}
                         </Text>
-                    </TouchableOpacity>
+                    </View>
                     <TouchableOpacity onPress={() => { navigation.push('ChangePassword') }} style={styles.adjustContainer}>
                         <Text style={styles.adjustText}>Đổi mật khẩu</Text>
                         <Image source={icons.nextIconBlack} />
@@ -146,7 +355,7 @@ const MyProfileDetail = (props) => {
                         <Text style={styles.adjustText}>Tài khoản/ Thẻ ngân hàng</Text>
                         <Image source={icons.nextIconBlack} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={LogoutAlert} style={styles.adjustContainer}>
+                    <TouchableOpacity onPress={handleConfirm} style={styles.adjustContainer}>
                         <Text style={[styles.adjustText, { color: colorsPES.red }]}>Đăng xuất</Text>
                         <Image source={icons.nextIconBlack} />
                     </TouchableOpacity>
@@ -157,6 +366,7 @@ const MyProfileDetail = (props) => {
                 >
                     <Text style={({ fontSize: 16, fontWeight: '500', color: colorsPES.white })}>Cập nhật</Text>
                 </TouchableOpacity>
+                {/* Update Modal Dialog*/}
                 <Modal
                     visible={visible}
                     animationType="slide"
@@ -165,63 +375,107 @@ const MyProfileDetail = (props) => {
                     <View style={styles.containerModal}>
                         <View style={styles.content}>
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={styles.title}>Cập nhật thông tin người dùng</Text>
+                                <Text style={styles.title}>Cập nhật thông tin cá nhân</Text>
                             </View>
-                            <TouchableOpacity style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: 10,
-                                flexDirection: 'row'
-                            }}
+                            <TouchableOpacity
+                                onPress={requestCameraPermission}
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginBottom: 10,
+                                    flexDirection: 'row'
+                                }}
                             >
-                                <Image style={{ height: 80, width: 80 }}
-                                    source={images.avatar}
-                                />
-                                <View style={{
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    marginLeft: 20
-                                }}>
-                                    <Icon
-                                        name="camera-outline" size={30}
-                                        color="#4F8EF7"
+                                <View>
+                                    <Image style={{ height: 80, width: 80, borderRadius: 50 }}
+                                        source={{ uri: avatar }}
                                     />
+                                    <View style={{
+                                        position: 'absolute',
+                                        bottom: -15,
+                                        right: -5,
+                                        padding: 8,
+                                        backgroundColor: colorsPES.grey,
+                                        borderRadius: 20
+                                    }}>
+                                        <Icon
+                                            name="camera" size={20}
+                                            color="#5865F2"
+                                        />
+                                    </View>
                                 </View>
+
                             </TouchableOpacity>
                             <TextInput
                                 style={styles.text}
-                                placeholder='Tên :'
+                                placeholder={`Tên : ${nickName}`}
                                 value={nickName}
-                                onChangeText={(text) => { setNickName(text) }}
+                                onChangeText={handleNickNameChange}
                             />
+                            <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
+                            {errorNickName ? <Text style={{ color: colorsPES.red, fontSize: 15 }}>{errorNickName}</Text> : null}
+                            <TouchableOpacity
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+                                onPress={() => { setShowDatePicker(true) }}
+                            >
+                                <TextInput
+                                    style={[styles.textDate, {}]}
+                                    placeholder={`Ngày sinh : ${user.date.slice(0, 10)}`}
+                                    value={date ? user.date.slice(0, 10) : ''}
+                                    editable={false}
+                                />
+                                <Icon
+                                    name="chevron-forward-outline"
+                                    color="#4F8EF7"
+                                    size={30}
+                                />
+                            </TouchableOpacity>
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={date || new Date()}
+                                    mode="date"
+                                    dateFormat='year month day'
+                                    display="inline"
+                                    onChange={handleDateChange}
+                                />
+                            )}
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
                             <TextInput
                                 style={styles.text}
-                                placeholder='Ngày tháng năm sinh :'
-                                value={date}
-                                onChangeText={(text) => { setDate(text) }}
-                            />
-                            <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
-                            <TextInput
-                                style={styles.text}
-                                placeholder='Email :'
+                                placeholder={`email : ${email}`}
                                 value={email}
-                                onChangeText={(text) => { setEmail(text) }}
+                                onChangeText={handleEmailChange}
                             />
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
-                            <TextInput
-                                style={styles.text}
-                                placeholder='Địa chỉ :'
-                                value={address}
-                                onChangeText={(text) => { setAddress(text) }}
-                            />
+                            {errorEmail ? <Text style={{ color: colorsPES.red, fontSize: 15 }}>{errorEmail}</Text> : null}
+                            <Picker
+                                style={{ marginHorizontal: -10 }}
+                                selectedValue={address}
+                                onValueChange={(itemValue) => setAddress(itemValue)}
+                            >
+                                {cities.map((city) => (
+                                    <Picker.Item key={city} label={city} value={city} />
+                                ))}
+                            </Picker>
                             <View style={{ borderWidth: 0.19, borderColor: colorsPES.inActive }} />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                                 <TouchableOpacity onPress={hideDialog} style={styles.buttonModal}>
                                     <Text style={styles.closeText}>Hủy</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={updateProfile} style={[styles.buttonModal, {}]}>
-                                    <Text style={styles.updateText}>Cập nhật</Text>
+                                <TouchableOpacity
+                                    disabled={isValidationOK() == false}
+                                    onPress={updateProfile}
+                                    style={[styles.buttonModal, {}]}
+                                >
+                                    <Text style={[
+                                        styles.updateText,
+                                        {
+                                            color: isValidationOK() == false
+                                                ? colorsPES.inActive
+                                                : colorsPES.borderColorBlue
+                                        }]}
+                                    >Cập nhật</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -230,6 +484,19 @@ const MyProfileDetail = (props) => {
                 <SuccessDialog
                     visible={successDialogVisible}
                     onPress={handleSuccessDialogClose}
+                    message="Cập nhật hồ sơ thành công !"
+                />
+                <FailDialog
+                    visible={failedDialogVisible}
+                    onPress={handleFailedDialogClose}
+                    message="Cập nhật hồ sơ thất bại !"
+                />
+                <ConfirmDialog
+                    visible={confirmDialogVisible}
+                    onCancelPress={handleConfirmDialogClose}
+                    onPress={logout}
+                    message="Bạn chắc chắn muốn đăng xuất ?"
+                    confirmMessage='Đăng xuất'
                 />
             </SafeAreaView>
         </ScrollView >
@@ -262,6 +529,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: colorsPES.blackText
     },
+    textDate: {
+        fontSize: 16,
+        color: colorsPES.blackText
+    },
     buttonModal: {
         marginTop: 20,
         justifyContent: 'center',
@@ -273,7 +544,6 @@ const styles = StyleSheet.create({
         fontWeight: '700'
     },
     updateText: {
-        color: colorsPES.borderColorBlue,
         fontSize: 16,
         fontWeight: '700'
     },

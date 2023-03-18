@@ -8,17 +8,17 @@ export const register = async (userName, password, date, address, nickName, emai
 }
 
 export const login = async (userName, password) => {
-  const data = {userName: userName, password: password};
-  const result = await customAxios().post('/api/login', data);
-  return result;
+    const data = { userName: userName, password: password };
+    const result = await customAxios().post('/api/login', data);
+    return result;
 };
 
 export const logout = async () => {
-  const token = AsyncStorage.getItem('token');
-  const result = await customAxios().get('/api/logout', token);
-  return result;
+    // const token = AsyncStorage.getItem('token');
+    const result = await customAxios().get('/api/logout');
+    return result;
 };
-  
+
 export const getUserInfor = async () => {
     const result = await customAxios().get('/api/profiles')
     return result;
@@ -39,5 +39,10 @@ export const changeProfile = async (avatar, date, address, nickName, email) => {
     const data = { avatar: avatar, date: date, address: address, nickName: nickName, email: email }
     const result = await customAxios().post('/api/update/profiles', data)
     return result
+}
+
+export const upload = async (data) => {
+    const result = await customAxios('multipart/form-data').post('/api/upLoadOne', data);
+    return result;
 }
 

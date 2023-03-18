@@ -9,7 +9,10 @@ import {
 } from '../../utils/Validations';
 
 import { UserContext } from '../../api/authservice/UserContext';
-
+import {
+    SuccessDialog,
+    FailDialog,
+} from '../../components'
 
 
 const ChangePassword = ({ navigation }) => {
@@ -18,22 +21,81 @@ const ChangePassword = ({ navigation }) => {
     const [newPassword, setNewPassword] = useState('')
     const [errorNewPassword, setErrorNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState('')
+    const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+    const [failedDialogVisible, setFailedDialogVisible] = useState(false);
 
     const {
         onChangePassword,
     } = useContext(UserContext)
 
-    const showSuccessAlert = () => {
-        Alert.alert('change password successfully')
+
+    const handleSuccess = () => {
+        setSuccessDialogVisible(true);
+    };
+    const handleSuccessDialogClose = () => {
+        setSuccessDialogVisible(false);
+    };
+
+    const handleFailed = () => {
+        setFailedDialogVisible(true);
+    };
+    const handleFailedDialogClose = () => {
+        setFailedDialogVisible(false);
+    };
+
+    const handlePasswordChange = (text) => {
+        setPassword(text);
+    };
+
+    const handleNewPasswordChange = (text) => {
+        setNewPassword(text);
+    };
+
+    const handleConfirmPasswordChange = (text) => {
+        setConfirmPassword(text);
+    };
+
+    const validateNewPassword = () => {
+        if (password === newPassword) {
+            setErrorNewPassword('Mật khẩu mới không được trùng mật khẩu cũ !');
+        } else {
+            setErrorNewPassword('');
+        }
+    };
+
+    const validateConfirmPassword = () => {
+        if (newPassword !== confirmPassword) {
+            setErrorConfirmPassword('Mật khẩu xác nhận không trùng khớp!');
+        } else {
+            setErrorConfirmPassword('');
+        }
+    };
+
+    const handleBlur = () => {
+        validateConfirmPassword();
+        validateNewPassword();
     }
+
+    const isValidationOK = () => {
+        if (password.length > 0 && newPassword.length > 0 && confirmPassword.length > 0
+            && errorConfirmPassword == '' && errorNewPassword == '') {
+            return true
+        } else {
+            return false
+        }
+
+    }
+
+
 
     const ChangeUserPassword = async () => {
         try {
             const res = await onChangePassword(password, newPassword)
             if (res == false) {
-                alert('change password failed')
+                handleFailed()
             } else {
-                showSuccessAlert()
+                handleSuccess()
                 setTimeout(() => { navigation.navigate('Profile') }, 1500)
             }
         } catch (error) {
@@ -59,43 +121,56 @@ const ChangePassword = ({ navigation }) => {
                         placeholder='Mật khẩu hiện tại'
                         value={password}
                         secureTextEntry={true}
-                        onChangeText={(text) => {
-                            setErrorPassword(isValidPassword(text) == true
-                                ? ''
-                                : 'Mật khẩu phải đủ 3 ký tự trở lên')
-                            setPassword(text)
-                        }}
+                        onChangeText={handlePasswordChange}
+                        onBlur={validateNewPassword}
                     />
-                    <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
+                    {errorPassword ? <Text style={{ color: colorsPES.red,fontSize: 15, marginStart: 10 }}>{errorPassword}</Text> : null}
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập mật khẩu mới'
                         value={newPassword}
                         secureTextEntry={true}
-                        onChangeText={(text) => {
-                            setErrorNewPassword(isValidNewPassword(text) == true || isValidNewPassword(text) != password
-                                ? ''
-                                : 'Mật khẩu không được trùng')
-                            setNewPassword(text)
-                        }}
+                        onChangeText={handleNewPasswordChange}
+                        onBlur={handleBlur}
                     />
-                    <Text style={{ color: 'red', fontSize: 14 }}>{errorNewPassword}</Text>
+                    {errorNewPassword ? <Text style={{ color: colorsPES.red,fontSize: 15, marginStart: 10 }}>{errorNewPassword}</Text> : null}
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập lại mật khẩu mới'
                         value={confirmPassword}
                         secureTextEntry={true}
-                        onChangeText={(text) => setConfirmPassword(text)}
+                        onChangeText={handleConfirmPasswordChange}
+                        onBlur={validateConfirmPassword}
                     />
+                    {errorConfirmPassword ? <Text style={{ color: colorsPES.red, marginTop: 10, fontSize: 15, marginStart: 10 }}>{errorConfirmPassword}</Text> : null}
                     <TouchableOpacity
+                        disabled={isValidationOK() == false}
                         onPress={ChangeUserPassword}
-                        style={styles.buttonUpdate}
+                        style={[
+                            styles.buttonUpdate,
+                            {
+                                backgroundColor: isValidationOK() == false
+                                    ? colorsPES.inActive
+                                    : colorsPES.primary,
+                            }
+
+                        ]}
                     >
                         <Text style={({ fontSize: 16, fontWeight: '500', color: colorsPES.white })}>Cập nhật</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonForget}>
                         <Text style={({ fontSize: 15, fontWeight: '400', color: colorsPES.primary })}>Quên mật khẩu?</Text>
                     </TouchableOpacity>
+                    <SuccessDialog
+                        visible={successDialogVisible}
+                        onPress={handleSuccessDialogClose}
+                        message="Đổi mật khẩu thành công !"
+                    />
+                    <FailDialog
+                        visible={failedDialogVisible}
+                        onPress={handleFailedDialogClose}
+                        message="Đổi mật khẩu thất bại !"
+                    />
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -115,7 +190,6 @@ const styles = StyleSheet.create({
     buttonUpdate: {
         paddingVertical: 11,
         marginTop: 27,
-        backgroundColor: colorsPES.borderColorBlue,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 60,
