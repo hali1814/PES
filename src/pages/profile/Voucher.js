@@ -4,6 +4,7 @@ import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
 import { UserContext } from '../../api/authservice/UserContext';
+import PESHeader from '../../components/PESHeader';
 
 const Voucher = ({ navigation }) => {
 
@@ -17,15 +18,16 @@ const Voucher = ({ navigation }) => {
         ongetVoucher()
         return () => { }
     }, [])
-
+    
     return (
         <View style={styles.container}>
-            <View style={styles.headerContainer}>
+            <PESHeader onPress={() => { navigation.goBack() }} title={'Voucher'} />
+            {/* <View style={styles.headerContainer}>
                 <TouchableOpacity onPress={() => { navigation.pop() }}>
                     <Image source={icons.backIcon} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Voucher</Text>
-            </View>
+            </View> */}
             <FlatList
                 data={voucher}
                 renderItem={({ item }) => (

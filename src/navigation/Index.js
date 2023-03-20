@@ -1,7 +1,7 @@
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import colorsPES from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
@@ -14,8 +14,9 @@ import {
   MyProfileDetail,
   MyFeedback,
 } from '../pages/profile';
-import {Product} from '../pages/product';
-import {ProductsNavigation} from '../api/authservice/ProductAPI/ProductNavigation';
+import { Product } from '../pages/product';
+import { ProductsNavigation } from '../api/authservice/ProductAPI/ProductNavigation';
+import OrderConfirmation from '../pages/ orderconfirmation/ OrderConfirmation';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,8 +46,8 @@ const AppStackScreen = () => {
 const MyTab = () => {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
           switch (route.name) {
@@ -86,27 +87,27 @@ const MyTab = () => {
       <Tab.Screen
         name="Home"
         component={ProductsNavigation}
-        options={{title: 'Trang chủ', headerTitleAlign: 'center'}}
+        options={{ title: 'Trang chủ', headerTitleAlign: 'center' }}
       />
       <Tab.Screen
         name="Favorites"
         component={Profile}
-        options={{title: 'Yêu thích', headerTitleAlign: 'center'}}
+        options={{ title: 'Yêu thích', headerTitleAlign: 'center' }}
       />
       <Tab.Screen
         name="Add"
-        component={Profile}
-        options={{title: 'Thêm', headerTitleAlign: 'center'}}
+        component={OrderConfirmation}
+        options={{ title: 'Bill', headerTitleAlign: 'center' }}
       />
       <Tab.Screen
         name="Notification"
         component={Profile}
-        options={{title: 'Thông báo', headerTitleAlign: 'center'}}
+        options={{ title: 'Thông báo', headerTitleAlign: 'center' }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{title: 'Tài khoản', headerTitleAlign: 'center'}}
+        options={{ title: 'Tài khoản', headerTitleAlign: 'center' }}
       />
     </Tab.Navigator>
   );

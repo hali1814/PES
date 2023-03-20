@@ -12,8 +12,8 @@ import PESHeader from '../../components/PESHeader';
 import color from '../../styles/colors';
 import Orderstyles from './components/styles';
 import Fonts from '../../assets/fonts/fonts';
-import {textsPES} from '../../constants/string';
-import {icons, images} from '../../assets';
+import { textsPES } from '../../constants/string';
+import { icons, images } from '../../assets';
 import {
   txtVoucher,
   voucherContainer,
@@ -33,9 +33,10 @@ import {
 const OrderConfirmation = () => {
   return (
     <SafeAreaView
-      style={{backgroundColor: color.BACKGROUDITEM, height: '100%'}}>
+      style={{ backgroundColor: color.BACKGROUDITEM, height: '100%' }}>
       <PESHeader title={'Xác nhận đơn hàng'} />
-      <ScrollView pagingEnabled style={Orderstyles.scrollContainer}>
+      <ScrollView showsVerticalScrollIndicator={false}
+        pagingEnabled style={Orderstyles.scrollContainer}>
         <View style={Orderstyles.userContainer}>
           <View style={Orderstyles.userBG}>
             <View style={Orderstyles.Address}>
@@ -56,12 +57,12 @@ const OrderConfirmation = () => {
                 <Text style={Orderstyles.AddError}>{'Chưa có địa chỉ'}</Text>
               </View>
             </View>
-            <View style={{marginTop: 8}}>
+            <View style={{ marginTop: 8 }}>
               <View style={Orderstyles.identificationContainer}>
-                <View style={{width: '70%'}}>
+                <View style={{ width: '70%' }}>
                   <Text
                     numberOfLines={2}
-                    style={{fontFamily: Fonts.Work_Medium, fontSize: 13}}>
+                    style={{ fontFamily: Fonts.Work_Medium, fontSize: 13 }}>
                     {textsPES.identificationText}
                   </Text>
                 </View>
@@ -96,7 +97,7 @@ const OrderConfirmation = () => {
                 }}>
                 <Image
                   source={images.voucher_image}
-                  style={{width: 44, height: 44, borderRadius: 4}}
+                  style={{ width: 44, height: 44, borderRadius: 4 }}
                 />
                 <View style={styles.productTitle}>
                   <Text
@@ -119,11 +120,11 @@ const OrderConfirmation = () => {
                   </View>
                   <View style={styles.productMoney}>
                     <Text
-                      style={{fontFamily: Fonts.Work_Regular, fontSize: 13}}>
+                      style={{ fontFamily: Fonts.Work_Regular, fontSize: 13 }}>
                       {'1,999,999'}đ
                     </Text>
                     <Text
-                      style={{fontFamily: Fonts.Work_Regular, fontSize: 13}}>
+                      style={{ fontFamily: Fonts.Work_Regular, fontSize: 13 }}>
                       {'x1'}
                     </Text>
                   </View>
@@ -133,12 +134,12 @@ const OrderConfirmation = () => {
           </View>
         </View>
         {/* Voucher */}
-        <View style={{marginTop: 8}}>
+        <View style={{ marginTop: 8 }}>
           <View style={voucherContainer}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <Image
                 source={icons.voucher_icon}
-                style={{width: 32, height: 32}}
+                style={{ width: 32, height: 32 }}
               />
               <View
                 style={{
@@ -151,11 +152,11 @@ const OrderConfirmation = () => {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity onPress={() => {}} style={{flexDirection: 'row'}}>
+            <TouchableOpacity onPress={() => { }} style={{ flexDirection: 'row' }}>
               <Text style={txtVoucher}>{textsPES.txtDetail}</Text>
               <Image
                 source={icons.chevronRight_icon}
-                style={{width: 16, height: 16, marginLeft: 2}}
+                style={{ width: 16, height: 16, marginLeft: 2 }}
               />
             </TouchableOpacity>
           </View>
@@ -176,17 +177,18 @@ const OrderConfirmation = () => {
               }}>
               {'Phương thức thanh toán'}
             </Text>
-            <TouchableOpacity onPress={() => {}} style={{flexDirection: 'row'}}>
+            <TouchableOpacity onPress={() => { }} style={{ flexDirection: 'row' }}>
               <Text style={txtVoucher}>{'Xem tất cả'}</Text>
               <Image
                 source={icons.chevronRight_icon}
-                style={{width: 16, height: 16, marginLeft: 2}}
+                style={{ width: 16, height: 16, marginLeft: 2 }}
               />
             </TouchableOpacity>
           </View>
-          <ScrollView horizontal style={{marginTop: 16}}>
+          <ScrollView showsHorizontalScrollIndicator={false}
+            horizontal style={{ marginTop: 16 }}>
             <TouchableOpacity style={styles.payView}>
-              <Image source={icons.payIcon} style={{width: 16, height: 16}} />
+              <Image source={icons.payIcon} style={{ width: 16, height: 16 }} />
               <View
                 style={{
                   marginLeft: 8,
@@ -196,7 +198,7 @@ const OrderConfirmation = () => {
                 }}>
                 <Text
                   numberOfLines={1}
-                  style={{fontFamily: Fonts.Work_Medium, fontSize: 14}}>
+                  style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
                   {'Thanh toán khi nhận hàng'}
                 </Text>
                 <Text
@@ -214,7 +216,7 @@ const OrderConfirmation = () => {
             <TouchableOpacity style={styles.payView}>
               <Image
                 source={icons.payMomoIcon}
-                style={{width: 16, height: 16}}
+                style={{ width: 16, height: 16 }}
               />
               <View
                 style={{
@@ -225,7 +227,7 @@ const OrderConfirmation = () => {
                 }}>
                 <Text
                   numberOfLines={1}
-                  style={{fontFamily: Fonts.Work_Medium, fontSize: 14}}>
+                  style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
                   {'Momo'}
                 </Text>
                 <Text
@@ -243,7 +245,7 @@ const OrderConfirmation = () => {
             <TouchableOpacity style={styles.payView}>
               <Image
                 source={icons.payZaloIcon}
-                style={{width: 16, height: 16}}
+                style={{ width: 16, height: 16 }}
               />
               <View
                 style={{
@@ -254,7 +256,7 @@ const OrderConfirmation = () => {
                 }}>
                 <Text
                   numberOfLines={1}
-                  style={{fontFamily: Fonts.Work_Medium, fontSize: 14}}>
+                  style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
                   {'Zalopay'}
                 </Text>
                 <Text
@@ -287,11 +289,11 @@ const OrderConfirmation = () => {
               justifyContent: 'space-between',
             }}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
                 {'Tiền hàng'}
               </Text>
-              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
                 {'1,999,999'}đ
               </Text>
             </View>
@@ -301,10 +303,10 @@ const OrderConfirmation = () => {
                 justifyContent: 'space-between',
                 marginTop: 8,
               }}>
-              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
                 {'Phí vận chuyển'}
               </Text>
-              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
                 {'Miễn phí'}
               </Text>
             </View>
@@ -314,10 +316,10 @@ const OrderConfirmation = () => {
                 justifyContent: 'space-between',
                 marginTop: 8,
               }}>
-              <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_SemiBold, fontSize: 14 }}>
                 {'Tổng tiền'}
               </Text>
-              <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_SemiBold, fontSize: 14 }}>
                 {'1,999,999'}đ
               </Text>
             </View>
@@ -331,11 +333,11 @@ const OrderConfirmation = () => {
           justifyContent: 'flex-start',
         }}>
         <View style={payContainer}>
-          <View style={{flexDirection: 'column'}}>
-            <View style={{height: 20, justifyContent: 'center'}}>
+          <View style={{ flexDirection: 'column' }}>
+            <View style={{ height: 20, justifyContent: 'center' }}>
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
-            <View style={{height: 20, justifyContent: 'center'}}>
+            <View style={{ height: 20, justifyContent: 'center' }}>
               <Text style={payMoneyText}>{'2.000.000'}đ</Text>
             </View>
           </View>

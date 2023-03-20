@@ -18,6 +18,7 @@ import {
     FailDialog,
     ConfirmDialog
 } from '../../components'
+import PESHeader from '../../components/PESHeader';
 
 const MyProfileDetail = (props) => {
     const { navigation } = props
@@ -313,12 +314,13 @@ const MyProfileDetail = (props) => {
                     backgroundColor='#FFFFFF'
                     barStyle='dark-content'
                 />
-                <View style={styles.header}>
+                <PESHeader title={'Thông tin cá nhân'} onPress={() => { navigation.goBack() }} />
+                {/* <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Image source={icons.backIcon} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>Thông tin cá nhân</Text>
-                </View>
+                </View> */}
                 <View style={styles.body}>
                     <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50 })}>
                         <Image style={({ width: 80, height: 80, borderRadius: 50 })} source={{ uri: user.avatar }} />

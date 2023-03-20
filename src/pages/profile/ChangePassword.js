@@ -13,6 +13,7 @@ import {
     SuccessDialog,
     FailDialog,
 } from '../../components'
+import PESHeader from '../../components/PESHeader';
 
 
 const ChangePassword = ({ navigation }) => {
@@ -108,12 +109,13 @@ const ChangePassword = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
-                <View style={styles.headerContainer}>
+                <PESHeader title={'Đổi mật khẩu'} onPress={() => { navigation.navigate('MyProfileDetail') }} />
+                {/* <View style={styles.headerContainer}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Image source={icons.backIcon} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>Đổi mật khẩu</Text>
-                </View>
+                </View> */}
                 <Text style={({ fontSize: 10, fontWeight: '400', lineHeight: 14, color: colorsPES.transText, marginTop: 25, marginHorizontal: 24 })}>Để đảm bảo tài khoản của bạn luôn được an toàn, vui lòng nhập đúng mật khẩu PES và không quá 3 lần.</Text>
                 <View style={styles.textInputContainer}>
                     <TextInput
@@ -124,7 +126,7 @@ const ChangePassword = ({ navigation }) => {
                         onChangeText={handlePasswordChange}
                         onBlur={validateNewPassword}
                     />
-                    {errorPassword ? <Text style={{ color: colorsPES.red,fontSize: 15, marginStart: 10 }}>{errorPassword}</Text> : null}
+                    {errorPassword ? <Text style={{ color: colorsPES.red, fontSize: 15, marginStart: 10 }}>{errorPassword}</Text> : null}
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập mật khẩu mới'
@@ -133,7 +135,7 @@ const ChangePassword = ({ navigation }) => {
                         onChangeText={handleNewPasswordChange}
                         onBlur={handleBlur}
                     />
-                    {errorNewPassword ? <Text style={{ color: colorsPES.red,fontSize: 15, marginStart: 10 }}>{errorNewPassword}</Text> : null}
+                    {errorNewPassword ? <Text style={{ color: colorsPES.red, fontSize: 15, marginStart: 10 }}>{errorNewPassword}</Text> : null}
                     <TextInput
                         style={styles.input}
                         placeholder='Nhập lại mật khẩu mới'

@@ -3,6 +3,7 @@ import React from 'react'
 import { icons } from '.././../assets';
 import { images } from '.././../assets';
 import colorsPES from '../../constants/colors';
+import PESHeader from '../../components/PESHeader';
 
 
 const DATA = [
@@ -40,12 +41,13 @@ const DATA = [
 const MyFeedback = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.headerContainer}>
+            <PESHeader title={'Đánh giá của tôi'} onPress={() => { navigation.navigate('MyTab') }} />
+            {/* <View style={styles.headerContainer}>
                 <TouchableOpacity onPress={() => { navigation.pop() }}>
                     <Image source={icons.backIcon} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Đánh giá của tôi</Text>
-            </View>
+            </View> */}
             <FlatList
                 data={DATA}
                 keyExtractor={item => item.id}
