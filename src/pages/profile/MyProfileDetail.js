@@ -314,13 +314,7 @@ const MyProfileDetail = (props) => {
                     backgroundColor='#FFFFFF'
                     barStyle='dark-content'
                 />
-                <PESHeader title={'Thông tin cá nhân'} onPress={() => { navigation.goBack() }} />
-                {/* <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Image source={icons.backIcon} />
-                    </TouchableOpacity>
-                    <Text style={styles.headerText}>Thông tin cá nhân</Text>
-                </View> */}
+                <PESHeader title={'Thông tin cá nhân'} navigation={navigation} />
                 <View style={styles.body}>
                     <View style={({ justifyContent: 'center', alignItems: 'center', borderRadius: 50 })}>
                         <Image style={({ width: 80, height: 80, borderRadius: 50 })} source={{ uri: user.avatar }} />

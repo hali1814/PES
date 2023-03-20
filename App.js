@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import Product from './src/pages/product/Product';
 import Loading from './src/pages/loading/Loading';
 import Onboarding from './src/pages/onboarding/Onboarding';
@@ -23,16 +23,17 @@ const App = () => {
   //   const data = await login('', '123')
   //   console.log('===>', data)
   // // }
-  // const {onGetAllProducts} = useContext(ProductContext);
+
   // useEffect(() => {
   //   ProductContext();
   //   return () => {};
   // }, []);
 
+
   return (
     <UserContextProvider>
       <ProductsContextProvider>
-        <AppNavigation/>
+        <AppNavigation />
       </ProductsContextProvider>
     </UserContextProvider>
   );

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, StatusBar, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, StatusBar, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 import colorsPES from '../../constants/colors';
 import { icons } from '../../assets';
@@ -73,101 +73,102 @@ const Login = (props) => {
 
 
   return (
-      <SafeAreaView style={styles.container}>
-        {/* <TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      {/* <TouchableOpacity>
                 <Image source={icons.backIcon} />
             </TouchableOpacity> */}
-        <StatusBar
-          barStyle="dark-content"
-          backgroundColor={colorsPES.white}
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={colorsPES.white}
+      />
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}> Nhập số điện thoại</Text>
+      </View>
+      <View style={styles.welcomeContainer}>
+        <Text style={styles.welcome}> Rất vui khi bạn đã quay trở lại với chúng tôi !</Text>
+      </View>
+      <View style={styles.InputContainer}>
+        <Image source={icons.vietnamIcon} />
+        <Text style={StyleSheet.create({ marginRight: 10 })}>+84</Text>
+        <TextInput
+          placeholder='Nhập số điện thoại'
+          value={phoneNumber}
+          keyboardType='phone-pad'
+          onChangeText={(text) => {
+            setErrorPhoneNumber(isValidPhoneNumber(text) == true
+              ? ''
+              : 'Số điện thoại phải đủ 10 ký tự')
+            setPhoneNumber(text)
+          }}
         />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}> Nhập số điện thoại</Text>
-        </View>
-        <View style={styles.welcomeContainer}>
-          <Text style={styles.welcome}> Rất vui khi bạn đã quay trở lại với chúng tôi !</Text>
-        </View>
-        <View style={styles.InputContainer}>
-          <Image source={icons.vietnamIcon} />
-          <Text style={StyleSheet.create({ marginRight: 10 })}>+84</Text>
-          <TextInput
-            placeholder='Nhập số điện thoại'
-            value={phoneNumber}
-            keyboardType='phone-pad'
-            onChangeText={(text) => {
-              setErrorPhoneNumber(isValidPhoneNumber(text) == true
-                ? ''
-                : 'Số điện thoại phải đủ 10 ký tự')
-              setPhoneNumber(text)
-            }}
-          />
-        </View>
-        <Text style={{ color: 'red', fontSize: 14 }}>{errorPhoneNumber}</Text>
-        <View style={styles.InputContainer}>
-          <TextInput
-            placeholder='Nhập mật khẩu'
-            value={password}
-            keyboardType='default'
-            secureTextEntry={true}
-            onChangeText={(text) => {
-              setErrorPassword(isValidPassword(text) == true
-                ? ''
-                : 'Mật khẩu phải đủ 3 ký tự trở lên')
-              setPassword(text)
-            }}
-          />
-        </View>
-        <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
-        <View style={styles.socialLoginContainer}>
-          <TouchableOpacity style={styles.googleLogin}>
-            <Image style={{ width: 18, height: 18 }} source={icons.googleIcon} />
-            <Text>GOOGLE</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.facebookLogin}>
-            <Image style={{ width: 18, height: 18 }} source={icons.facebookIcon} />
-            <Text>FACEBOOK</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={() => { navigation.push('Register') }} style={styles.registerContainer}>
-          <Text style={styles.registerText}>Đăng ký tài khoản mới</Text>
+      </View>
+      <Text style={{ color: 'red', fontSize: 14 }}>{errorPhoneNumber}</Text>
+      <View style={styles.InputContainer}>
+        <TextInput
+          placeholder='Nhập mật khẩu'
+          value={password}
+          keyboardType='default'
+          secureTextEntry={true}
+          onChangeText={(text) => {
+            setErrorPassword(isValidPassword(text) == true
+              ? ''
+              : 'Mật khẩu phải đủ 3 ký tự trở lên')
+            setPassword(text)
+          }}
+        />
+      </View>
+      <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
+      <View style={styles.socialLoginContainer}>
+        <TouchableOpacity style={styles.googleLogin}>
+          <Image style={{ width: 18, height: 18 }} source={icons.googleIcon} />
+          <Text>GOOGLE</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          disabled={isValidationOK() == false}
-          style={[styles.loginButton,
-          {
-            backgroundColor: isValidationOK() == false
-              ? colorsPES.inActive
-              : colorsPES.primary,
-          }]
-          }
-          onPress={login}
-        >
-          <Text style={styles.loginText}>Đăng nhập</Text>
+        <TouchableOpacity style={styles.facebookLogin}>
+          <Image style={{ width: 18, height: 18 }} source={icons.facebookIcon} />
+          <Text>FACEBOOK</Text>
         </TouchableOpacity>
-        <View style={styles.termContainer}>
-          <Text style={styles.termText}>
-            Chấp nhận mọi Điều khoản sử dụng & Chính sách bảo mật khi đăng nhập sử dụng dịch vụ của chúng tôi
-          </Text>
+      </View>
+      <TouchableOpacity onPress={() => { navigation.push('Register') }} style={styles.registerContainer}>
+        <Text style={styles.registerText}>Đăng ký tài khoản mới</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        disabled={isValidationOK() == false}
+        style={[styles.loginButton,
+        {
+          backgroundColor: isValidationOK() == false
+            ? colorsPES.inActive
+            : colorsPES.primary,
+        }]
+        }
+        onPress={login}
+      >
+        <Text style={styles.loginText}>Đăng nhập</Text>
+      </TouchableOpacity>
+      <View style={styles.termContainer}>
+        <Text style={styles.termText}>
+          Chấp nhận mọi Điều khoản sử dụng & Chính sách bảo mật khi đăng nhập sử dụng dịch vụ của chúng tôi
+        </Text>
 
-          <FailDialog
-            visible={failedDialogVisible}
-            onPress={handleFailedDialogClose}
-            message="Đăng nhập không thành công, xin hãy thử lại!"
-          />
-          <SuccessDialog
-            visible={successDialogVisible}
-            onPress={handleSuccessDialogClose}
-            message="Đăng nhập thành công"
-          />
-          <ConfirmDialog
-            visible={confirmDialogVisible}
-            onCancelPress={handleConfirmDialogClose}
-            onPress={() => { navigation.navigate('OTP', { phoneNumber: phoneNumber }) }}
-            message="Tài khoản của bạn chưa được kích hoạt"
-            confirmMessage='Nhập OTP'
-          />
-        </View>
-      </SafeAreaView>
+        <FailDialog
+          visible={failedDialogVisible}
+          onPress={handleFailedDialogClose}
+          message="Đăng nhập không thành công, xin hãy thử lại!"
+        />
+        <SuccessDialog
+          visible={successDialogVisible}
+          onPress={handleSuccessDialogClose}
+          message="Đăng nhập thành công"
+        />
+        <ConfirmDialog
+          visible={confirmDialogVisible}
+          onCancelPress={handleConfirmDialogClose}
+          onPress={() => { navigation.navigate('OTP', { phoneNumber: phoneNumber }) }}
+          message="Tài khoản của bạn chưa được kích hoạt"
+          confirmMessage='Nhập OTP'
+        />
+      </View>
+    </SafeAreaView>
+
   )
 }
 
@@ -297,6 +298,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-    backgroundColor: colorsPES.white
+    backgroundColor: colorsPES.white,
   }
 })

@@ -41,13 +41,7 @@ const DATA = [
 const MyFeedback = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            <PESHeader title={'Đánh giá của tôi'} onPress={() => { navigation.navigate('MyTab') }} />
-            {/* <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={() => { navigation.pop() }}>
-                    <Image source={icons.backIcon} />
-                </TouchableOpacity>
-                <Text style={styles.headerText}>Đánh giá của tôi</Text>
-            </View> */}
+            <PESHeader title={'Đánh giá của tôi'} navigation={navigation} />
             <FlatList
                 data={DATA}
                 keyExtractor={item => item.id}

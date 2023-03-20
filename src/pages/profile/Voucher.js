@@ -18,16 +18,10 @@ const Voucher = ({ navigation }) => {
         ongetVoucher()
         return () => { }
     }, [])
-    
+
     return (
         <View style={styles.container}>
-            <PESHeader onPress={() => { navigation.goBack() }} title={'Voucher'} />
-            {/* <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={() => { navigation.pop() }}>
-                    <Image source={icons.backIcon} />
-                </TouchableOpacity>
-                <Text style={styles.headerText}>Voucher</Text>
-            </View> */}
+            <PESHeader navigation={navigation} title={'Voucher'} />
             <FlatList
                 data={voucher}
                 renderItem={({ item }) => (

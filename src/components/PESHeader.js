@@ -5,10 +5,10 @@ import color from '../styles/colors';
 import { textsPES } from '../constants/string';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const PESHeader = ({ title, onPress }) => {
+const PESHeader = ({ title, onPress, navigation }) => {
   return (
     <View style={styles.Container}>
-      <TouchableOpacity onPress={onPress} style={styles.imageContainer}>
+      <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.imageContainer}>
         <Image
           source={icons.chevronBack_icon}
           style={{ width: 24, height: 24 }}

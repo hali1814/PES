@@ -92,9 +92,6 @@ export const UserContextProvider = (props) => {
     const onLogout = async () => {
         try {
             const res = await logout();
-            const token = AsyncStorage.getItem('token');
-            console.log(token)
-            console.log(res)
             if (res.status == 'success') {
                 await AsyncStorage.removeItem('token')
                 setIsLoggedIn(false)

@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import UserNavigation from '../api/authservice/UserNavigation';
 import AppStackScreen from './Index';
 import { UserContext } from '../api/authservice/UserContext';
