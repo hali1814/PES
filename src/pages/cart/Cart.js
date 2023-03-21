@@ -87,11 +87,13 @@ const Cart = () => {
                                 }}>
                                 Tất cả
                             </Text>
-                            <Icon
-                                name='ellipse-outline'
-                                size={25}
-                                color={colorsPES.primary}
-                            />
+                            <TouchableOpacity>
+                                <Icon
+                                    name='ellipse-outline'
+                                    size={25}
+                                    color={colorsPES.primary}
+                                />
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <FlatList
@@ -139,7 +141,12 @@ const Cart = () => {
                                     </View>
                                     <View style={styles.quantityContainer}>
                                         <TouchableOpacity
-                                            style={{ padding: 3, backgroundColor: colorsPES.grey, borderRadius: 3 }}
+                                            style={{
+                                                backgroundColor: colorsPES.grey,
+                                                borderRadius: 3, width: 20, height: 20,
+                                                justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }}
                                         >
                                             <Text style={{
                                                 fontWeight: '400',
@@ -151,7 +158,12 @@ const Cart = () => {
                                         </TouchableOpacity>
                                         <Text style={{ marginHorizontal: 5 }}>{item.quantity}</Text>
                                         <TouchableOpacity
-                                            style={{ padding: 3, backgroundColor: colorsPES.grey, borderRadius: 3 }}
+                                            style={{
+                                                backgroundColor: colorsPES.grey,
+                                                borderRadius: 3, width: 20, height: 20,
+                                                justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }}
                                         >
                                             <Text style={{
                                                 fontWeight: '400',
