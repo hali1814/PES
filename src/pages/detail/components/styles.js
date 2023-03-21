@@ -41,9 +41,10 @@ export const shopNameText = {
   fontSize: 14,
   fontFamily: Fonts.Work_SemiBold,
   color: color.TEXT_PRIMARY,
+  textTransform: 'capitalize',
 };
 export const phoneText = {
-  fontSize: 14,
+  fontSize: 13,
   fontFamily: Fonts.Work_Regular,
   color: color.TEXT_SECOND,
 };
@@ -148,6 +149,7 @@ export const payContainer = {
 export const payText = {
   fontFamily: Fonts.Man_SemiBold,
   fontSize: 14,
+  color: color.BLACK,
 };
 export const payMoneyText = {
   fontFamily: Fonts.Man_Bold,

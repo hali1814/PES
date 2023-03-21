@@ -1,21 +1,35 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert, StatusBar, KeyboardAvoidingView, Platform } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  Alert,
+  StatusBar,
+} from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
 import colorsPES from '../../constants/colors';
-import { icons } from '../../assets';
-import { isValidPassword, isValidPhoneNumber } from '../../utils/Validations';
-import { UserContext } from '../../api/authservice/UserContext';
+import {icons} from '../../assets';
+import {isValidPassword, isValidPhoneNumber} from '../../utils/Validations';
+import {UserContext} from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FailDialog, SuccessDialog, ConfirmDialog } from '../../components';
+import {FailDialog, SuccessDialog, ConfirmDialog} from '../../components';
+import Fonts from '../../assets/fonts/fonts';
+import color from '../../styles/colors';
 
-const Login = (props) => {
-  const { navigation, route } = props;
-  const [errorPhoneNumber, setErrorPhoneNumber] = useState('')
-  const [errorPassword, setErrorPassword] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [password, setPassword] = useState('')
-  const isValidationOK = () => phoneNumber.length > 0 && password.length > 0
-    && isValidPhoneNumber(phoneNumber) == true
-    && isValidPassword(password) == true;
+const Login = props => {
+  const {navigation, route} = props;
+  const [errorPhoneNumber, setErrorPhoneNumber] = useState('');
+  const [errorPassword, setErrorPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const isValidationOK = () =>
+    phoneNumber.length > 0 &&
+    password.length > 0 &&
+    isValidPhoneNumber(phoneNumber) == true &&
+    isValidPassword(password) == true;
   const [failedDialogVisible, setFailedDialogVisible] = useState(false);
   const handleFailed = () => {
     setFailedDialogVisible(true);
@@ -25,7 +39,7 @@ const Login = (props) => {
   };
   const [successDialogVisible, setSuccessDialogVisible] = useState(false);
   const handleSuccess = () => {
-    setSuccessDialogVisible(true);
+    setFailedDialogVisible(true);
   };
   const handleSuccessDialogClose = () => {
     setFailedDialogVisible(false);
@@ -39,116 +53,156 @@ const Login = (props) => {
     setConfirmDialogVisible(false);
   };
 
-  useEffect(() => {
+  useEffect(() => {}, []);
 
-  }, [])
-  const {
-    onLogin,
-  } = useContext(UserContext)
+  const {onLogin} = useContext(UserContext);
 
   const login = async () => {
     try {
-      const res = await onLogin(phoneNumber, password)
-      const token = await AsyncStorage.getItem('token')
-      console.log('token: ' + token)
+      const res = await onLogin(phoneNumber, password);
+      const token = await AsyncStorage.getItem('token');
+      console.log('token: ' + token);
       if (res == true) {
-        handleSuccess()
-      } if (typeof res === 'string') {
-        handleConfirm()
+        handleSuccess();
       }
-      else {
-        handleFailed()
+      if (typeof res === 'string') {
+        handleConfirm();
+      } else {
+        handleFailed();
       }
     } catch (error) {
-      console.log('error', error)
+      console.log('error', error);
     }
-  }
-
+  };
 
   const [isFocused, setIsFocused] = useState(false);
 
-
-
-
-
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* <TouchableOpacity>
-                <Image source={icons.backIcon} />
-            </TouchableOpacity> */}
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={colorsPES.white}
-      />
+      <StatusBar barStyle="dark-content" backgroundColor={colorsPES.white} />
       <View style={styles.titleContainer}>
         <Text style={styles.title}> Nhập số điện thoại</Text>
       </View>
       <View style={styles.welcomeContainer}>
-        <Text style={styles.welcome}> Rất vui khi bạn đã quay trở lại với chúng tôi !</Text>
+        <Text style={styles.welcome}>
+          {'Rất vui khi bạn đã quay trở lại với chúng tôi!'}
+        </Text>
       </View>
       <View style={styles.InputContainer}>
-        <Image source={icons.vietnamIcon} />
-        <Text style={StyleSheet.create({ marginRight: 10 })}>+84</Text>
+        <Image source={icons.vietnamIcon} style={{width: 16, height: 16}} />
+        <Text
+          style={StyleSheet.create({
+            marginLeft: 4,
+            marginRight: 10,
+            fontFamily: Fonts.Man_Medium,
+            color: color.BLACK,
+          })}>
+          {'+84'}
+        </Text>
         <TextInput
-          placeholder='Nhập số điện thoại'
+          style={{width: '80%', fontFamily: Fonts.Man_Medium, fontSize: 14}}
+          placeholder="Nhập số điện thoại"
           value={phoneNumber}
-          keyboardType='phone-pad'
-          onChangeText={(text) => {
-            setErrorPhoneNumber(isValidPhoneNumber(text) == true
-              ? ''
-              : 'Số điện thoại phải đủ 10 ký tự')
-            setPhoneNumber(text)
+          keyboardType="phone-pad"
+          onChangeText={text => {
+            setErrorPhoneNumber(
+              isValidPhoneNumber(text) == true
+                ? ''
+                : 'Số điện thoại phải đủ 10 ký tự',
+            );
+            setPhoneNumber(text);
           }}
         />
       </View>
-      <Text style={{ color: 'red', fontSize: 14 }}>{errorPhoneNumber}</Text>
-      <View style={styles.InputContainer}>
+      <Text style={{color: 'red', fontSize: 14, fontFamily: Fonts.Man_Medium}}>
+        {errorPhoneNumber}
+      </Text>
+      <View style={styles.InputContainerMK}>
         <TextInput
-          placeholder='Nhập mật khẩu'
+          style={{
+            width: '80%',
+            fontFamily: Fonts.Man_Medium,
+            fontSize: 14,
+          }}
+          placeholder="Nhập mật khẩu"
           value={password}
-          keyboardType='default'
+          keyboardType="default"
           secureTextEntry={true}
-          onChangeText={(text) => {
-            setErrorPassword(isValidPassword(text) == true
-              ? ''
-              : 'Mật khẩu phải đủ 3 ký tự trở lên')
-            setPassword(text)
+          onChangeText={text => {
+            setErrorPassword(
+              isValidPassword(text) == true
+                ? ''
+                : 'Mật khẩu phải đủ 3 ký tự trở lên',
+            );
+            setPassword(text);
           }}
         />
       </View>
-      <Text style={{ color: 'red', fontSize: 14 }}>{errorPassword}</Text>
+      <Text style={{color: 'red', fontSize: 14, fontFamily: Fonts.Man_Medium}}>
+        {errorPassword}
+      </Text>
       <View style={styles.socialLoginContainer}>
         <TouchableOpacity style={styles.googleLogin}>
-          <Image style={{ width: 18, height: 18 }} source={icons.googleIcon} />
-          <Text>GOOGLE</Text>
+          <Image style={{width: 18, height: 18}} source={icons.googleIcon} />
+          <View style={{height: 20, marginLeft: 8}}>
+            <Text
+              style={{
+                fontFamily: Fonts.Man_Regular,
+                fontSize: 15,
+                color: color.MAIN,
+              }}>
+              {'Google'}
+            </Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.facebookLogin}>
-          <Image style={{ width: 18, height: 18 }} source={icons.facebookIcon} />
-          <Text>FACEBOOK</Text>
+          <Image style={{width: 18, height: 18}} source={icons.facebookIcon} />
+          <View style={{height: 20, marginLeft: 8}}>
+            <Text
+              style={{
+                fontFamily: Fonts.Man_Regular,
+                fontSize: 15,
+                color: color.MAIN,
+              }}>
+              {'Facebook'}
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => { navigation.push('Register') }} style={styles.registerContainer}>
-        <Text style={styles.registerText}>Đăng ký tài khoản mới</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.push('');
+        }}
+        style={styles.registerContainer}>
+        <Text style={styles.registerText}>{'Quên mật khẩu?'}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.push('Register');
+        }}
+        style={styles.registerContainer}>
+        <Text style={styles.registerText}>{'Đăng ký tài khoản mới'}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         disabled={isValidationOK() == false}
-        style={[styles.loginButton,
-        {
-          backgroundColor: isValidationOK() == false
-            ? colorsPES.inActive
-            : colorsPES.primary,
-        }]
-        }
-        onPress={login}
-      >
-        <Text style={styles.loginText}>Đăng nhập</Text>
+        style={[
+          styles.loginButton,
+          {
+            backgroundColor:
+              isValidationOK() == false
+                ? 'rgba(88, 101, 242, 0.6)'
+                : colorsPES.primary,
+          },
+        ]}
+        onPress={login}>
+        <Text style={styles.loginText}>{'Đăng nhập'}</Text>
       </TouchableOpacity>
       <View style={styles.termContainer}>
         <Text style={styles.termText}>
-          Chấp nhận mọi Điều khoản sử dụng & Chính sách bảo mật khi đăng nhập sử dụng dịch vụ của chúng tôi
+          {
+            'Chấp nhận mọi Điều khoản sử dụng & Chính sách bảo mật khi đăng nhập sử dụng dịch vụ của chúng tôi'
+          }
         </Text>
-
         <FailDialog
           visible={failedDialogVisible}
           onPress={handleFailedDialogClose}
@@ -162,28 +216,28 @@ const Login = (props) => {
         <ConfirmDialog
           visible={confirmDialogVisible}
           onCancelPress={handleConfirmDialogClose}
-          onPress={() => { navigation.navigate('OTP', { phoneNumber: phoneNumber }) }}
+          onPress={() => {
+            navigation.navigate('OTP', {phoneNumber: phoneNumber});
+          }}
           message="Tài khoản của bạn chưa được kích hoạt"
-          confirmMessage='Nhập OTP'
+          confirmMessage="Nhập OTP"
         />
       </View>
     </SafeAreaView>
+  );
+};
 
-  )
-}
 
-export default Login
+
+
+
+
+export default Login;
 
 const styles = StyleSheet.create({
   termText: {
     color: colorsPES.transText,
-    fontWeight: '400',
-    fontSize: 12,
-  },
-
-  termText: {
-    color: colorsPES.transText,
-    fontWeight: '400',
+    fontFamily: Fonts.Man_Medium,
     fontSize: 12,
   },
 
@@ -205,39 +259,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 8,
-    borderWidth: 1,
-    borderColor: colorsPES.borderColorBlue,
     borderRadius: 60,
   },
 
   registerText: {
-    fontWeight: '600',
+    fontFamily: Fonts.Man_Bold,
     fontSize: 14,
     color: colorsPES.borderColorBlue,
   },
 
   registerContainer: {
-    width: '100%',
     height: 44,
-    marginTop: 150,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 8,
   },
 
   facebookLogin: {
-    width: '40%',
-    height: '100%',
+    width: 157.5,
+    height: 44,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderWidth: 1,
     borderColor: colorsPES.borderColorBlue,
     borderRadius: 8,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
+    justifyContent: 'center',
   },
 
   googleLogin: {
-    width: '40%',
-    height: '100%',
+    width: 157.5,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    height: 44,
     borderWidth: 1,
     borderColor: colorsPES.borderColorBlue,
     borderRadius: 8,
@@ -258,40 +313,46 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 44,
     marginTop: 24,
-    marginBottom: 10,
+    marginBottom: 6,
     paddingHorizontal: 16,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 40,
-    borderColor: colorsPES.borderColorPrimary,
+    borderRadius: 60,
+    borderColor: color.BORDER_BOTTOM,
+  },
+  InputContainerMK: {
+    width: '100%',
+    height: 44,
+    marginTop: 12,
+    marginBottom: 6,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 60,
+    borderColor: color.BORDER_BOTTOM,
   },
 
   welcome: {
     fontWeight: '400',
     fontSize: 14,
-    color: colorsPES.blackText
+    color: color.TEXT_PRIMARY,
   },
 
   welcomeContainer: {
-    width: '100%',
     height: 19,
     marginTop: 8,
   },
 
   titleContainer: {
-    width: 182,
-    height: 27,
-    marginTop: 40,
+    marginTop: 24,
   },
 
   title: {
-    width: '100%',
-    height: '100%',
-    fontWeight: '800',
+    fontFamily: Fonts.Man_ExtraBold,
     fontSize: 20,
-    color: colorsPES.blackText,
+    color: color.TEXT_PRIMARY,
   },
 
   container: {
@@ -299,5 +360,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: colorsPES.white,
-  }
-})
+  },
+});

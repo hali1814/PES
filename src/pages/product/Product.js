@@ -91,7 +91,6 @@ const Product = ({navigation, onPressProducts}) => {
           {/* FlashSale */}
           <View
             style={{
-              height: 238,
               backgroundColor: color.WHITE,
               marginTop: 12,
               paddingHorizontal: 16,
@@ -112,10 +111,12 @@ const Product = ({navigation, onPressProducts}) => {
                 {'Flash Sale'}
               </Text>
             </View>
+            {/* FlatListFlashSale */}
             <View>
               <FlatList
                 pagingEnabled
                 data={flashSaleProducts}
+                showsHorizontalScrollIndicator={false}
                 horizontal
                 keyExtractor={item => item._id}
                 renderItem={({item}) => (
@@ -129,7 +130,6 @@ const Product = ({navigation, onPressProducts}) => {
           <View
             style={{
               width: '100%',
-              height: 32,
               marginTop: 16,
               paddingHorizontal: 12,
             }}>
@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
+
   SearchStyles: {
     height: 54,
     paddingVertical: 12,
@@ -160,6 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+
   customSearch: {
     width: '80%',
     height: 44,
@@ -169,6 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     backgroundColor: color.WHITE,
   },
+
   TextInputSearch: {
     marginLeft: 4,
     fontSize: 15,

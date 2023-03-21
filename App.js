@@ -13,10 +13,8 @@ import MyTab from './src/navigation/Index';
 import { login } from './src/api/authservice/UserService';
 import UserNavigation from './src/api/authservice/UserNavigation';
 import AppNavigation from './src/navigation/AppNavigation';
-import { UserContextProvider } from './src/api/authservice/UserContext';
-import { ProductsContextProvider } from './src/api/authservice/ProductAPI/ProductContext';
-import { ProductContext } from './src/api/authservice/ProductAPI/ProductContext';
-import { UserContext } from './src/api/authservice/UserContext';
+import {UserContextProvider} from './src/api/authservice/UserContext';
+import {ProductsContextProvider} from './src/api/authservice/ProductAPI/ProductContext';
 
 const App = () => {
   // const checkLogin = async () => {
@@ -38,15 +36,5 @@ const App = () => {
     </UserContextProvider>
   );
 };
-// <NavigationContainer>
-//   <MyTab />
-// </NavigationContainer>
-
-// <Register/>
-// <NavigationContainer>
-//   <UserNavigation />
-// </NavigationContainer>
 
 export default App;
-
-const styles = StyleSheet.create({});

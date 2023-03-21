@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
+  StatusBar,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import color from '../../styles/colors';
@@ -49,15 +50,19 @@ import PESProductDescription from '../../components/PESProductDescription';
 import PESRelatedProducts from '../../components/PESRelatedProducts';
 import Fonts from '../../assets/fonts/fonts';
 import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import {formatPrice} from '../../utils/MoneyFormat';
 
 const {width: screenWidth} = Dimensions.get('window');
 
 const Detail = props => {
   const {route, navigation} = props;
+
   const {id} = route.params;
 
   const {onGetDetail, detail} = useContext(ProductContext);
+
   const [imageList, setImageList] = useState([]);
+
   const [currentImage, setCurrentImage] = useState(1);
 
   useEffect(() => {
@@ -91,12 +96,17 @@ const Detail = props => {
 
   const ShopID = detail.shop?.idShop || '';
 
+  // formatPrice
+  const price = detail && detail.stock[0].price;
+
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       style={{
         height: '100%',
         backgroundColor: color.BACKGROUDITEM,
       }}>
+      <StatusBar hidden={true} />
       <View
         style={{
           position: 'relative',
@@ -140,7 +150,9 @@ const Detail = props => {
         </View>
         <View style={counterContainer}>
           <View style={counterBG}>
-            <Text style={counterText}>{currentImage}/8</Text>
+            <Text style={counterText}>
+              {currentImage}/{imageList.length}
+            </Text>
           </View>
         </View>
       </View>
@@ -148,16 +160,42 @@ const Detail = props => {
       <View style={productsContainer}>
         <View style={productsBG}>
           <View style={{width: '100%'}}>
-            <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 18}}>
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 18,
+                textTransform: 'capitalize',
+                color: color.TEXT_PRIMARY,
+              }}>
               {detail.name}
             </Text>
           </View>
           <View style={labelContainer}>
-            <View style={labelBG}>
-              <Text style={labelText}>{textsPES.txtlabel}</Text>
-            </View>
-            <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 20}}>
-              {detail && detail.stock[0].price}đ
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 20,
+                color: color.MAIN,
+              }}>
+              {formatPrice(price)}
+            </Text>
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 20,
+                color: color.MAIN,
+              }}>
+              {formatPrice(price)}
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 20,
+                color: color.MAIN,
+              }}>
+              {formatPrice(price)}
             </Text>
           </View>
         </View>
@@ -199,7 +237,7 @@ const Detail = props => {
           style={{paddingHorizontal: 12, marginTop: 8}}>
           <View style={ContainerShop}>
             <View style={headerContainerShop}>
-              <TouchableOpacity style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row'}}>
                 <Image
                   source={{uri: detail && detail.shop.avatar}}
                   style={{width: 32, height: 32, borderRadius: 360}}
@@ -210,7 +248,7 @@ const Detail = props => {
                   </Text>
                   <Text style={phoneText}>{detail && detail.owner}</Text>
                 </View>
-              </TouchableOpacity>
+              </View>
               <View>
                 <Image
                   source={icons.crown_icon}
@@ -278,7 +316,7 @@ const Detail = props => {
                     <PESProductDescription
                       icon={icons.size_icon}
                       text1={'Size'}
-                      text2={detail && detail.stock.size}
+                      text2={detail && detail.stock[0].size}
                     />
                   </View>
                   <View style={{paddingTop: 8}}>
@@ -374,7 +412,7 @@ const Detail = props => {
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
             <View style={{height: 20, justifyContent: 'center'}}>
-              <Text style={payMoneyText}>{'2.000.000'}đ</Text>
+              <Text style={payMoneyText}>{formatPrice(price)}</Text>
             </View>
           </View>
           {/* AddCart */}
