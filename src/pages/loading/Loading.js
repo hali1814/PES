@@ -1,23 +1,43 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
-import React, { useEffect } from 'react';
+import { StyleSheet, Text, View, Image, Animated, Easing } from 'react-native';
+import React, { useEffect, useRef } from 'react';
 import { containerLoading } from './components/styles';
 import { images } from '../../assets';
 import { useNavigation } from '@react-navigation/native';
+
+
+
 const Loading = () => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1500,
+      useNativeDriver: true,
+      easing: Easing.bounce
+    }).start();
+  }, [fadeAnim]);
 
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Login');
-    }, 2000); // Thời gian delay 2 giây
+      navigation.navigate('MyTab');
+    }, 2000)
   }, [navigation]);
   return (
-    <View style={containerLoading}>
+    <Animated.View style={[containerLoading, {
+      opacity: fadeAnim,
+      transform: [{
+        translateY: fadeAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1000, 0],
+        }),
+      }],
+    }]}>
       <Image
         source={images.loading_image}
         style={{ width: 220, height: 220, resizeMode: 'contain' }}
       />
-    </View>
+    </Animated.View>
   );
 };
 

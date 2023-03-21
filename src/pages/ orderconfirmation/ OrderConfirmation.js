@@ -34,7 +34,7 @@ const OrderConfirmation = () => {
   return (
     <SafeAreaView
       style={{ backgroundColor: color.BACKGROUDITEM, height: '100%' }}>
-      <PESHeader title={'Xác nhận đơn hàng'} />
+      {/* <PESHeader title={'Xác nhận đơn hàng'} /> */}
       <ScrollView showsVerticalScrollIndicator={false}
         pagingEnabled style={Orderstyles.scrollContainer}>
         <View style={Orderstyles.userContainer}>

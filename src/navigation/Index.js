@@ -17,6 +17,7 @@ import {
 import { Product } from '../pages/product';
 import { ProductsNavigation } from '../api/authservice/ProductAPI/ProductNavigation';
 import OrderConfirmation from '../pages/ orderconfirmation/ OrderConfirmation';
+import Loading from '../pages/loading/Loading';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,6 +33,7 @@ const AppStackScreen = () => {
         headerTintColor: colorsPES.background,
         headerShown: false,
       }}>
+      <appStack.Screen name="Loading" component={Loading} />
       <appStack.Screen name="MyTab" component={MyTab} />
       <appStack.Screen name="MyProfileDetail" component={MyProfileDetail} />
       <appStack.Screen name="MyFeedback" component={MyFeedback} />
@@ -58,7 +60,7 @@ const MyTab = () => {
               iconName = focused ? 'ios-heart' : 'ios-heart-outline';
               break;
             case 'Add':
-              iconName = focused ? 'add-circle' : 'add-circle';
+              iconName = focused ? 'wallet' : 'wallet-outline';
               break;
             case 'Notification':
               iconName = focused ? 'notifications' : 'notifications-outline';
