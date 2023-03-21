@@ -96,8 +96,20 @@ const Detail = props => {
 
   const ShopID = detail.shop?.idShop || '';
 
-  // formatPrice
-  const price = detail && detail.stock[0].price;
+  const sale = detail && detail.sale;
+  let price = 0;
+  let price1 = 0;
+
+  if (detail) {
+    detail.stock.sort((a, b) => a.price - b.price);
+    // formatPrice
+    if (detail.stock.length == 1) {
+      price = detail && detail.stock[0].price;
+    } else {
+      price = detail && detail.stock[0].price;
+      price1 = detail && detail.stock[detail.stock.length - 1].price;
+    }
+  }
 
   return (
     <ScrollView
@@ -131,7 +143,7 @@ const Detail = props => {
           <SafeAreaView style={SafeAreaContainer}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Products');
+                navigation.goBack();
               }}
               style={{paddingHorizontal: 16}}>
               <Image
@@ -159,6 +171,12 @@ const Detail = props => {
       {/* Title và Price */}
       <View style={productsContainer}>
         <View style={productsBG}>
+          <View style={{position: 'absolute', right: 0}}>
+            <View style={styles.customSale}>
+              <Image source={icons.tagSale_icon} style={styles.imgSale} />
+              <Text style={styles.txtSale}>{sale ? `${sale}` : ''}%</Text>
+            </View>
+          </View>
           <View style={{width: '100%'}}>
             <Text
               style={{
@@ -177,25 +195,22 @@ const Detail = props => {
                 fontSize: 20,
                 color: color.MAIN,
               }}>
-              {formatPrice(price)}
-            </Text>
-            <Text
-              style={{
-                fontFamily: Fonts.Work_SemiBold,
-                fontSize: 20,
-                color: color.MAIN,
-              }}>
-              {formatPrice(price)}
+              {price && formatPrice(price * (1 - sale / 100))}
+              {price1
+                ? ` - ${price1 && formatPrice(price1 * (1 - sale / 100))}`
+                : ''}
             </Text>
           </View>
-          <View>
+          <View style={{flexDirection: 'row'}}>
             <Text
               style={{
                 fontFamily: Fonts.Work_SemiBold,
-                fontSize: 20,
-                color: color.MAIN,
+                fontSize: 14,
+                color: color.TEXT_SECOND,
+                textDecorationLine: 'line-through',
               }}>
-              {formatPrice(price)}
+              {price && formatPrice(price)}
+              {price1 ? ` - ${price1 && formatPrice(price1)}` : ''}
             </Text>
           </View>
         </View>
@@ -219,7 +234,9 @@ const Detail = props => {
               </Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => {}} style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            onPress={() => {}}
+            style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={txtVoucher}>{textsPES.txtDetail}</Text>
             <Image
               source={icons.chevronRight_icon}
@@ -246,7 +263,7 @@ const Detail = props => {
                   <Text style={shopNameText}>
                     {detail && detail.shop.nameShop}
                   </Text>
-                  <Text style={phoneText}>{detail && detail.owner}</Text>
+                  <Text style={phoneText}>{detail && detail.email}</Text>
                 </View>
               </View>
               <View>
@@ -407,14 +424,14 @@ const Detail = props => {
       {/* PayView */}
       <View style={{height: 75, backgroundColor: color.WHITE}}>
         <View style={payContainer}>
-          <View style={{flexDirection: 'column'}}>
+          {/* <View style={{flexDirection: 'column'}}>
             <View style={{height: 20, justifyContent: 'center'}}>
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
             <View style={{height: 20, justifyContent: 'center'}}>
               <Text style={payMoneyText}>{formatPrice(price)}</Text>
             </View>
-          </View>
+          </View> */}
           {/* AddCart */}
           <TouchableOpacity>
             <View style={addCartButton}>
@@ -444,5 +461,25 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: screenWidth,
     height: 375,
+  },
+  customSale: {
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderTopRightRadius: 4,
+    borderBottomLeftRadius: 4,
+    backgroundColor: color.MAIN,
+    alignItems: 'center',
+  },
+  imgSale: {
+    width: 16,
+    height: 16,
+    tintColor: color.WHITE,
+  },
+  txtSale: {
+    color: color.WHITE,
+    fontFamily: Fonts.Work_Medium,
+    fontSize: 14,
+    marginLeft: 4,
   },
 });

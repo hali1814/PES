@@ -23,8 +23,8 @@ const Login = props => {
   const {navigation, route} = props;
   const [errorPhoneNumber, setErrorPhoneNumber] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('0349751007');
+  const [password, setPassword] = useState('123');
   const isValidationOK = () =>
     phoneNumber.length > 0 &&
     password.length > 0 &&
@@ -226,11 +226,6 @@ const Login = props => {
     </SafeAreaView>
   );
 };
-
-
-
-
-
 
 export default Login;
 

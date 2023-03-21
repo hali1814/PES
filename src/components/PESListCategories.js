@@ -6,8 +6,9 @@ import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Fonts from '../assets/fonts/fonts';
 
 const PESListCategories = ({item, index}) => {
-  const {onGetAllGenre, genres} = useContext(ProductContext);
-  // console.log('gennnnnnnnnnnnnnnnnnnnnnnnnnnre', genres);
+  const {onGetAllGenre, genres, productsByGenre, onGetProductsByGenre} =
+    useContext(ProductContext);
+  // console.log('gennnnnnnnnnnnnnnnnnnnnnnnnnnre', productsByGenre);
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -17,7 +18,10 @@ const PESListCategories = ({item, index}) => {
     onGetAllGenre();
   }, []);
 
-  const onPressCategory = () => {};
+  const onPressCategory = id => {
+    id = item._id;
+    console.log('loggggggggggg', id);
+  };
 
   return (
     <View>

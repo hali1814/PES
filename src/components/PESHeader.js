@@ -1,17 +1,21 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
-import { icons } from '../assets';
+import {icons} from '../assets';
 import color from '../styles/colors';
-import { textsPES } from '../constants/string';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {textsPES} from '../constants/string';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const PESHeader = ({ title, onPress, navigation }) => {
+const PESHeader = ({title, onPress, navigation}) => {
   return (
     <View style={styles.Container}>
-      <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.imageContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.goBack();
+        }}
+        style={styles.imageContainer}>
         <Image
           source={icons.chevronBack_icon}
-          style={{ width: 24, height: 24 }}
+          style={{width: 24, height: 24, tintColor: color.MAIN}}
         />
       </TouchableOpacity>
       <View style={styles.textContainer}>
