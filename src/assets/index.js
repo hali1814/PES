@@ -130,6 +130,7 @@ const images = {
   superVoucherImage: require('../assets/images/superVoucherImage.png'),
   hoodieImage: require('../assets/images/hoodieImage.png'),
   ratingStarImage: require('../assets/images/ratingStarImage.png'),
+  aplyVoucher: require('../assets/images/aplyVoucher.png'),
 };
 
 export {icons, images};

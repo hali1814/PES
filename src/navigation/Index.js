@@ -10,11 +10,11 @@ import {
   ChangeAddress,
   ChangePassword,
   Voucher,
-  ProfileStackScreen,
   MyProfileDetail,
   MyFeedback,
+
 } from '../pages/profile';
-import { Product } from '../pages/product';
+import { Cart } from '../pages/cart'
 import { ProductsNavigation } from '../api/authservice/ProductAPI/ProductNavigation';
 import OrderConfirmation from '../pages/ orderconfirmation/ OrderConfirmation';
 import Loading from '../pages/loading/Loading';
@@ -56,10 +56,10 @@ const MyTab = () => {
             case 'Home':
               iconName = focused ? 'ios-home' : 'ios-home-outline';
               break;
-            case 'Favorites':
-              iconName = focused ? 'ios-heart' : 'ios-heart-outline';
+            case 'Cart':
+              iconName = focused ? 'cart' : 'cart-outline';
               break;
-            case 'Add':
+            case 'Bill':
               iconName = focused ? 'wallet' : 'wallet-outline';
               break;
             case 'Notification':
@@ -92,12 +92,12 @@ const MyTab = () => {
         options={{ title: 'Trang chủ', headerTitleAlign: 'center' }}
       />
       <Tab.Screen
-        name="Favorites"
-        component={Profile}
+        name="Cart"
+        component={Cart}
         options={{ title: 'Yêu thích', headerTitleAlign: 'center' }}
       />
       <Tab.Screen
-        name="Add"
+        name="Bill"
         component={OrderConfirmation}
         options={{ title: 'Bill', headerTitleAlign: 'center' }}
       />
