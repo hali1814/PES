@@ -171,14 +171,29 @@ const Detail = props => {
             </Text>
           </View>
           <View style={labelContainer}>
-            <View style={labelBG}>
-              <Text style={labelText}>{textsPES.txtlabel}</Text>
-            </View>
             <Text
               style={{
                 fontFamily: Fonts.Work_SemiBold,
                 fontSize: 20,
-                color: color.TEXT_PRIMARY,
+                color: color.MAIN,
+              }}>
+              {formatPrice(price)}
+            </Text>
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 20,
+                color: color.MAIN,
+              }}>
+              {formatPrice(price)}
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 20,
+                color: color.MAIN,
               }}>
               {formatPrice(price)}
             </Text>

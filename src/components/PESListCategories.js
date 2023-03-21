@@ -1,13 +1,18 @@
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useState, useRef} from 'react';
 import color from '../styles/colors';
 import {icons} from '../assets';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Fonts from '../assets/fonts/fonts';
 
-const PESListCategories = ({item}) => {
+const PESListCategories = ({item, index}) => {
   const {onGetAllGenre, genres} = useContext(ProductContext);
   // console.log('gennnnnnnnnnnnnnnnnnnnnnnnnnnre', genres);
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  const containerStyle = [styles.container];
+
   useEffect(() => {
     onGetAllGenre();
   }, []);
@@ -15,37 +20,42 @@ const PESListCategories = ({item}) => {
   const onPressCategory = () => {};
 
   return (
-    <TouchableOpacity onPress={onPressCategory} style={styles.Container}>
-      <View
-        style={{
-          backgroundColor: color.WHITE,
-          flexDirection: 'row',
-          paddingHorizontal: 12,
-          paddingVertical: 4,
-          borderRadius: 60,
-          justifyContent: 'space-between',
-        }}>
-        <Image source={{uri: item.images}} style={styles.imgProduct} />
-        <View style={{justifyContent: 'center', marginLeft: 4}}>
-          <Text style={styles.textName}>{item.label}</Text>
+    <View>
+      <TouchableOpacity style={containerStyle} onPress={onPressCategory}>
+        <View
+          style={{
+            backgroundColor: color.WHITE,
+            paddingHorizontal: 16,
+            paddingVertical: 8,
+            borderRadius: 6,
+            alignItems: 'center',
+            width: 80,
+          }}>
+          <Image source={{uri: item.images}} style={styles.imgProduct} />
+          <View style={{justifyContent: 'center', marginTop: 4}}>
+            <Text style={styles.textName}>{item.label}</Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 export default PESListCategories;
 
 const styles = StyleSheet.create({
-  Container: {
-    justifyContent: 'center',
-    paddingLeft: 8,
+  container: {
+    marginLeft: 10,
   },
-
+  containerFocused: {
+    borderWidth: 1,
+    borderColor: color.MAIN,
+    borderRadius: 4,
+  },
   imgProduct: {
-    width: 24,
+    width: 32,
     resizeMode: 'cover',
-    height: 24,
+    height: 32,
   },
   headerTextContainer: {
     flexDirection: 'column',
@@ -55,24 +65,8 @@ const styles = StyleSheet.create({
   },
   textName: {
     fontSize: 14,
-    color: color.TEXT_SECOND,
+    color: color.BLACK,
     textTransform: 'capitalize',
     fontFamily: Fonts.Work_SemiBold,
-  },
-  textAbout: {
-    marginTop: 4,
-    height: 40,
-    fontSize: 14,
-    fontWeight: '400',
-    color: color.TEXT_SECOND,
-  },
-  textPrice: {
-    fontSize: 15,
-    fontWeight: '600',
-    alignContent: 'center',
-  },
-  imgContainer: {
-    width: '50%',
-    alignItems: 'flex-end',
   },
 });

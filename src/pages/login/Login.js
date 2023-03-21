@@ -16,6 +16,8 @@ import {isValidPassword, isValidPhoneNumber} from '../../utils/Validations';
 import {UserContext} from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FailDialog, SuccessDialog, ConfirmDialog} from '../../components';
+import Fonts from '../../assets/fonts/fonts';
+import color from '../../styles/colors';
 
 const Login = props => {
   const {navigation, route} = props;
@@ -77,23 +79,28 @@ const Login = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <TouchableOpacity>
-                <Image source={icons.backIcon} />
-            </TouchableOpacity> */}
       <StatusBar barStyle="dark-content" backgroundColor={colorsPES.white} />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}> Nhập số điện thoại</Text>
+        <Text style={styles.title}>{'Nhập số điện thoại'}</Text>
       </View>
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcome}>
-          {' '}
-          Rất vui khi bạn đã quay trở lại với chúng tôi !
+          {'Rất vui khi bạn đã quay trở lại với chúng tôi!'}
         </Text>
       </View>
       <View style={styles.InputContainer}>
-        <Image source={icons.vietnamIcon} />
-        <Text style={StyleSheet.create({marginRight: 10})}>+84</Text>
+        <Image source={icons.vietnamIcon} style={{width: 16, height: 16}} />
+        <Text
+          style={StyleSheet.create({
+            marginLeft: 4,
+            marginRight: 10,
+            fontFamily: Fonts.Man_Medium,
+            color: color.BLACK,
+          })}>
+          {'+84'}
+        </Text>
         <TextInput
+          style={{width: '80%', fontFamily: Fonts.Man_Medium, fontSize: 14}}
           placeholder="Nhập số điện thoại"
           value={phoneNumber}
           keyboardType="phone-pad"
@@ -107,9 +114,16 @@ const Login = props => {
           }}
         />
       </View>
-      <Text style={{color: 'red', fontSize: 14}}>{errorPhoneNumber}</Text>
-      <View style={styles.InputContainer}>
+      <Text style={{color: 'red', fontSize: 14, fontFamily: Fonts.Man_Medium}}>
+        {errorPhoneNumber}
+      </Text>
+      <View style={styles.InputContainerMK}>
         <TextInput
+          style={{
+            width: '80%',
+            fontFamily: Fonts.Man_Medium,
+            fontSize: 14,
+          }}
           placeholder="Nhập mật khẩu"
           value={password}
           keyboardType="default"
@@ -124,23 +138,50 @@ const Login = props => {
           }}
         />
       </View>
-      <Text style={{color: 'red', fontSize: 14}}>{errorPassword}</Text>
+      <Text style={{color: 'red', fontSize: 14, fontFamily: Fonts.Man_Medium}}>
+        {errorPassword}
+      </Text>
       <View style={styles.socialLoginContainer}>
         <TouchableOpacity style={styles.googleLogin}>
           <Image style={{width: 18, height: 18}} source={icons.googleIcon} />
-          <Text>GOOGLE</Text>
+          <View style={{height: 20, marginLeft: 8}}>
+            <Text
+              style={{
+                fontFamily: Fonts.Man_Regular,
+                fontSize: 15,
+                color: color.MAIN,
+              }}>
+              {'Google'}
+            </Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.facebookLogin}>
           <Image style={{width: 18, height: 18}} source={icons.facebookIcon} />
-          <Text>FACEBOOK</Text>
+          <View style={{height: 20, marginLeft: 8}}>
+            <Text
+              style={{
+                fontFamily: Fonts.Man_Regular,
+                fontSize: 15,
+                color: color.MAIN,
+              }}>
+              {'Facebook'}
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.push('');
+        }}
+        style={styles.registerContainer}>
+        <Text style={styles.registerText}>{'Quên mật khẩu?'}</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
           navigation.push('Register');
         }}
         style={styles.registerContainer}>
-        <Text style={styles.registerText}>Đăng ký tài khoản mới</Text>
+        <Text style={styles.registerText}>{'Đăng ký tài khoản mới'}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         disabled={isValidationOK() == false}
@@ -149,17 +190,18 @@ const Login = props => {
           {
             backgroundColor:
               isValidationOK() == false
-                ? colorsPES.inActive
+                ? 'rgba(88, 101, 242, 0.6)'
                 : colorsPES.primary,
           },
         ]}
         onPress={login}>
-        <Text style={styles.loginText}>Đăng nhập</Text>
+        <Text style={styles.loginText}>{'Đăng nhập'}</Text>
       </TouchableOpacity>
       <View style={styles.termContainer}>
         <Text style={styles.termText}>
-          Chấp nhận mọi Điều khoản sử dụng & Chính sách bảo mật khi đăng nhập sử
-          dụng dịch vụ của chúng tôi
+          {
+            'Chấp nhận mọi Điều khoản sử dụng & Chính sách bảo mật khi đăng nhập sử dụng dịch vụ của chúng tôi'
+          }
         </Text>
         <FailDialog
           visible={failedDialogVisible}
@@ -190,13 +232,7 @@ export default Login;
 const styles = StyleSheet.create({
   termText: {
     color: colorsPES.transText,
-    fontWeight: '400',
-    fontSize: 12,
-  },
-
-  termText: {
-    color: colorsPES.transText,
-    fontWeight: '400',
+    fontFamily: Fonts.Man_Medium,
     fontSize: 12,
   },
 
@@ -207,7 +243,7 @@ const styles = StyleSheet.create({
   },
 
   loginText: {
-    fontWeight: '600',
+    fontFamily: Fonts.Man_SemiBold,
     fontSize: 14,
     color: colorsPES.white,
   },
@@ -218,49 +254,50 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 8,
-    borderWidth: 1,
-    borderColor: colorsPES.borderColorBlue,
     borderRadius: 60,
   },
 
   registerText: {
-    fontWeight: '600',
+    fontFamily: Fonts.Man_Bold,
     fontSize: 14,
     color: colorsPES.borderColorBlue,
   },
 
   registerContainer: {
-    width: '100%',
     height: 44,
-    marginTop: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+
+  facebookLogin: {
+    width: 157.5,
+    height: 44,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: colorsPES.borderColorBlue,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  googleLogin: {
+    width: 157.5,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    height: 44,
+    borderWidth: 1,
+    borderColor: colorsPES.borderColorBlue,
+    borderRadius: 8,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
-  facebookLogin: {
-    width: '40%',
-    height: '100%',
-    borderWidth: 1,
-    borderColor: colorsPES.borderColorBlue,
-    borderRadius: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-
-  googleLogin: {
-    width: '40%',
-    height: '100%',
-    borderWidth: 1,
-    borderColor: colorsPES.borderColorBlue,
-    borderRadius: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-
   socialLoginContainer: {
-    marginTop: 50,
+    marginTop: 32,
     width: '100%',
     height: 44,
     flexDirection: 'row',
@@ -271,40 +308,46 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 44,
     marginTop: 24,
-    marginBottom: 10,
+    marginBottom: 6,
     paddingHorizontal: 16,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 40,
-    borderColor: colorsPES.borderColorPrimary,
+    borderRadius: 60,
+    borderColor: color.BORDER_BOTTOM,
+  },
+  InputContainerMK: {
+    width: '100%',
+    height: 44,
+    marginTop: 12,
+    marginBottom: 6,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 60,
+    borderColor: color.BORDER_BOTTOM,
   },
 
   welcome: {
-    fontWeight: '400',
+    fontFamily: Fonts.Man_Regular,
     fontSize: 14,
-    color: colorsPES.blackText,
+    color: color.TEXT_PRIMARY,
   },
 
   welcomeContainer: {
-    width: '100%',
     height: 19,
     marginTop: 8,
   },
 
   titleContainer: {
-    width: 182,
-    height: 27,
-    marginTop: 40,
+    marginTop: 24,
   },
 
   title: {
-    width: '100%',
-    height: '100%',
-    fontWeight: '800',
+    fontFamily: Fonts.Man_ExtraBold,
     fontSize: 20,
-    color: colorsPES.blackText,
+    color: color.TEXT_PRIMARY,
   },
 
   container: {
