@@ -24,3 +24,7 @@ export const getFlashSale = async () => {
   const result = await customAxios().get(`/api/products/flash_sale`);
   return result;
 };
+export const getCart = async () => {
+  const result = await customAxios().get('/api/cart');
+  return result;
+};

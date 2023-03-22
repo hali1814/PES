@@ -1,22 +1,24 @@
 import {
   getAllGenres,
   getAllProducts,
+  getCart,
   getDetail,
   getFlashSale,
   getProductsByGenres,
   getStore,
 } from './ProductService';
-import React, {useState, createContext} from 'react';
+import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ProductContext = createContext();
 
 export const ProductsContextProvider = props => {
-  const {children} = props;
+  const { children } = props;
   const [products, setProducts] = useState([]);
   const [genres, setGenres] = useState([]);
   const [detail, setDetail] = useState('');
   const [store, setStore] = useState([]);
+  const [cart, setCart] = useState([]);
   const [productID, setProductID] = useState([]);
   const [flashSaleProducts, setFlashSaleProducts] = useState([]);
   const [productsByGenre, setProductsByGenre] = useState([]);
@@ -95,10 +97,24 @@ export const ProductsContextProvider = props => {
     }
   };
 
+  const onGetCart = async () => {
+    try {
+      const res = await getCart()
+      if (res.status == 'success') {
+        setCart(res.data);
+        console.log('onGetCart ==>', cart)
+        return true
+      }
+    } catch (error) {
+      console.log('GET CART ERROR ==>', error);
+    }
+  }
+
   return (
     <ProductContext.Provider
       value={{
         productsByGenre,
+        setCart,
         onGetProductsByGenre,
         onGetAllProducts,
         setProducts,
@@ -111,6 +127,8 @@ export const ProductsContextProvider = props => {
         store,
         flashSaleProducts,
         onGetAllFlashSaleProducts,
+        onGetCart,
+        cart
       }}>
       {children}
     </ProductContext.Provider>

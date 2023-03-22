@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Fonts from '../../assets/fonts/fonts'
 import colorsPES from '../../constants/colors'
@@ -19,6 +19,8 @@ import {
     payMoneyText,
     payText,
 } from '../detail/components/styles';
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext'
+import { formatPrice } from '../../utils/MoneyFormat';
 
 const Cart = () => {
 
@@ -61,6 +63,14 @@ const Cart = () => {
         },
     ]
 
+    const { cart, onGetCart } = useContext(ProductContext)
+
+    useEffect(() => {
+        onGetCart()
+        console.log('cart in cart', cart.images)
+    }, [])
+
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView
@@ -97,10 +107,10 @@ const Cart = () => {
                         </View>
                     </View>
                     <FlatList
-                        data={DATA}
+                        data={cart}
                         showsVerticalScrollIndicator={false}
                         nestedScrollEnabled={true}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.idProduct}
                         renderItem={({ item }) => (
                             <View style={styles.productContainer}>
                                 <TouchableOpacity>
@@ -110,12 +120,13 @@ const Cart = () => {
                                         color={colorsPES.primary}
                                     />
                                 </TouchableOpacity>
-                                <Image style={{ width: 44, height: 44, marginStart: 8 }} source={item.image} resizeMode='cover' />
+                                <Image style={{ width: 44, height: 44, marginStart: 8 }} source={{ uri: item.images[0] }} resizeMode='cover' />
                                 <View style={styles.productContent}>
                                     <Text style={{
                                         color: colorsPES.black,
-                                        fontSize: 14, fontWeight: '400',
-                                        marginRight: 30, width: '60%'
+                                        fontSize: 16, fontWeight: '600',
+                                        marginRight: 30, width: '60%',
+                                        textTransform: 'capitalize'
                                     }}>
                                         {item.name}
                                     </Text>
@@ -125,18 +136,19 @@ const Cart = () => {
                                         marginTop: 4,
                                         justifyContent: 'space-between'
                                     }}>
-                                        <Text style={{
-                                            fontWeight: '400',
-                                            fontSize: 13, color: colorsPES.inActive,
-                                            padding: 1,
-                                            backgroundColor: colorsPES.grey,
-                                            borderRadius: 3
-                                        }}>{item.description}</Text>
+                                        <Text
+                                            numberOfLines={2}
+                                            style={{
+                                                fontWeight: '400',
+                                                fontSize: 13, color: colorsPES.inActive,
+                                                width: '90%'
+                                            }}>{item.description}</Text>
                                         <Text style={{
                                             fontWeight: '600',
-                                            fontSize: 16, color: colorsPES.black
+                                            fontSize: 16, color: colorsPES.black,
+                                            marginLeft: 5
                                         }}>
-                                            {item.price}đ
+                                            {formatPrice(item.stock.price * item.quantity)}
                                         </Text>
                                     </View>
                                     <View style={styles.quantityContainer}>
@@ -418,7 +430,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        width: '70%'
+        width: '90%'
     },
 
     productContent: {

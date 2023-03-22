@@ -42,7 +42,7 @@ const Product = ({navigation, onPressProducts}) => {
   return (
     <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
       <View style={{flexDirection: 'column'}}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
           {/* Search and voucher */}
           <View style={styles.ContainerSearch}>
             {/* Search */}

@@ -12,7 +12,6 @@ import {
   Voucher,
   MyProfileDetail,
   MyFeedback,
-
 } from '../pages/profile';
 import { Cart } from '../pages/cart'
 import { ProductsNavigation } from '../api/authservice/ProductAPI/ProductNavigation';
@@ -96,7 +95,7 @@ const MyTab = ({ navigation }) => {
         <Tab.Screen
           name="Cart"
           component={Cart}
-          options={{ title: 'Yêu thích', headerTitleAlign: 'center' }}
+          options={{ title: 'Giỏ hàng', headerTitleAlign: 'center' }}
         />
         <Tab.Screen
           name="Bill"

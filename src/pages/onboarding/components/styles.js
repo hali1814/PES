@@ -7,7 +7,7 @@ export const containerOnboarding = {
 export const LogoandText = {
   alignSelf: 'center',
   flexDirection: 'column',
-  marginTop: 438,
+  marginTop: 380,
   position: 'absolute',
   alignItems: 'center',
   width: '100%',
@@ -22,7 +22,7 @@ export const TextOnboarding = {
   fontFamily: Fonts.Man_Regular,
 };
 export const ViewButton = {
-  marginTop: 48,
+  marginTop: 35,
   width: '100%',
   flexDirection: 'column',
   alignItems: 'center',
