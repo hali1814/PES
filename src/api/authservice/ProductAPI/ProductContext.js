@@ -1,4 +1,5 @@
 import {
+  addCart,
   getAllGenres,
   getAllProducts,
   getCart,
@@ -73,6 +74,21 @@ export const ProductsContextProvider = props => {
     }
   };
 
+  const onAddCart = async (idProduct, size, color, quantity) => {
+    try {
+      const res = await addCart(idProduct, size, color, quantity);
+      if (res.status == 'success') {
+        console.log('add cart product ==>', res.data.message);
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch (error) {
+      console.log('onAddCart failed ===>', error);
+    }
+  };
+
   const onGetProductsByGenre = async _id => {
     try {
       const res = await getProductsByGenres(_id);
@@ -102,7 +118,6 @@ export const ProductsContextProvider = props => {
       const res = await getCart()
       if (res.status == 'success') {
         setCart(res.data);
-        console.log('onGetCart ==>', cart)
         return true
       }
     } catch (error) {
@@ -114,6 +129,7 @@ export const ProductsContextProvider = props => {
     <ProductContext.Provider
       value={{
         productsByGenre,
+        onAddCart,
         setCart,
         onGetProductsByGenre,
         onGetAllProducts,

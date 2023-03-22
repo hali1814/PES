@@ -1,4 +1,8 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native'
+import {
+    StyleSheet, Text, View, SafeAreaView,
+    TouchableOpacity, FlatList, Image, ScrollView,
+    ActivityIndicator, Alert, Modal
+} from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Fonts from '../../assets/fonts/fonts'
@@ -22,7 +26,7 @@ import {
 import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext'
 import { formatPrice } from '../../utils/MoneyFormat';
 
-const Cart = () => {
+const Cart = ({ navigation }) => {
 
     const DATA = [
         {
@@ -64,10 +68,18 @@ const Cart = () => {
     ]
 
     const { cart, onGetCart } = useContext(ProductContext)
+    const [visible, setVisible] = useState(false)
+
+    const showDialog = () => {
+        setVisible(true)
+    }
+
+    const closeDialog = () => {
+        setVisible(false)
+    }
 
     useEffect(() => {
         onGetCart()
-        console.log('cart in cart', cart.images)
     }, [])
 
 
@@ -77,17 +89,17 @@ const Cart = () => {
                 nestedScrollEnabled
                 showsVerticalScrollIndicator={false}
             >
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ fontSize: 18, fontWeight: '700', color: colorsPES.black }}>Giỏ hàng</Text>
-                </View>
+                </View> */}
                 <View style={styles.cartContainer}>
                     <View style={styles.titleContainer}>
                         <Text
                             style={{
-                                fontSize: 16, fontWeight: '600',
-                                fontFamily: Fonts.Work_Bold, color: colorsPES.black
+                                fontSize: 18, fontWeight: '600',
+                                fontFamily: Fonts.Man_SemiBold, color: colorsPES.borderColorBlue
                             }}>
-                            Sản phẩm
+                            Giỏ hàng
                         </Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text
@@ -109,7 +121,6 @@ const Cart = () => {
                     <FlatList
                         data={cart}
                         showsVerticalScrollIndicator={false}
-                        nestedScrollEnabled={true}
                         keyExtractor={(item) => item.idProduct}
                         renderItem={({ item }) => (
                             <View style={styles.productContainer}>
@@ -130,12 +141,14 @@ const Cart = () => {
                                     }}>
                                         {item.name}
                                     </Text>
-                                    <View style={{
-                                        flexDirection: 'row', alignItems: 'center',
-                                        width: '70%',
-                                        marginTop: 4,
-                                        justifyContent: 'space-between'
-                                    }}>
+                                    <TouchableOpacity
+                                        onPress={() => { navigation.navigate('Detail', { id: item.idProduct }) }}
+                                        style={{
+                                            flexDirection: 'row', alignItems: 'center',
+                                            width: '70%',
+                                            marginTop: 4,
+                                            justifyContent: 'space-between'
+                                        }}>
                                         <Text
                                             numberOfLines={2}
                                             style={{
@@ -150,7 +163,7 @@ const Cart = () => {
                                         }}>
                                             {formatPrice(item.stock.price * item.quantity)}
                                         </Text>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View style={styles.quantityContainer}>
                                         <TouchableOpacity
                                             style={{
@@ -375,7 +388,9 @@ const Cart = () => {
                     </View>
 
                     {/* ButtonBuy */}
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={showDialog}
+                    >
                         <View style={buyButton}>
                             <View style={buyContainer}>
                                 <Text style={buyText}>{'Mua ngay'}</Text>
@@ -384,6 +399,24 @@ const Cart = () => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <Modal
+                visible={visible}
+                transparent
+                animationType='slide'
+            >
+                <View style={styles.modalContainer}>
+                    <TouchableOpacity
+                        onPress={closeDialog}
+                        style={{
+                            width: 100, height: 100,
+                            backgroundColor: colorsPES.white,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                        <Text>Bấm vào đê</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
         </SafeAreaView>
     )
 }
@@ -391,6 +424,14 @@ const Cart = () => {
 export default Cart
 
 const styles = StyleSheet.create({
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        paddingHorizontal: 10,
+    },
 
     billContainer: {
         paddingHorizontal: 12,

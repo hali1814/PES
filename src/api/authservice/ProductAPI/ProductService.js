@@ -28,3 +28,8 @@ export const getCart = async () => {
   const result = await customAxios().get('/api/cart');
   return result;
 };
+export const addCart = async (idProduct, size, color, quantity) => {
+  const data = { idProduct: idProduct, size: size, color: color, quantity: quantity }
+  const result = await customAxios().post('/api/cart/add', data);
+  return result;
+};

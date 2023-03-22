@@ -10,9 +10,9 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import color from '../../styles/colors';
-import {icons, images} from '../../assets';
+import { icons, images } from '../../assets';
 import {
   addCartButton,
   buyButton,
@@ -44,22 +44,22 @@ import {
   voucherContainer,
   voucherText,
 } from './components/styles';
-import {textsPES} from '../../constants/string';
+import { textsPES } from '../../constants/string';
 import PESShop from '../../components/PESShop';
 import PESProductDescription from '../../components/PESProductDescription';
 import PESRelatedProducts from '../../components/PESRelatedProducts';
 import Fonts from '../../assets/fonts/fonts';
-import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
-import {formatPrice} from '../../utils/MoneyFormat';
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
+import { formatPrice } from '../../utils/MoneyFormat';
 
-const {width: screenWidth} = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get('window');
 
 const Detail = props => {
-  const {route, navigation} = props;
+  const { route, navigation } = props;
 
-  const {id} = route.params;
+  const { id } = route.params;
 
-  const {onGetDetail, detail} = useContext(ProductContext);
+  const { onGetDetail, detail } = useContext(ProductContext);
 
   const [imageList, setImageList] = useState([]);
 
@@ -71,7 +71,7 @@ const Detail = props => {
 
   useEffect(() => {
     if (detail.images) {
-      const images = detail.images.map(image => ({uri: image}));
+      const images = detail.images.map(image => ({ uri: image }));
       setImageList(images);
     }
   }, [detail]);
@@ -79,7 +79,7 @@ const Detail = props => {
   //Bộ đếm số ảnh
   //Thay vì sử dụng Math.floor, chúng tôi đã sử dụng Math.ceil để đảm bảo rằng index được bắt đầu từ 1.
   const handleScroll = e => {
-    const {nativeEvent} = e || {};
+    const { nativeEvent } = e || {};
     if (!nativeEvent || !nativeEvent.contentOffset) {
       return;
     }
@@ -90,8 +90,8 @@ const Detail = props => {
     setCurrentImage(imageIndex);
   };
 
-  const renderItem = ({item, index}) => (
-    <Image source={item} style={{width: screenWidth, height: 375}} />
+  const renderItem = ({ item, index }) => (
+    <Image source={item} style={{ width: screenWidth, height: 375 }} />
   );
 
   const ShopID = detail.shop?.idShop || '';
@@ -133,17 +133,17 @@ const Detail = props => {
               onPress={() => {
                 navigation.navigate('Products');
               }}
-              style={{paddingHorizontal: 16}}>
+              style={{ paddingHorizontal: 16 }}>
               <Image
                 source={icons.chevronBackWhite_icon}
-                style={{width: 24, height: 24}}
+                style={{ width: 24, height: 24 }}
               />
             </TouchableOpacity>
 
-            <TouchableOpacity style={{paddingHorizontal: 16}}>
+            <TouchableOpacity style={{ paddingHorizontal: 16 }}>
               <Image
                 source={icons.heartWhite_icon}
-                style={{width: 24, height: 24}}
+                style={{ width: 24, height: 24 }}
               />
             </TouchableOpacity>
           </SafeAreaView>
@@ -159,7 +159,7 @@ const Detail = props => {
       {/* Title và Price */}
       <View style={productsContainer}>
         <View style={productsBG}>
-          <View style={{width: '100%'}}>
+          <View style={{ width: '100%' }}>
             <Text
               style={{
                 fontFamily: Fonts.Work_SemiBold,
@@ -201,12 +201,12 @@ const Detail = props => {
         </View>
       </View>
       {/* Voucher */}
-      <View style={{paddingHorizontal: 12, marginTop: 90}}>
+      <View style={{ paddingHorizontal: 12, marginTop: 90 }}>
         <View style={voucherContainer}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <Image
               source={icons.voucher_icon}
-              style={{width: 32, height: 32}}
+              style={{ width: 32, height: 32 }}
             />
             <View
               style={{
@@ -219,11 +219,11 @@ const Detail = props => {
               </Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => {}} style={{flexDirection: 'row'}}>
+          <TouchableOpacity onPress={() => { }} style={{ flexDirection: 'row' }}>
             <Text style={txtVoucher}>{textsPES.txtDetail}</Text>
             <Image
               source={icons.chevronRight_icon}
-              style={{width: 16, height: 16, marginLeft: 2}}
+              style={{ width: 16, height: 16, marginLeft: 2 }}
             />
           </TouchableOpacity>
         </View>
@@ -232,15 +232,15 @@ const Detail = props => {
         {/* AdminShop */}
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Shop', {ShopID});
+            navigation.navigate('Shop', { ShopID });
           }}
-          style={{paddingHorizontal: 12, marginTop: 8}}>
+          style={{ paddingHorizontal: 12, marginTop: 8 }}>
           <View style={ContainerShop}>
             <View style={headerContainerShop}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Image
-                  source={{uri: detail && detail.shop.avatar}}
-                  style={{width: 32, height: 32, borderRadius: 360}}
+                  source={{ uri: detail && detail.shop.avatar }}
+                  style={{ width: 32, height: 32, borderRadius: 360 }}
                 />
                 <View style={userNameContainer}>
                   <Text style={shopNameText}>
@@ -260,7 +260,7 @@ const Detail = props => {
               </View>
             </View>
 
-            <View style={{paddingHorizontal: 12}}>
+            <View style={{ paddingHorizontal: 12 }}>
               <View style={showReaching}>
                 <PESShop
                   imgUri={icons.shopBag_icon}
@@ -293,11 +293,11 @@ const Detail = props => {
                 }}>
                 <Text style={descriptionText}>{'Mô tả chi tiết'}</Text>
                 <TouchableOpacity
-                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={detailText}>{'Chi tiết'}</Text>
                   <Image
                     source={icons.chevronRight_icon}
-                    style={{width: 16, height: 16}}
+                    style={{ width: 16, height: 16 }}
                   />
                 </TouchableOpacity>
               </View>
@@ -312,21 +312,21 @@ const Detail = props => {
                     text1={'Màu'}
                     text2={detail && detail.stock[0].color}
                   />
-                  <View style={{paddingTop: 8}}>
+                  <View style={{ paddingTop: 8 }}>
                     <PESProductDescription
                       icon={icons.size_icon}
                       text1={'Size'}
                       text2={detail && detail.stock[0].size}
                     />
                   </View>
-                  <View style={{paddingTop: 8}}>
+                  <View style={{ paddingTop: 8 }}>
                     <PESProductDescription
                       icon={icons.location_icon}
                       text1={'Khu vực'}
                       text2={'Hồ Chí Minh, Hà Nội'}
                     />
                   </View>
-                  <View style={{paddingTop: 8}}>
+                  <View style={{ paddingTop: 8 }}>
                     <PESProductDescription
                       icon={icons.local_icon}
                       text1={'Thương hiệu'}
@@ -357,7 +357,7 @@ const Detail = props => {
                 money={'2.000.000'}
               />
             </View>
-            <View style={{marginTop: 8}}>
+            <View style={{ marginTop: 8 }}>
               <PESRelatedProducts
                 imageProducts={images.detail_image}
                 imageUser={images.user2_image}
@@ -368,7 +368,7 @@ const Detail = props => {
                 money={'2.000.000'}
               />
             </View>
-            <View style={{marginTop: 8}}>
+            <View style={{ marginTop: 8 }}>
               <PESRelatedProducts
                 imageProducts={images.detail_image}
                 imageUser={images.user2_image}
@@ -379,7 +379,7 @@ const Detail = props => {
                 money={'2.000.000'}
               />
             </View>
-            <TouchableOpacity style={{marginTop: 8}}>
+            <TouchableOpacity style={{ marginTop: 8 }}>
               <PESRelatedProducts
                 imageProducts={images.detail_image}
                 imageUser={images.user2_image}
@@ -390,7 +390,7 @@ const Detail = props => {
                 money={'2.000.000'}
               />
             </TouchableOpacity>
-            <View style={{marginTop: 8}}>
+            <View style={{ marginTop: 8 }}>
               <PESRelatedProducts
                 imageProducts={images.detail_image}
                 imageUser={images.user2_image}
@@ -405,22 +405,24 @@ const Detail = props => {
         </View>
       </ScrollView>
       {/* PayView */}
-      <View style={{height: 75, backgroundColor: color.WHITE}}>
+      <View style={{ height: 75, backgroundColor: color.WHITE }}>
         <View style={payContainer}>
-          <View style={{flexDirection: 'column'}}>
-            <View style={{height: 20, justifyContent: 'center'}}>
+          <View style={{ flexDirection: 'column' }}>
+            <View style={{ height: 20, justifyContent: 'center' }}>
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
-            <View style={{height: 20, justifyContent: 'center'}}>
+            <View style={{ height: 20, justifyContent: 'center' }}>
               <Text style={payMoneyText}>{formatPrice(price)}</Text>
             </View>
           </View>
           {/* AddCart */}
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { navigation.navigate('Cart') }}
+          >
             <View style={addCartButton}>
               <Image
                 source={icons.cartAdd_icon}
-                style={{width: 24, height: 24}}
+                style={{ width: 24, height: 24 }}
               />
             </View>
           </TouchableOpacity>

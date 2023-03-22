@@ -11,7 +11,7 @@ import {
   TextInput,
 } from 'react-native';
 import color from '../../styles/colors';
-import {PESFlatList} from '../../components/PESFlatList';
+import { PESFlatList } from '../../components/PESFlatList';
 import {
   flatlistContainer,
   headerContainer,
@@ -19,20 +19,20 @@ import {
   imgVoucher2,
 } from './components/styles';
 
-import {icons, images} from '../../assets';
+import { icons, images } from '../../assets';
 import PESCategories from '../../components/PESCategories';
 import Fonts from '../../assets/fonts/fonts';
 const width = Dimensions.get('screen').width / 2 - 30;
-import React, {useState, useEffect, useContext} from 'react';
-import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 import PESListItem from '../../components/PESListItem';
 import PESListFlashSale from '../../components/PESListFlashSale';
 
-const Product = ({navigation, onPressProducts}) => {
-  const {onGetAllProducts, onGetAllFlashSaleProducts, flashSaleProducts} =
+const Product = ({ navigation, onPressProducts }) => {
+  const { onGetAllProducts, onGetAllFlashSaleProducts, flashSaleProducts } =
     useContext(ProductContext);
-  const shop = () => {};
-  const notificantion = () => {};
+  const shop = () => { };
+  const notificantion = () => { };
 
   useEffect(() => {
     onGetAllProducts();
@@ -40,8 +40,8 @@ const Product = ({navigation, onPressProducts}) => {
   }, []);
 
   return (
-    <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
-      <View style={{flexDirection: 'column'}}>
+    <SafeAreaView style={{ width: '100%', backgroundColor: '#F0F2F5' }}>
+      <View style={{ flexDirection: 'column' }}>
         <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
           {/* Search and voucher */}
           <View style={styles.ContainerSearch}>
@@ -50,29 +50,30 @@ const Product = ({navigation, onPressProducts}) => {
               <View style={styles.customSearch}>
                 <Image
                   source={icons.search_icon}
-                  style={{width: 24, height: 24}}
+                  style={{ width: 24, height: 24 }}
                 />
                 <TextInput
                   style={styles.TextInputSearch}
                   placeholder="Bạn muốn tìm kiếm sản phẩm?"
                 />
               </View>
-              <TouchableOpacity onPress={shop}>
+              <TouchableOpacity onPress={() => { navigation.navigate('Cart') }}>
                 <Image
                   source={icons.cardIcon}
-                  style={{width: 24, height: 24}}
+                  style={{ width: 24, height: 24 }}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={notificantion}>
                 <Image
                   source={icons.chatIcon}
-                  style={{width: 24, height: 24}}
+                  style={{ width: 24, height: 24 }}
                 />
               </TouchableOpacity>
             </View>
             {/* Voucher */}
             <View>
               <ScrollView
+                pagingEnabled={true}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{
@@ -119,7 +120,7 @@ const Product = ({navigation, onPressProducts}) => {
                 showsHorizontalScrollIndicator={false}
                 horizontal
                 keyExtractor={item => item._id}
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                   <PESListFlashSale navigation={navigation} item={item} />
                 )}
               />
