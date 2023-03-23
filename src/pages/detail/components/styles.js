@@ -70,18 +70,15 @@ export const counterContainer = {
   paddingBottom: 45,
 };
 export const counterBG = {
-  width: 30,
-  height: 20,
+  paddingHorizontal: 8,
+  paddingVertical: 2,
   borderRadius: 60,
   backgroundColor: 'rgba(0,0,0,0.4)',
-  alignItems: 'center',
-  justifyContent: 'center',
 };
 export const counterText = {
   fontSize: 12,
   fontFamily: Fonts.Work_Regular,
   color: color.WHITE,
-  height: 16,
 };
 export const productsContainer = {
   position: 'absolute',

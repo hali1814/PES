@@ -141,23 +141,32 @@ const Detail = props => {
             />
           )}
           <SafeAreaView style={SafeAreaContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-              style={{paddingHorizontal: 16}}>
-              <Image
-                source={icons.chevronBackWhite_icon}
-                style={{width: 24, height: 24}}
-              />
-            </TouchableOpacity>
+            <View
+              style={{
+                marginTop: 8,
+                marginLeft: 16,
+                paddingHorizontal: 2,
+                paddingVertical: 2,
+                borderRadius: 360,
+                backgroundColor: 'rgba(0,0,0,0.4)',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.goBack();
+                }}>
+                <Image
+                  source={icons.chevronBackWhite_icon}
+                  style={{width: 24, height: 24}}
+                />
+              </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity style={{paddingHorizontal: 16}}>
+            {/* <TouchableOpacity style={{paddingHorizontal: 16}}>
               <Image
                 source={icons.heartWhite_icon}
                 style={{width: 24, height: 24}}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </SafeAreaView>
         </View>
         <View style={counterContainer}>
