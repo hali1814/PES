@@ -57,9 +57,9 @@ const { width: screenWidth } = Dimensions.get('window');
 const Detail = props => {
   const { route, navigation } = props;
 
-  const { id } = route.params;
+  const { id, type } = route.params;
 
-  const { onGetDetail, detail } = useContext(ProductContext);
+  const { onGetDetail, detail, productsByGenre, onGetProductsByGenre } = useContext(ProductContext);
 
   const [imageList, setImageList] = useState([]);
 
@@ -68,6 +68,13 @@ const Detail = props => {
   useEffect(() => {
     onGetDetail(id);
   }, [id]);
+
+  useEffect(() => {
+    onGetProductsByGenre(type)
+    console.log('type san pham ===>', type)
+    return () => { }
+  }, [])
+
 
   useEffect(() => {
     if (detail.images) {
@@ -338,71 +345,62 @@ const Detail = props => {
             </View>
           </View>
         </View>
-        {/* Sản phẩm liên quan */}
-        <View
-          style={{
-            marginTop: 8,
-            height: '100%',
-            marginHorizontal: 12,
-          }}>
-          <View>
-            <View>
-              <PESRelatedProducts
-                imageProducts={images.detail_image}
-                imageUser={images.user2_image}
-                title={'Giày Bán rồi'}
-                description={
-                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
-                }
-                money={'2.000.000'}
-              />
-            </View>
-            <View style={{ marginTop: 8 }}>
-              <PESRelatedProducts
-                imageProducts={images.detail_image}
-                imageUser={images.user2_image}
-                title={'Giày Bán rồi'}
-                description={
-                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
-                }
-                money={'2.000.000'}
-              />
-            </View>
-            <View style={{ marginTop: 8 }}>
-              <PESRelatedProducts
-                imageProducts={images.detail_image}
-                imageUser={images.user2_image}
-                title={'Giày Bán rồi'}
-                description={
-                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
-                }
-                money={'2.000.000'}
-              />
-            </View>
-            <TouchableOpacity style={{ marginTop: 8 }}>
-              <PESRelatedProducts
-                imageProducts={images.detail_image}
-                imageUser={images.user2_image}
-                title={'Giày Bán rồi'}
-                description={
-                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
-                }
-                money={'2.000.000'}
-              />
+        <FlatList
+          data={productsByGenre}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => { navigation.navigate('ShopDetail', { ID: item._id }) }}
+              style={{
+                height: 104,
+                width: '100%',
+                backgroundColor: color.WHITE,
+                borderRadius: 4,
+                padding: 12,
+                flexDirection: 'row',
+              }}>
+              <View>
+                <Image source={{ uri: item.images[0] }} style={{ width: 80, height: 80 }} />
+              </View>
+              <View
+                style={{
+                  width: '73%',
+                  marginLeft: 12,
+                  flexDirection: 'column',
+                  paddingRight: 20,
+                  justifyContent: 'space-between',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: Fonts.Work_SemiBold,
+                    fontSize: 14,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  {item.name}
+                </Text>
+                <Text
+                  numberOfLines={2}
+                  style={{
+                    fontFamily: Fonts.Work_Regular,
+                    color: color.TEXT_SECOND,
+                    fontSize: 14,
+                    alignItems: 'center',
+                  }}>
+                  {item.description}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: Fonts.Work_SemiBold,
+                    fontSize: 15,
+                    alignItems: 'center',
+                  }}>
+                  {item.stock[0].price}đ
+                </Text>
+              </View>
             </TouchableOpacity>
-            <View style={{ marginTop: 8 }}>
-              <PESRelatedProducts
-                imageProducts={images.detail_image}
-                imageUser={images.user2_image}
-                title={'Giày Bán rồi'}
-                description={
-                  'Hình hài bé nhỏ, thân hình cường tráng, xem phim kiếm hiệp'
-                }
-                money={'2.000.000'}
-              />
-            </View>
-          </View>
-        </View>
+          )}
+        />
       </ScrollView>
       {/* PayView */}
       <View style={{ height: 75, backgroundColor: color.WHITE }}>

@@ -1,25 +1,25 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import React, {useContext, useEffect} from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import React, { useContext, useEffect } from 'react';
 import color from '../styles/colors';
-import {icons} from '../assets';
+import { icons } from '../assets';
 import Fonts from '../assets/fonts/fonts';
-import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
+import { ProductContext } from '../api/authservice/ProductAPI/ProductContext';
 import Detail from '../pages/detail/Detail';
-import {formatPrice} from '../utils/MoneyFormat';
+import { formatPrice } from '../utils/MoneyFormat';
 
 const PESListItem = props => {
-  const {item, navigation, onPress} = props;
+  const { item, navigation, onPress } = props;
 
   const navigationPush = () => {
-    navigation.push('Detail', {id: item._id});
+    navigation.push('Detail', { id: item._id, type: item.type });
   };
 
   const price = item.stock[0].price;
 
   return (
     <TouchableOpacity onPress={navigationPush} style={styles.Container}>
-      <View style={{width: '100%', height: 180.5}}>
-        <Image source={{uri: item.images[0]}} style={styles.imgProduct} />
+      <View style={{ width: '100%', height: 180.5 }}>
+        <Image source={{ uri: item.images[0] }} style={styles.imgProduct} />
       </View>
       {/* Sale */}
       <View
@@ -32,7 +32,7 @@ const PESListItem = props => {
         </View>
       </View>
       {/* Title với About */}
-      <View style={{marginTop: 12}}>
+      <View style={{ marginTop: 12 }}>
         <Text numberOfLines={1} style={styles.textName}>
           {item.name}
         </Text>
@@ -41,7 +41,7 @@ const PESListItem = props => {
         </Text>
       </View>
       {/* Price */}
-      <View style={{marginTop: 4}}>
+      <View style={{ marginTop: 4 }}>
         <Text style={styles.textPrice}>{formatPrice(price)}</Text>
       </View>
     </TouchableOpacity>

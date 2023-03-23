@@ -132,6 +132,7 @@ export const ProductsContextProvider = props => {
         onAddCart,
         setCart,
         onGetProductsByGenre,
+        setProductsByGenre,
         onGetAllProducts,
         setProducts,
         products,

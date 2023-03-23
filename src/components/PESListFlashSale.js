@@ -6,19 +6,19 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import color from '../styles/colors';
-import {icons} from '../assets';
+import { icons } from '../assets';
 import Fonts from '../assets/fonts/fonts';
-import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
+import { ProductContext } from '../api/authservice/ProductAPI/ProductContext';
 import Detail from '../pages/detail/Detail';
-import {formatPrice} from '../utils/MoneyFormat';
+import { formatPrice } from '../utils/MoneyFormat';
 
 const PESListFlashSale = props => {
-  const {item, navigation, onPress} = props;
+  const { item, navigation, onPress } = props;
 
   const navigationPush = () => {
-    navigation.push('Detail', {id: item._id});
+    navigation.push('Detail', { id: item._id, type: item.type });
   };
 
   const price = item.stock[0].price;
@@ -26,8 +26,8 @@ const PESListFlashSale = props => {
   return (
     <TouchableOpacity onPress={navigationPush} style={styles.Container}>
       {/* image */}
-      <View style={{width: '100%', height: 140, borderRadius: 4}}>
-        <Image source={{uri: item.images[0]}} style={styles.imgProduct} />
+      <View style={{ width: '100%', height: 140, borderRadius: 4 }}>
+        <Image source={{ uri: item.images[0] }} style={styles.imgProduct} />
       </View>
       {/* Sale */}
       <View
@@ -39,7 +39,7 @@ const PESListFlashSale = props => {
           <Text style={styles.txtSale}>{item.sale}%</Text>
         </View>
       </View>
-      <View style={{alignItems: 'center', marginTop: 4}}>
+      <View style={{ alignItems: 'center', marginTop: 4 }}>
         <Text style={styles.textPrice}>{formatPrice(price)}</Text>
       </View>
     </TouchableOpacity>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
 
-  imgSale: {width: 16, height: 16, alignSelf: 'center', tintColor: color.WHITE},
+  imgSale: { width: 16, height: 16, alignSelf: 'center', tintColor: color.WHITE },
 
   imgProduct: {
     width: '100%',
