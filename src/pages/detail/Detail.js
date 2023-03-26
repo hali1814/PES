@@ -16,6 +16,10 @@ import color from '../../styles/colors';
 import { icons, images } from '../../assets';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {
+  SuccessDialog,
+  FailDialog,
+} from '../../components'
+import {
   addCartButton,
   buyButton,
   buyContainer,
@@ -54,12 +58,12 @@ import Fonts from '../../assets/fonts/fonts';
 import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 import { formatPrice } from '../../utils/MoneyFormat';
 import colorsPES from '../../constants/colors';
+import { Picker } from '@react-native-picker/picker';
 
 const { width: screenWidth } = Dimensions.get('window');
 
 const Detail = props => {
   const { route, navigation } = props;
-
   const { id, type } = route.params;
   const [visible, setVisible] = useState(false)
   const showDialog = () => {
@@ -69,14 +73,12 @@ const Detail = props => {
     setVisible(false)
   }
 
-  console.log('idddd', id)
   const {
     onGetDetail, detail,
     productsByGenre, onGetProductsByGenre,
     onAddCart
   } = useContext(ProductContext);
 
-  console.log('detail heheeh', detail)
 
   const [imageList, setImageList] = useState([]);
 
@@ -95,31 +97,31 @@ const Detail = props => {
   const [detailColor1, setDetailColor1] = useState('')
   const [detailSize, setDetailSize] = useState('')
   const [detailSize1, setDetailSize1] = useState('')
+  const [stock, setStock] = useState([])
+  const [quantity, setQuantity] = useState(1)
 
   const getDetailProduct = async () => {
     const productModal = await onGetDetail(id);
     setDetaiData(productModal)
+    setStock(productModal.stock)
     setDetailImage(productModal.images[0])
     setDetailPrice(productModal.stock[0].price)
     setDetailPrice1(productModal.stock[1].price)
-    setDetailColor(productModal.stock[0].color)
+    setDetailColor(productModal.stock.color)
     setDetailColor1(productModal.stock[1].color)
-    setDetailSize(productModal.stock[0].size)
+    setDetailSize(productModal.stock.size)
     setDetailSize1(productModal.stock[1].size)
+  }
+
+  for (let i = 0; i < stock.length; i++) {
 
   }
 
+  let colors = stock.map(item => item.color);
+  console.log(colors);
 
-
-
-
-
-
-
-
-
-
-
+  let sizes = stock.map(item => item.size);
+  console.log(sizes);
 
   useEffect(() => {
     onGetProductsByGenre(type)
@@ -128,16 +130,38 @@ const Detail = props => {
   }, [])
 
   const addCart = async () => {
-    const res = await onAddCart('63e4c29b9a2f0ff07c36ce6a', 's', 'trắng', 2)
-    if (res === false) {
-      alert('add cart failed')
-    } else {
-      alert('add cart successfully')
-      navigation.navigate('Cart')
-
+    try {
+      const res = await onAddCart(id, detailSize, detailColor, quantity)
+      if (res === false) {
+        handleFailed()
+      } else {
+        handleSuccess()
+        setTimeout(() => { navigation.navigate('Cart'), 2000 })
+      }
+    } catch (error) {
+      console.log('error', error)
+      throw error
     }
+
   }
 
+
+  const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+  const [failedDialogVisible, setFailedDialogVisible] = useState(false);
+
+  const handleSuccess = () => {
+    setSuccessDialogVisible(true);
+  };
+  const handleSuccessDialogClose = () => {
+    setSuccessDialogVisible(false);
+  };
+
+  const handleFailed = () => {
+    setFailedDialogVisible(true);
+  };
+  const handleFailedDialogClose = () => {
+    setFailedDialogVisible(false);
+  };
 
   useEffect(() => {
     if (detail.images) {
@@ -413,7 +437,7 @@ const Detail = props => {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => { navigation.navigate('ShopDetail', { ID: item._id }) }}
+              onPress={() => { navigation.navigate('ShopDetail', { ID: item._id, type: item.type }) }}
               style={{
                 height: 104,
                 width: '100%',
@@ -529,40 +553,62 @@ const Detail = props => {
             <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
             <View style={styles.colorContainer}>
               <Text style={styles.textTitle}>Màu sắc</Text>
-              <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                <TouchableOpacity>
+              <View style={{ marginTop: 10, borderRadius: 10, borderWidth: 1, width: '40%' }}>
+                {/* <TouchableOpacity>
                   <Text style={styles.contentText}>{detailColor}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <Text style={[styles.contentText, { marginLeft: 20 }]}>{detailColor1}</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <Picker
+                  style={{ backgroundColor: colorsPES.white, width: '100%' }}
+                  selectedValue={detailColor}
+                  onValueChange={(itemValue) => setDetailColor(itemValue)}
+                >
+                  {colors.map((color) => (
+                    <Picker.Item key={color} label={color} value={color} />
+                  ))}
+                </Picker>
               </View>
             </View>
             <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
             <View style={styles.sizeContainer}>
               <Text style={styles.textTitle}>Kích cỡ</Text>
-              <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ marginTop: 10, borderRadius: 10, borderWidth: 1, width: '40%' }}>
+                {/* <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                   <Text style={styles.contentText}>{detailSize}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <Text style={[styles.contentText, { marginLeft: 20 }]}>{detailSize1}</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <Picker
+                  style={{ backgroundColor: colorsPES.white, width: '100%' }}
+                  selectedValue={detailColor}
+                  onValueChange={(itemValue) => setDetailSize(itemValue)}
+                >
+                  {sizes.map((size) => (
+                    <Picker.Item key={size} label={size} value={size} />
+                  ))}
+                </Picker>
               </View>
             </View>
             <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
             <View style={styles.quantityContainer}>
               <Text style={styles.textTitle}>Số lượng</Text>
               <View style={styles.quantity}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => { quantity == 1 ? quantity : setQuantity(quantity - 1) }}
+                >
                   <View style={styles.quantitybutton}>
                     <Text style={{ fontSize: 18 }}>-</Text>
                   </View>
                 </TouchableOpacity>
                 <View style={styles.quantityNumber}>
-                  <Text style={{ fontSize: 18 }}>1</Text>
+                  <Text style={{ fontSize: 18 }}>{quantity}</Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => { setQuantity(quantity + 1); }}
+                >
                   <View style={styles.quantitybutton}>
                     <Text style={{ fontSize: 18 }}>+</Text>
                   </View>
@@ -570,13 +616,25 @@ const Detail = props => {
               </View>
             </View>
             <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
-            <TouchableOpacity style={styles.buyButton}>
+            <TouchableOpacity
+              onPress={addCart}
+              style={styles.buyButton}>
               <Text style={{ fontSize: 20, fontWeight: '300', color: colorsPES.white }}>Mua ngay</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-    </ScrollView>
+      <SuccessDialog
+        visible={successDialogVisible}
+        onPress={handleSuccessDialogClose}
+        message="Cập nhật hồ sơ thành công !"
+      />
+      <FailDialog
+        visible={failedDialogVisible}
+        onPress={handleFailedDialogClose}
+        message="Cập nhật hồ sơ thất bại !"
+      />
+    </ScrollView >
   );
 };
 

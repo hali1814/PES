@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
+  Modal
 } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
 import color from '../../styles/colors';
@@ -50,6 +51,9 @@ import PESRelatedProducts from '../../components/PESRelatedProducts';
 import Fonts from '../../assets/fonts/fonts';
 import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 import { formatPrice } from '../../utils/MoneyFormat';
+import colorsPES from '../../constants/colors';
+import Icon from 'react-native-vector-icons/Ionicons'
+
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -60,10 +64,41 @@ const ShopDetail = props => {
   const { onGetDetail, detail, productsByGenre, onGetProductsByGenre } = useContext(ProductContext);
   const [imageList, setImageList] = useState([]);
   const [currentImage, setCurrentImage] = useState(1);
+  const [visible, setVisible] = useState(false)
+  const [detaiData, setDetaiData] = useState([])
+
+  const showDialog = () => {
+    setVisible(true)
+  }
+  const closeDialog = () => {
+    setVisible(false)
+  }
 
   useEffect(() => {
-    onGetDetail(ID);
-  }, [ID]);
+    getDetailProduct()
+  }, []);
+
+  const [detailImage, setDetailImage] = useState('')
+  const [detailPrice, setDetailPrice] = useState('')
+  const [detailPrice1, setDetailPrice1] = useState('')
+  const [detailColor, setDetailColor] = useState('')
+  const [detailColor1, setDetailColor1] = useState('')
+  const [detailSize, setDetailSize] = useState('')
+  const [detailSize1, setDetailSize1] = useState('')
+
+  const getDetailProduct = async () => {
+    const productModal = await onGetDetail(ID);
+    setDetaiData(productModal)
+    setDetailImage(productModal.images[0])
+    setDetailPrice(productModal.stock[0].price)
+    setDetailPrice1(productModal.stock[1].price)
+    setDetailColor(productModal.stock[0].color)
+    setDetailColor1(productModal.stock[1].color)
+    setDetailSize(productModal.stock[0].size)
+    setDetailSize1(productModal.stock[1].size)
+  }
+
+  console.log('productModal', detaiData)
 
   useEffect(() => {
     onGetProductsByGenre(type)
@@ -77,7 +112,7 @@ const ShopDetail = props => {
       const images = detail.images.map(image => ({ uri: image }));
       setImageList(images);
     }
-  }, [detail]);
+  }, []);
 
   //Bộ đếm số ảnh
   //Thay vì sử dụng Math.floor, chúng tôi đã sử dụng Math.ceil để đảm bảo rằng index được bắt đầu từ 1.
@@ -107,6 +142,7 @@ const ShopDetail = props => {
 
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       style={{
         height: '100%',
         backgroundColor: color.BACKGROUDITEM,
@@ -396,7 +432,7 @@ const ShopDetail = props => {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => { navigation.navigate('ShopDetail', { ID: item._id }) }}
+              onPress={() => { navigation.navigate('ShopDetail', { ID: item._id, type: item.type }) }}
               style={{
                 height: 104,
                 width: '100%',
@@ -469,7 +505,9 @@ const ShopDetail = props => {
             </View>
           </TouchableOpacity>
           {/* ButtonBuy */}
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={showDialog}
+          >
             <View style={buyButton}>
               <View style={buyContainer}>
                 <Text style={buyText}>{'Mua ngay'}</Text>
@@ -478,6 +516,86 @@ const ShopDetail = props => {
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+        visible={visible}
+        transparent
+        animationType='slide'
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.contentContainer}>
+            <TouchableOpacity
+              style={{ position: 'absolute', top: 10, right: 10 }}
+              onPress={closeDialog}
+            >
+              <Icon
+                name='close-outline'
+                size={30}
+                color={colorsPES.black}
+              />
+            </TouchableOpacity>
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: detailImage }}
+                style={{ height: 150, width: 150 }}
+              />
+              <View style={styles.stockContainer}>
+                <Text style={{ fontSize: 22, color: colorsPES.red }} >{formatPrice(detailPrice)}</Text>
+                <Text style={{ fontSize: 18, color: colorsPES.inActive }}>Kho : 4663</Text>
+              </View>
+            </View>
+            <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
+            <View style={styles.colorContainer}>
+              <Text style={styles.textTitle}>Màu sắc</Text>
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <TouchableOpacity>
+                  <Text style={styles.contentText}>{detailColor}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text style={[styles.contentText, { marginLeft: 20 }]}>{detailColor1}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
+            <View style={styles.sizeContainer}>
+              <Text style={styles.textTitle}>Kích cỡ</Text>
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={styles.contentText}>{detailSize}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text style={[styles.contentText, { marginLeft: 20 }]}>{detailSize1}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
+            <View style={styles.quantityContainer}>
+              <Text style={styles.textTitle}>Số lượng</Text>
+              <View style={styles.quantity}>
+                <TouchableOpacity>
+                  <View style={styles.quantitybutton}>
+                    <Text style={{ fontSize: 18 }}>-</Text>
+                  </View>
+                </TouchableOpacity>
+                <View style={styles.quantityNumber}>
+                  <Text style={{ fontSize: 18 }}>1</Text>
+                </View>
+                <TouchableOpacity>
+                  <View style={styles.quantitybutton}>
+                    <Text style={{ fontSize: 18 }}>+</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
+            <TouchableOpacity
+              onPress={showDialog}
+              style={styles.buyButton}
+            >
+              <Text style={{ fontSize: 20, fontWeight: '300', color: colorsPES.white }}>Mua ngay</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
@@ -488,5 +606,96 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: screenWidth,
     height: 375,
+  },
+
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end'
+  },
+
+  quantitybutton: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colorsPES.inActive
+  },
+
+  quantityNumber: {
+    width: 50,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colorsPES.inActive
+  },
+
+  sizeContainer: {
+    marginTop: 20,
+    justifyContent: 'flex-start',
+    width: '100%',
+    marginLeft: 20
+  },
+
+  quantity: {
+    flexDirection: 'row',
+    marginRight: 20
+  },
+
+  contentContainer: {
+    backgroundColor: colorsPES.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingBottom: 20,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+
+  imageContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '100%',
+    marginLeft: 20,
+  },
+
+  stockContainer: {
+    marginLeft: 20,
+    justifyContent: 'flex-end'
+  },
+
+  colorContainer: {
+    marginTop: 20,
+    justifyContent: 'flex-start',
+    width: '100%',
+    marginLeft: 20
+  },
+
+  contentText: {
+    color: colorsPES.black,
+    fontSize: 16,
+    backgroundColor: '#CFD8DC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    padding: 10
+  },
+
+  quantityContainer: {
+    marginTop: 20,
+    justifyContent: 'space-between',
+    width: '100%',
+    marginLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
+  textTitle: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: colorsPES.black
   },
 });
