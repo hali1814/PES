@@ -287,8 +287,8 @@ const MyProfileDetail = (props) => {
             if (res == false) {
                 handleFailed()
             } else {
-                setTimeout(() => { navigation.navigate('Profile'), 2000 })
                 handleSuccess()
+                setTimeout(() => { navigation.navigate('Profile'), 2000 })
             }
         } catch (error) {
             console.log('change profile failed', error);

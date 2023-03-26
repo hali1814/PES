@@ -11,7 +11,7 @@ const PESListItem = props => {
   const { item, navigation, onPress } = props;
 
   const navigationPush = () => {
-    navigation.push('Detail', { id: item._id, type: item.type });
+    navigation.navigate('Detail', { id: item._id, type: item.type });
   };
 
   const price = item.stock[0].price;

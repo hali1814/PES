@@ -9,10 +9,12 @@ import {
   TouchableOpacity,
   FlatList,
   StatusBar,
+  Modal
 } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
 import color from '../../styles/colors';
 import { icons, images } from '../../assets';
+import Icon from 'react-native-vector-icons/Ionicons'
 import {
   addCartButton,
   buyButton,
@@ -51,6 +53,7 @@ import PESRelatedProducts from '../../components/PESRelatedProducts';
 import Fonts from '../../assets/fonts/fonts';
 import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 import { formatPrice } from '../../utils/MoneyFormat';
+import colorsPES from '../../constants/colors';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -58,22 +61,82 @@ const Detail = props => {
   const { route, navigation } = props;
 
   const { id, type } = route.params;
+  const [visible, setVisible] = useState(false)
+  const showDialog = () => {
+    setVisible(true)
+  }
+  const closeDialog = () => {
+    setVisible(false)
+  }
 
-  const { onGetDetail, detail, productsByGenre, onGetProductsByGenre } = useContext(ProductContext);
+  console.log('idddd', id)
+  const {
+    onGetDetail, detail,
+    productsByGenre, onGetProductsByGenre,
+    onAddCart
+  } = useContext(ProductContext);
+
+  console.log('detail heheeh', detail)
 
   const [imageList, setImageList] = useState([]);
 
   const [currentImage, setCurrentImage] = useState(1);
 
+  const [detaiData, setDetaiData] = useState([])
+
   useEffect(() => {
-    onGetDetail(id);
-  }, [id]);
+    getDetailProduct();
+  }, []);
+
+  const [detailImage, setDetailImage] = useState('')
+  const [detailPrice, setDetailPrice] = useState('')
+  const [detailPrice1, setDetailPrice1] = useState('')
+  const [detailColor, setDetailColor] = useState('')
+  const [detailColor1, setDetailColor1] = useState('')
+  const [detailSize, setDetailSize] = useState('')
+  const [detailSize1, setDetailSize1] = useState('')
+
+  const getDetailProduct = async () => {
+    const productModal = await onGetDetail(id);
+    setDetaiData(productModal)
+    setDetailImage(productModal.images[0])
+    setDetailPrice(productModal.stock[0].price)
+    setDetailPrice1(productModal.stock[1].price)
+    setDetailColor(productModal.stock[0].color)
+    setDetailColor1(productModal.stock[1].color)
+    setDetailSize(productModal.stock[0].size)
+    setDetailSize1(productModal.stock[1].size)
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     onGetProductsByGenre(type)
     console.log('type san pham ===>', type)
     return () => { }
   }, [])
+
+  const addCart = async () => {
+    const res = await onAddCart('63e4c29b9a2f0ff07c36ce6a', 's', 'trắng', 2)
+    if (res === false) {
+      alert('add cart failed')
+    } else {
+      alert('add cart successfully')
+      navigation.navigate('Cart')
+
+    }
+  }
 
 
   useEffect(() => {
@@ -415,7 +478,7 @@ const Detail = props => {
           </View>
           {/* AddCart */}
           <TouchableOpacity
-            onPress={() => { navigation.navigate('Cart') }}
+            onPress={addCart}
           >
             <View style={addCartButton}>
               <Image
@@ -425,7 +488,9 @@ const Detail = props => {
             </View>
           </TouchableOpacity>
           {/* ButtonBuy */}
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={showDialog}
+          >
             <View style={buyButton}>
               <View style={buyContainer}>
                 <Text style={buyText}>{'Mua ngay'}</Text>
@@ -434,6 +499,83 @@ const Detail = props => {
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+        visible={visible}
+        transparent
+        animationType='slide'
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.contentContainer}>
+            <TouchableOpacity
+              style={{ position: 'absolute', top: 10, right: 10 }}
+              onPress={closeDialog}
+            >
+              <Icon
+                name='close-outline'
+                size={30}
+                color={colorsPES.black}
+              />
+            </TouchableOpacity>
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: detailImage }}
+                style={{ height: 150, width: 150 }}
+              />
+              <View style={styles.stockContainer}>
+                <Text style={{ fontSize: 22, color: colorsPES.red }} >{formatPrice(detailPrice)}</Text>
+                <Text style={{ fontSize: 18, color: colorsPES.inActive }}>Kho : 4663</Text>
+              </View>
+            </View>
+            <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
+            <View style={styles.colorContainer}>
+              <Text style={styles.textTitle}>Màu sắc</Text>
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <TouchableOpacity>
+                  <Text style={styles.contentText}>{detailColor}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text style={[styles.contentText, { marginLeft: 20 }]}>{detailColor1}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
+            <View style={styles.sizeContainer}>
+              <Text style={styles.textTitle}>Kích cỡ</Text>
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={styles.contentText}>{detailSize}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text style={[styles.contentText, { marginLeft: 20 }]}>{detailSize1}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
+            <View style={styles.quantityContainer}>
+              <Text style={styles.textTitle}>Số lượng</Text>
+              <View style={styles.quantity}>
+                <TouchableOpacity>
+                  <View style={styles.quantitybutton}>
+                    <Text style={{ fontSize: 18 }}>-</Text>
+                  </View>
+                </TouchableOpacity>
+                <View style={styles.quantityNumber}>
+                  <Text style={{ fontSize: 18 }}>1</Text>
+                </View>
+                <TouchableOpacity>
+                  <View style={styles.quantitybutton}>
+                    <Text style={{ fontSize: 18 }}>+</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ width: '100%', borderWidth: 0.4, borderColor: colorsPES.inActive, marginTop: 20 }}></View>
+            <TouchableOpacity style={styles.buyButton}>
+              <Text style={{ fontSize: 20, fontWeight: '300', color: colorsPES.white }}>Mua ngay</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
@@ -441,8 +583,111 @@ const Detail = props => {
 export default Detail;
 
 const styles = StyleSheet.create({
+
+  buyButton: {
+    width: '90%',
+    paddingVertical: 10,
+    backgroundColor: colorsPES.borderColorBlue,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20
+  },
+
+  quantityNumber: {
+    width: 50,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colorsPES.inActive
+  },
+
+  quantitybutton: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colorsPES.inActive
+  },
+
+  quantity: {
+    flexDirection: 'row',
+    marginRight: 20
+
+  },
+
+  quantityContainer: {
+    marginTop: 20,
+    justifyContent: 'space-between',
+    width: '100%',
+    marginLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
+  sizeContainer: {
+    marginTop: 20,
+    justifyContent: 'flex-start',
+    width: '100%',
+    marginLeft: 20
+  },
+
+  contentText: {
+    color: colorsPES.black,
+    fontSize: 16,
+    backgroundColor: '#CFD8DC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    padding: 10
+  },
+
+  textTitle: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: colorsPES.black
+  },
+
+  colorContainer: {
+    marginTop: 20,
+    justifyContent: 'flex-start',
+    width: '100%',
+    marginLeft: 20
+  },
+
+  stockContainer: {
+    marginLeft: 20,
+    justifyContent: 'flex-end'
+
+  },
+
+  imageContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '100%',
+    marginLeft: 20,
+  },
+
+  contentContainer: {
+    backgroundColor: colorsPES.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingBottom: 20,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+
   imageStyle: {
     width: screenWidth,
     height: 375,
+  },
+
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end'
   },
 });

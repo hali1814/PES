@@ -65,9 +65,10 @@ export const ProductsContextProvider = props => {
   const onGetDetail = async _id => {
     try {
       const res = await getDetail(_id);
+      console.log('ressss', res)
       if (res.status == 'success') {
         setDetail(res.data);
-        return true;
+        return res.data;
       }
     } catch (error) {
       console.log('GetAllGetALLProductsssssssss========', error);

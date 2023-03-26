@@ -68,19 +68,11 @@ const Cart = ({ navigation }) => {
     ]
 
     const { cart, onGetCart } = useContext(ProductContext)
-    const [visible, setVisible] = useState(false)
 
-    const showDialog = () => {
-        setVisible(true)
-    }
-
-    const closeDialog = () => {
-        setVisible(false)
-    }
 
     useEffect(() => {
         onGetCart()
-    }, [])
+    }, [cart])
 
 
     return (
@@ -388,9 +380,7 @@ const Cart = ({ navigation }) => {
                     </View>
 
                     {/* ButtonBuy */}
-                    <TouchableOpacity
-                        onPress={showDialog}
-                    >
+                    <TouchableOpacity>
                         <View style={buyButton}>
                             <View style={buyContainer}>
                                 <Text style={buyText}>{'Mua ngay'}</Text>
@@ -399,24 +389,6 @@ const Cart = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <Modal
-                visible={visible}
-                transparent
-                animationType='slide'
-            >
-                <View style={styles.modalContainer}>
-                    <TouchableOpacity
-                        onPress={closeDialog}
-                        style={{
-                            width: 100, height: 100,
-                            backgroundColor: colorsPES.white,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                        <Text>Bấm vào đê</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
         </SafeAreaView>
     )
 }
