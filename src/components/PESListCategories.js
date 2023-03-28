@@ -5,10 +5,9 @@ import {icons} from '../assets';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Fonts from '../assets/fonts/fonts';
 
-const PESListCategories = ({item, index}) => {
+const PESListCategories = ({item, onSelectCategory}) => {
   const {onGetAllGenre, genres, productsByGenre, onGetProductsByGenre} =
     useContext(ProductContext);
-  // console.log('gennnnnnnnnnnnnnnnnnnnnnnnnnnre', productsByGenre);
 
   const [isFocused, setIsFocused] = useState(false);
 

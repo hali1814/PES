@@ -28,7 +28,7 @@ import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 import PESListItem from '../../components/PESListItem';
 import PESListFlashSale from '../../components/PESListFlashSale';
 
-const Product = ({navigation, onPressProducts}) => {
+const Product = ({navigation}) => {
   const {onGetAllProducts, onGetAllFlashSaleProducts, flashSaleProducts} =
     useContext(ProductContext);
   const shop = () => {};

@@ -6,11 +6,12 @@ import PESListCategories from './PESListCategories';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 
 const PESCategories = () => {
-  const {onGetAllGenre, genres, productsByGenre, onGetProductsByGenre} =
+  const {onGetAllGenre, genres, onGetProductsByGenre} =
     useContext(ProductContext);
+
   useEffect(() => {
     onGetAllGenre();
-    onGetProductsByGenre('63e4c2289a2f0ff07c36ce68');
+    onGetProductsByGenre();
   }, []);
 
   return (
