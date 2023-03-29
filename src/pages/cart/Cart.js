@@ -70,6 +70,11 @@ const Cart = ({ navigation }) => {
     const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
     const [successDialogVisible, setSuccessDialogVisible] = useState(false);
     const [failedDialogVisible, setFailedDialogVisible] = useState(false);
+    const [isSelected, setIsSelected] = useState(false);
+
+    const handlePress = () => {
+        setIsSelected(!isSelected);
+    };
 
     const handleSuccess = () => {
         setSuccessDialogVisible(true);
@@ -98,16 +103,19 @@ const Cart = ({ navigation }) => {
     const [id, setId] = useState('')
     const [size, setSize] = useState('')
     const [colorProduct, setColorProduct] = useState('')
+    const [quantity, setQuantity] = useState(0)
+    const [stock, setStock] = useState('')
 
 
     useEffect(() => {
-        GetAllCart()
+        onGetCart()
     }, [])
 
-    const GetAllCart = async () => {
-        const cartItem = await onGetCart()
-        setCartData(cartItem)
-    }
+    // const GetAllCart = async () => {
+    //     const cartItem = await onGetCart()
+    //     setStock(cartItem.stock)
+    //     setCartData(cartItem)
+    // }
 
     const deleteCart = async () => {
         try {
@@ -124,8 +132,8 @@ const Cart = ({ navigation }) => {
         }
     }
 
-
-
+    // let prices = cartData.map((item) => item.stock.price)
+    // console.log('pricesssss', prices)
 
     return (
         <SafeAreaView style={styles.container}>
@@ -163,14 +171,16 @@ const Cart = ({ navigation }) => {
                         </View>
                     </View>
                     <FlatList
-                        data={cartData}
+                        data={cart}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.idProduct}
                         renderItem={({ item }) => (
                             <View style={styles.productContainer}>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={handlePress}
+                                >
                                     <Icon
-                                        name='ellipse-outline'
+                                        name={isSelected ? 'checkmark-circle-outline' : 'ellipse-outline'}
                                         size={25}
                                         color={colorsPES.primary}
                                     />
@@ -239,6 +249,7 @@ const Cart = ({ navigation }) => {
                                         </TouchableOpacity>
                                         <Text style={{ marginHorizontal: 5 }}>{item.quantity}</Text>
                                         <TouchableOpacity
+                                            onPress={() => { setQuantity(item.quantity + 1) }}
                                             style={{
                                                 backgroundColor: colorsPES.grey,
                                                 borderRadius: 3, width: 20, height: 20,
