@@ -25,6 +25,7 @@ import {
 } from '../detail/components/styles';
 import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext'
 import { formatPrice } from '../../utils/MoneyFormat';
+import { ConfirmDialog, SuccessDialog, FailDialog } from '../../components'
 
 const Cart = ({ navigation }) => {
 
@@ -66,13 +67,64 @@ const Cart = ({ navigation }) => {
 
         },
     ]
+    const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+    const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+    const [failedDialogVisible, setFailedDialogVisible] = useState(false);
 
-    const { cart, onGetCart } = useContext(ProductContext)
+    const handleSuccess = () => {
+        setSuccessDialogVisible(true);
+    };
+    const handleSuccessDialogClose = () => {
+        setSuccessDialogVisible(false);
+    };
+
+    const handleFailed = () => {
+        setFailedDialogVisible(true);
+    };
+    const handleFailedDialogClose = () => {
+        setFailedDialogVisible(false);
+    };
+    const handleConfirm = (idProduct, size, color) => {
+        setId(idProduct)
+        setSize(size)
+        setColorProduct(color)
+        setConfirmDialogVisible(true);
+    };
+    const handleConfirmDialogClose = () => {
+        setConfirmDialogVisible(false);
+    };
+    const { cart, onGetCart, onDeleteCart } = useContext(ProductContext)
+    const [cartData, setCartData] = useState([])
+    const [id, setId] = useState('')
+    const [size, setSize] = useState('')
+    const [colorProduct, setColorProduct] = useState('')
 
 
     useEffect(() => {
-        onGetCart()
-    }, [cart])
+        GetAllCart()
+    }, [])
+
+    const GetAllCart = async () => {
+        const cartItem = await onGetCart()
+        setCartData(cartItem)
+    }
+
+    const deleteCart = async () => {
+        try {
+            const res = await onDeleteCart(id, size, colorProduct)
+            if (res == false) {
+                handleFailed()
+            } else {
+                handleSuccess()
+                setTimeout(() => { navigation.navigate('Cart') }, 2000)
+            }
+        } catch (error) {
+            console.log('error', error)
+            throw error
+        }
+    }
+
+
 
 
     return (
@@ -111,7 +163,7 @@ const Cart = ({ navigation }) => {
                         </View>
                     </View>
                     <FlatList
-                        data={cart}
+                        data={cartData}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.idProduct}
                         renderItem={({ item }) => (
@@ -125,19 +177,31 @@ const Cart = ({ navigation }) => {
                                 </TouchableOpacity>
                                 <Image style={{ width: 44, height: 44, marginStart: 8 }} source={{ uri: item.images[0] }} resizeMode='cover' />
                                 <View style={styles.productContent}>
-                                    <Text style={{
-                                        color: colorsPES.black,
-                                        fontSize: 16, fontWeight: '600',
-                                        marginRight: 30, width: '60%',
-                                        textTransform: 'capitalize'
-                                    }}>
-                                        {item.name}
-                                    </Text>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Text style={{
+                                            color: colorsPES.black,
+                                            fontSize: 16, fontWeight: '600',
+                                            marginRight: 30, width: '60%',
+                                            textTransform: 'capitalize'
+                                        }}>
+                                            {item.name}
+                                        </Text>
+                                        <TouchableOpacity
+                                            onPress={() => { handleConfirm(item.idProduct, item.size, item.color) }}
+                                        >
+                                            <Icon
+                                                name='trash-outline'
+                                                size={25}
+                                                color={colorsPES.red}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+
                                     <TouchableOpacity
                                         onPress={() => { navigation.navigate('Detail', { id: item.idProduct }) }}
                                         style={{
                                             flexDirection: 'row', alignItems: 'center',
-                                            width: '70%',
+                                            width: '50%',
                                             marginTop: 4,
                                             justifyContent: 'space-between'
                                         }}>
@@ -374,7 +438,7 @@ const Cart = ({ navigation }) => {
                         <View style={{ height: 20, justifyContent: 'center' }}>
                             <Text style={payText}>{'Thanh Toán'}</Text>
                         </View>
-                        <View style={{ height: 20, justifyContent: 'center' }}>
+                        <View style={{ height: 30, justifyContent: 'center' }}>
                             <Text style={payMoneyText}>{'2.000.000'}đ</Text>
                         </View>
                     </View>
@@ -389,6 +453,23 @@ const Cart = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <SuccessDialog
+                visible={successDialogVisible}
+                onPress={handleSuccessDialogClose}
+                message="Xoá sản phẩm thành công !"
+            />
+            <FailDialog
+                visible={failedDialogVisible}
+                onPress={handleFailedDialogClose}
+                message="Xoá sản phẩm thất bại !"
+            />
+            <ConfirmDialog
+                visible={confirmDialogVisible}
+                onCancelPress={handleConfirmDialogClose}
+                onPress={deleteCart}
+                message="Bạn chắc chắn muốn xóa khỏi giỏ hàng ?"
+                confirmMessage='Xóa'
+            />
         </SafeAreaView>
     )
 }
@@ -443,7 +524,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        width: '90%'
+        width: 250
     },
 
     productContent: {

@@ -139,7 +139,7 @@ export const detailText = {
   color: color.MAIN,
 };
 export const payContainer = {
-  height: 61,
+  height: 67,
   paddingHorizontal: 16,
   paddingVertical: 8,
   flexDirection: 'row',

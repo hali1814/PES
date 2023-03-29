@@ -107,15 +107,15 @@ const Detail = props => {
     setDetailImage(productModal.images[0])
     setDetailPrice(productModal.stock[0].price)
     setDetailPrice1(productModal.stock[1].price)
-    setDetailColor(productModal.stock.color)
+    setDetailColor(productModal.stock[0].color)
     setDetailColor1(productModal.stock[1].color)
-    setDetailSize(productModal.stock.size)
+    setDetailSize(productModal.stock[0].size)
+
     setDetailSize1(productModal.stock[1].size)
   }
 
-  for (let i = 0; i < stock.length; i++) {
+  console.log('detail size: ', detailSize)
 
-  }
 
   let colors = stock.map(item => item.color);
   console.log(colors);
@@ -131,7 +131,9 @@ const Detail = props => {
 
   const addCart = async () => {
     try {
+      console.log('sizeee', id, detailSize, detailColor, quantity)
       const res = await onAddCart(id, detailSize, detailColor, quantity)
+
       if (res === false) {
         handleFailed()
       } else {
@@ -496,7 +498,7 @@ const Detail = props => {
             <View style={{ height: 20, justifyContent: 'center' }}>
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
-            <View style={{ height: 20, justifyContent: 'center' }}>
+            <View style={{ height: 35, justifyContent: 'center' }}>
               <Text style={payMoneyText}>{formatPrice(price)}</Text>
             </View>
           </View>
@@ -563,7 +565,7 @@ const Detail = props => {
                 <Picker
                   style={{ backgroundColor: colorsPES.white, width: '100%' }}
                   selectedValue={detailColor}
-                  onValueChange={(itemValue) => setDetailColor(itemValue)}
+                  onValueChange={(colorValue) => setDetailColor(colorValue)}
                 >
                   {colors.map((color) => (
                     <Picker.Item key={color} label={color} value={color} />
@@ -583,12 +585,14 @@ const Detail = props => {
                 </TouchableOpacity> */}
                 <Picker
                   style={{ backgroundColor: colorsPES.white, width: '100%' }}
-                  selectedValue={detailColor}
-                  onValueChange={(itemValue) => setDetailSize(itemValue)}
+                  selectedValue={detailSize}
+                  onValueChange={(sizeValue) => setDetailSize(sizeValue)}
                 >
-                  {sizes.map((size) => (
-                    <Picker.Item key={size} label={size} value={size} />
-                  ))}
+                  {stock.map((e) => {
+                    if (e.color == detailColor)
+                      return <Picker.Item key={e.size} label={e.size} value={e.size} />
+                  })}
+
                 </Picker>
               </View>
             </View>
@@ -627,12 +631,12 @@ const Detail = props => {
       <SuccessDialog
         visible={successDialogVisible}
         onPress={handleSuccessDialogClose}
-        message="Cập nhật hồ sơ thành công !"
+        message="Đã thêm vào giỏ hàng !"
       />
       <FailDialog
         visible={failedDialogVisible}
         onPress={handleFailedDialogClose}
-        message="Cập nhật hồ sơ thất bại !"
+        message="Thêm giỏ hàng thất bại !"
       />
     </ScrollView >
   );

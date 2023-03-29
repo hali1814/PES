@@ -33,3 +33,9 @@ export const addCart = async (idProduct, size, color, quantity) => {
   const result = await customAxios().post('/api/cart/add', data);
   return result;
 };
+
+export const deleteCart = async (idProduct, size, color) => {
+  const data = { idProduct: idProduct, size: size, color: color }
+  const result = await customAxios().post('/api/cart/delete/product', data);
+  return result;
+};

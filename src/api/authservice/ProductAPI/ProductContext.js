@@ -1,5 +1,6 @@
 import {
   addCart,
+  deleteCart,
   getAllGenres,
   getAllProducts,
   getCart,
@@ -89,6 +90,21 @@ export const ProductsContextProvider = props => {
     }
   };
 
+  const onDeleteCart = async (idProduct, size, color) => {
+    try {
+      const res = await deleteCart(idProduct, size, color);
+      if (res.status == 'success') {
+        console.log('delete cart product ==>', res.data.message);
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch (error) {
+      console.log('onAddCart failed ===>', error);
+    }
+  };
+
   const onGetProductsByGenre = async _id => {
     try {
       const res = await getProductsByGenres(_id);
@@ -118,7 +134,7 @@ export const ProductsContextProvider = props => {
       const res = await getCart()
       if (res.status == 'success') {
         setCart(res.data);
-        return true
+        return res.data
       }
     } catch (error) {
       console.log('GET CART ERROR ==>', error);
@@ -128,6 +144,7 @@ export const ProductsContextProvider = props => {
   return (
     <ProductContext.Provider
       value={{
+        onDeleteCart,
         productsByGenre,
         onAddCart,
         setCart,

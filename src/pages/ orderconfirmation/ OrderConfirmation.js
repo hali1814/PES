@@ -337,7 +337,7 @@ const OrderConfirmation = () => {
             <View style={{ height: 20, justifyContent: 'center' }}>
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
-            <View style={{ height: 20, justifyContent: 'center' }}>
+            <View style={{ height: 35, justifyContent: 'center' }}>
               <Text style={payMoneyText}>{'2.000.000'}đ</Text>
             </View>
           </View>
