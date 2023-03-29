@@ -138,7 +138,20 @@ const ShopDetail = props => {
     navigation.goBack();
   };
 
-  const price = detail && detail.stock[0].price;
+  const sale = detail && detail.sale;
+  let price = 0;
+  let price1 = 0;
+
+  if (detail) {
+    detail.stock.sort((a, b) => a.price - b.price);
+    // formatPrice
+    if (detail.stock.length == 1) {
+      price = detail && detail.stock[0].price;
+    } else {
+      price = detail && detail.stock[0].price;
+      price1 = detail && detail.stock[detail.stock.length - 1].price;
+    }
+  }
 
   return (
     <ScrollView
@@ -197,7 +210,17 @@ const ShopDetail = props => {
       {/* Title và Price */}
       <View style={productsContainer}>
         <View style={productsBG}>
+<<<<<<< HEAD
           <View style={{ width: '100%' }}>
+=======
+          <View style={{position: 'absolute', right: 0}}>
+            <View style={styles.customSale}>
+              <Image source={icons.tagSale_icon} style={styles.imgSale} />
+              <Text style={styles.txtSale}>{sale ? `${sale}` : ''}%</Text>
+            </View>
+          </View>
+          <View style={{width: '100%'}}>
+>>>>>>> huyDuc
             <Text
               style={{
                 fontFamily: Fonts.Work_SemiBold,
@@ -209,16 +232,28 @@ const ShopDetail = props => {
             </Text>
           </View>
           <View style={labelContainer}>
-            <View style={labelBG}>
-              <Text style={labelText}>{textsPES.txtlabel}</Text>
-            </View>
             <Text
               style={{
                 fontFamily: Fonts.Work_SemiBold,
                 fontSize: 20,
                 color: color.MAIN,
               }}>
-              {formatPrice(price)}
+              {price && formatPrice(price * (1 - sale / 100))}
+              {price1
+                ? ` - ${price1 && formatPrice(price1 * (1 - sale / 100))}`
+                : ''}
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={{
+                fontFamily: Fonts.Work_SemiBold,
+                fontSize: 14,
+                color: color.TEXT_SECOND,
+                textDecorationLine: 'line-through',
+              }}>
+              {price && formatPrice(price)}
+              {price1 ? ` - ${price1 && formatPrice(price1)}` : ''}
             </Text>
           </View>
         </View>
@@ -242,7 +277,13 @@ const ShopDetail = props => {
               </Text>
             </View>
           </View>
+<<<<<<< HEAD
           <TouchableOpacity onPress={() => { }} style={{ flexDirection: 'row' }}>
+=======
+          <TouchableOpacity
+            onPress={() => {}}
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+>>>>>>> huyDuc
             <Text style={txtVoucher}>{textsPES.txtDetail}</Text>
             <Image
               source={icons.chevronRight_icon}
@@ -607,6 +648,7 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: 375,
   },
+<<<<<<< HEAD
 
   modalContainer: {
     flex: 1,
@@ -697,5 +739,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '400',
     color: colorsPES.black
+=======
+  customSale: {
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderTopRightRadius: 4,
+    borderBottomLeftRadius: 4,
+    backgroundColor: color.MAIN,
+    alignItems: 'center',
+  },
+  imgSale: {
+    width: 16,
+    height: 16,
+    tintColor: color.WHITE,
+  },
+  txtSale: {
+    color: color.WHITE,
+    fontFamily: Fonts.Work_Medium,
+    fontSize: 14,
+    marginLeft: 4,
+>>>>>>> huyDuc
   },
 });

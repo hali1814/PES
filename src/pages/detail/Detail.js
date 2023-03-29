@@ -192,8 +192,20 @@ const Detail = props => {
 
   const ShopID = detail.shop?.idShop || '';
 
-  // formatPrice
-  const price = detail && detail.stock[0].price;
+  const sale = detail && detail.sale;
+  let price = 0;
+  let price1 = 0;
+
+  if (detail) {
+    detail.stock.sort((a, b) => a.price - b.price);
+    // formatPrice
+    if (detail.stock.length == 1) {
+      price = detail && detail.stock[0].price;
+    } else {
+      price = detail && detail.stock[0].price;
+      price1 = detail && detail.stock[detail.stock.length - 1].price;
+    }
+  }
 
   return (
     <ScrollView
@@ -225,6 +237,7 @@ const Detail = props => {
             />
           )}
           <SafeAreaView style={SafeAreaContainer}>
+<<<<<<< HEAD
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Products');
@@ -237,11 +250,34 @@ const Detail = props => {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ paddingHorizontal: 16 }}>
+=======
+            <View
+              style={{
+                marginTop: 8,
+                marginLeft: 16,
+                paddingHorizontal: 2,
+                paddingVertical: 2,
+                borderRadius: 360,
+                backgroundColor: 'rgba(0,0,0,0.4)',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.goBack();
+                }}>
+                <Image
+                  source={icons.chevronBackWhite_icon}
+                  style={{width: 24, height: 24}}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* <TouchableOpacity style={{paddingHorizontal: 16}}>
+>>>>>>> huyDuc
               <Image
                 source={icons.heartWhite_icon}
                 style={{ width: 24, height: 24 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </SafeAreaView>
         </View>
         <View style={counterContainer}>
@@ -255,7 +291,17 @@ const Detail = props => {
       {/* Title và Price */}
       <View style={productsContainer}>
         <View style={productsBG}>
+<<<<<<< HEAD
           <View style={{ width: '100%' }}>
+=======
+          <View style={{position: 'absolute', right: 0}}>
+            <View style={styles.customSale}>
+              <Image source={icons.tagSale_icon} style={styles.imgSale} />
+              <Text style={styles.txtSale}>{sale ? `${sale}` : ''}%</Text>
+            </View>
+          </View>
+          <View style={{width: '100%'}}>
+>>>>>>> huyDuc
             <Text
               style={{
                 fontFamily: Fonts.Work_SemiBold,
@@ -273,25 +319,22 @@ const Detail = props => {
                 fontSize: 20,
                 color: color.MAIN,
               }}>
-              {formatPrice(price)}
-            </Text>
-            <Text
-              style={{
-                fontFamily: Fonts.Work_SemiBold,
-                fontSize: 20,
-                color: color.MAIN,
-              }}>
-              {formatPrice(price)}
+              {price && formatPrice(price * (1 - sale / 100))}
+              {price1
+                ? ` - ${price1 && formatPrice(price1 * (1 - sale / 100))}`
+                : ''}
             </Text>
           </View>
-          <View>
+          <View style={{flexDirection: 'row'}}>
             <Text
               style={{
                 fontFamily: Fonts.Work_SemiBold,
-                fontSize: 20,
-                color: color.MAIN,
+                fontSize: 14,
+                color: color.TEXT_SECOND,
+                textDecorationLine: 'line-through',
               }}>
-              {formatPrice(price)}
+              {price && formatPrice(price)}
+              {price1 ? ` - ${price1 && formatPrice(price1)}` : ''}
             </Text>
           </View>
         </View>
@@ -315,7 +358,13 @@ const Detail = props => {
               </Text>
             </View>
           </View>
+<<<<<<< HEAD
           <TouchableOpacity onPress={() => { }} style={{ flexDirection: 'row' }}>
+=======
+          <TouchableOpacity
+            onPress={() => {}}
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+>>>>>>> huyDuc
             <Text style={txtVoucher}>{textsPES.txtDetail}</Text>
             <Image
               source={icons.chevronRight_icon}
@@ -342,7 +391,7 @@ const Detail = props => {
                   <Text style={shopNameText}>
                     {detail && detail.shop.nameShop}
                   </Text>
-                  <Text style={phoneText}>{detail && detail.owner}</Text>
+                  <Text style={phoneText}>{detail && detail.email}</Text>
                 </View>
               </View>
               <View>
@@ -494,14 +543,19 @@ const Detail = props => {
       {/* PayView */}
       <View style={{ height: 75, backgroundColor: color.WHITE }}>
         <View style={payContainer}>
+<<<<<<< HEAD
           <View style={{ flexDirection: 'column' }}>
             <View style={{ height: 20, justifyContent: 'center' }}>
+=======
+          {/* <View style={{flexDirection: 'column'}}>
+            <View style={{height: 20, justifyContent: 'center'}}>
+>>>>>>> huyDuc
               <Text style={payText}>{'Thanh Toán'}</Text>
             </View>
             <View style={{ height: 35, justifyContent: 'center' }}>
               <Text style={payMoneyText}>{formatPrice(price)}</Text>
             </View>
-          </View>
+          </View> */}
           {/* AddCart */}
           <TouchableOpacity
             onPress={addCart}
@@ -746,10 +800,32 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: 375,
   },
+<<<<<<< HEAD
 
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end'
+=======
+  customSale: {
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderTopRightRadius: 4,
+    borderBottomLeftRadius: 4,
+    backgroundColor: color.MAIN,
+    alignItems: 'center',
+  },
+  imgSale: {
+    width: 16,
+    height: 16,
+    tintColor: color.WHITE,
+  },
+  txtSale: {
+    color: color.WHITE,
+    fontFamily: Fonts.Work_Medium,
+    fontSize: 14,
+    marginLeft: 4,
+>>>>>>> huyDuc
   },
 });

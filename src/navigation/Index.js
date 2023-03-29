@@ -1,7 +1,13 @@
-import { StatusBar, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import React, { useState } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useState} from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import colorsPES from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
@@ -13,11 +19,14 @@ import {
   MyProfileDetail,
   MyFeedback,
 } from '../pages/profile';
-import { Cart } from '../pages/cart'
-import { ProductsNavigation } from '../api/authservice/ProductAPI/ProductNavigation';
+import {Cart} from '../pages/cart';
+import {ProductsNavigation} from '../api/authservice/ProductAPI/ProductNavigation';
 import OrderConfirmation from '../pages/ orderconfirmation/ OrderConfirmation';
 import Loading from '../pages/loading/Loading';
-import Spinner from 'react-native-loading-spinner-overlay';
+import Detail from '../pages/detail/Detail';
+import {Product} from '../pages/product';
+import Shop from '../pages/shop/Shop';
+import ShopDetail from '../pages/detail/ShopDetail';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +44,9 @@ const AppStackScreen = () => {
       }}>
       <appStack.Screen name="Loading" component={Loading} />
       <appStack.Screen name="MyTab" component={MyTab} />
+      <appStack.Screen name="Detail" component={Detail} />
+      <appStack.Screen name="Shop" component={Shop} />
+      <appStack.Screen name="ShopDetail" component={ShopDetail} />
       <appStack.Screen name="MyProfileDetail" component={MyProfileDetail} />
       <appStack.Screen name="MyFeedback" component={MyFeedback} />
       <appStack.Screen name="ChangePassword" component={ChangePassword} />
@@ -45,12 +57,12 @@ const AppStackScreen = () => {
   );
 };
 
-const MyTab = ({ navigation }) => {
+const MyTab = ({navigation}) => {
   return (
     <>
       <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
             let iconName;
 
             switch (route.name) {
@@ -89,8 +101,8 @@ const MyTab = ({ navigation }) => {
         initialRouteName={'Home'}>
         <Tab.Screen
           name="Home"
-          component={ProductsNavigation}
-          options={{ title: 'Trang chủ', headerTitleAlign: 'center' }}
+          component={Product}
+          options={{title: 'Trang chủ', headerTitleAlign: 'center'}}
         />
         <Tab.Screen
           name="Cart"
@@ -100,17 +112,17 @@ const MyTab = ({ navigation }) => {
         <Tab.Screen
           name="Bill"
           component={OrderConfirmation}
-          options={{ title: 'Bill', headerTitleAlign: 'center' }}
+          options={{title: 'Bill', headerTitleAlign: 'center'}}
         />
         <Tab.Screen
           name="Notification"
           component={Profile}
-          options={{ title: 'Thông báo', headerTitleAlign: 'center' }}
+          options={{title: 'Thông báo', headerTitleAlign: 'center'}}
         />
         <Tab.Screen
           name="Profile"
           component={Profile}
-          options={{ title: 'Tài khoản', headerTitleAlign: 'center' }}
+          options={{title: 'Tài khoản', headerTitleAlign: 'center'}}
         />
       </Tab.Navigator>
     </>

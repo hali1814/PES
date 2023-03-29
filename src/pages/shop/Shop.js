@@ -33,6 +33,7 @@ import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 import PESListItem from '../../components/PESListItem';
 import PESListItemShop from '../../components/PESListItemShop';
 import {TextInput} from 'react-native-gesture-handler';
+import PESHeader from '../../components/PESHeader';
 
 const Shop = props => {
   const {route, navigation} = props;
@@ -52,8 +53,8 @@ const Shop = props => {
 
   return (
     <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
-      <View
-        style={{flexDirection: 'column', paddingHorizontal: 12, marginTop: 8}}>
+      <PESHeader title={'Cửa Hàng'} navigation={navigation} />
+      <View style={{flexDirection: 'column', marginTop: 8}}>
         {/* Search */}
         <View style={styles.SearchStyles}>
           <View style={styles.customSearch}>
@@ -72,7 +73,7 @@ const Shop = props => {
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* Shop */}
-          <View style={{marginTop: 12}}>
+          <View style={{marginTop: 12, paddingHorizontal: 12}}>
             <View style={ContainerShop}>
               <View style={headerContainerShop}>
                 <View style={{flexDirection: 'row'}}>
@@ -128,7 +129,7 @@ const Shop = props => {
           </View>
 
           {/* Voucher */}
-          <View style={{marginTop: 12}}>
+          <View style={{marginTop: 12, paddingHorizontal: 12}}>
             <View style={voucherContainer}>
               <View style={{flexDirection: 'row'}}>
                 <Image
@@ -176,9 +177,11 @@ const styles = StyleSheet.create({
   SearchStyles: {
     height: 54,
     paddingVertical: 12,
+    paddingHorizontal: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: color.MAIN,
   },
 
   customSearch: {
