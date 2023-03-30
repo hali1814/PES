@@ -3,7 +3,7 @@ import React from 'react'
 import colorsPES from '../../constants/colors'
 import { formatPrice } from '../../utils/MoneyFormat'
 
-const Awaiting = () => {
+const AwaitingPickUp = () => {
 
     const DATA = [
         {
@@ -35,46 +35,6 @@ const Awaiting = () => {
             quantity: 2,
             price: 100000,
             totalPrice: 200000,
-        },
-        {
-            id: 4,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        },
-        {
-            id: 5,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        },
-        {
-            id: 6,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        },
-        {
-            id: 7,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
         }
     ]
 
@@ -82,7 +42,6 @@ const Awaiting = () => {
         <SafeAreaView style={styles.container}>
             <View style={styles.contentContainer}>
                 <FlatList
-                    showsVerticalScrollIndicator={false}
                     data={DATA}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
@@ -114,7 +73,7 @@ const Awaiting = () => {
     )
 }
 
-export default Awaiting
+export default AwaitingPickUp
 
 const styles = StyleSheet.create({
     container: {
@@ -127,7 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: colorsPES.white,
         paddingHorizontal: 16,
         width: '100%',
-        marginVertical: 10,
+        marginTop: 10,
         flexDirection: 'row',
         paddingVertical: 10,
     },

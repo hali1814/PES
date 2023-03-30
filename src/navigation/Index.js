@@ -18,7 +18,14 @@ import { ProductsNavigation } from '../api/authservice/ProductAPI/ProductNavigat
 import OrderConfirmation from '../pages/ orderconfirmation/ OrderConfirmation';
 import Loading from '../pages/loading/Loading';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Awaiting from '../pages/order-status/Awaiting';
+import {
+  Awaiting,
+  Delivered,
+  AwaitingPickUp,
+  Shipping,
+  Canceled
+} from '../pages/order-status'
+
 
 const Tab = createBottomTabNavigator();
 const topTab = createMaterialTopTabNavigator()
@@ -39,7 +46,7 @@ const AppStackScreen = () => {
       <appStack.Screen name="Loading" component={Loading} />
       <appStack.Screen name="MyTab" component={MyTab} />
       <appStack.Screen name="MyProfileDetail" component={MyProfileDetail} />
-      <appStack.Screen name="OrderTab" component={OrderTab} options={{ headerShown: true, }} />
+      <appStack.Screen name="OrderTab" component={OrderTab} options={{ headerShown: true, title: 'Đơn mua sản phẩm' }} />
       <appStack.Screen name="MyFeedback" component={MyFeedback} />
       <appStack.Screen name="ChangePassword" component={ChangePassword} />
       <appStack.Screen name="ChangeAddress" component={ChangeAddress} />
@@ -124,13 +131,17 @@ const MyTab = ({ navigation }) => {
 const OrderTab = ({ navigation }) => {
   return (
     <topTab.Navigator
-      screenOptions={{ tabBarLabelStyle: { fontSize: 10 }, tabBarStyle: { backgroundColor: colorsPES.white } }}
+      screenOptions={{
+        tabBarLabelStyle: { fontSize: 10 },
+        tabBarStyle: { backgroundColor: colorsPES.white },
+        tabBarPressColor: colorsPES.borderColorBlue,
+      }}
     >
       <topTab.Screen name="Awaiting" component={Awaiting} options={{ title: 'Chờ xác nhận', }} />
-      <topTab.Screen name="AwaitingPickup" component={Awaiting} options={{ title: 'Chờ lấy hàng' }} />
-      <topTab.Screen name="Shipping" component={Awaiting} options={{ title: 'Đang giao' }} />
-      <topTab.Screen name="Delivered" component={Awaiting} options={{ title: 'Đã giao' }} />
-      <topTab.Screen name="Cancel" component={Awaiting} options={{ title: 'Đã hủy' }} />
+      <topTab.Screen name="AwaitingPickup" component={AwaitingPickUp} options={{ title: 'Chờ lấy hàng' }} />
+      <topTab.Screen name="Shipping" component={Shipping} options={{ title: 'Đang giao' }} />
+      <topTab.Screen name="Delivered" component={Delivered} options={{ title: 'Đã giao' }} />
+      <topTab.Screen name="Cancel" component={Canceled} options={{ title: 'Đã hủy' }} />
     </topTab.Navigator>
   );
 }

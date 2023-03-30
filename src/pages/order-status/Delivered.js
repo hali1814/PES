@@ -3,7 +3,7 @@ import React from 'react'
 import colorsPES from '../../constants/colors'
 import { formatPrice } from '../../utils/MoneyFormat'
 
-const Awaiting = () => {
+const Delivered = () => {
 
     const DATA = [
         {
@@ -35,46 +35,6 @@ const Awaiting = () => {
             quantity: 2,
             price: 100000,
             totalPrice: 200000,
-        },
-        {
-            id: 4,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        },
-        {
-            id: 5,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        },
-        {
-            id: 6,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        },
-        {
-            id: 7,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
         }
     ]
 
@@ -82,7 +42,6 @@ const Awaiting = () => {
         <SafeAreaView style={styles.container}>
             <View style={styles.contentContainer}>
                 <FlatList
-                    showsVerticalScrollIndicator={false}
                     data={DATA}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
@@ -102,8 +61,13 @@ const Awaiting = () => {
                                 </View>
                                 <View style={{ alignItems: 'flex-end' }}>
                                     <View style={styles.status}>
-                                        <Text style={{ color: colorsPES.borderColorBlue }}>Đang đối soát</Text>
+                                        <Text style={{ color: '#2C9C5C' }}>Đơn hàng đã giao thành công</Text>
                                     </View>
+                                </View>
+                                <View style={{ alignItems: 'flex-end', marginTop: 10 }}>
+                                    <TouchableOpacity style={styles.button}>
+                                        <Text style={{ color: colorsPES.white, fontSize: 16 }}>Mua lại</Text>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
@@ -114,7 +78,7 @@ const Awaiting = () => {
     )
 }
 
-export default Awaiting
+export default Delivered
 
 const styles = StyleSheet.create({
     container: {
@@ -127,7 +91,7 @@ const styles = StyleSheet.create({
         backgroundColor: colorsPES.white,
         paddingHorizontal: 16,
         width: '100%',
-        marginVertical: 10,
+        marginTop: 10,
         flexDirection: 'row',
         paddingVertical: 10,
     },
@@ -162,11 +126,19 @@ const styles = StyleSheet.create({
     status: {
         paddingVertical: 5,
         paddingHorizontal: 5,
-        backgroundColor: colorsPES.borderColorPrimary,
-        width: '50%',
+        backgroundColor: '#D4EFDF',
+        width: '70%',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 12,
         marginTop: 10
+    },
+    button: {
+        paddingVertical: 7,
+        width: '40%',
+        borderRadius: 5,
+        backgroundColor: colorsPES.borderColorBlue,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 })
