@@ -25,7 +25,7 @@ export const userNameContainer = {
 };
 export const flatlistContainer = {
   width: '100%',
-  marginTop: 10,
+  marginTop: 5,
 };
 export const imgVoucher = {
   width: 343,

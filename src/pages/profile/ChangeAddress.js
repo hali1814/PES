@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, FlatList } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
-import { icons } from '.././../assets';
-import { images } from '.././../assets';
+import { icons } from '../../assets';
+import { images } from '../../assets';
 import colorsPES from '../../constants/colors';
 import { UserContext } from '../../api/authservice/UserContext';
 

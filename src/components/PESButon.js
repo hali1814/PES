@@ -10,7 +10,7 @@ const PESButon = ({on_press, btn_text}) => {
         justifyContent: 'center',
         width: '100%',
         height: 44,
-        borderRadius: 60,
+        borderRadius: 5,
         backgroundColor: '#5865F2',
       }}>
       <Text

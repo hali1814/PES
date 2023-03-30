@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList } from 'react-native'
 import React, { useEffect, useContext } from 'react'
-import { icons } from '.././../assets';
-import { images } from '.././../assets';
+import { icons } from '../../assets';
+import { images } from '../../assets';
 import colorsPES from '../../constants/colors';
 import { UserContext } from '../../api/authservice/UserContext';
 import PESHeader from '../../components/PESHeader';

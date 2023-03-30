@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput } from 'react-native'
 import React from 'react'
-import { icons } from '.././../assets';
-import { images } from '.././../assets';
+import { icons } from '../../assets';
+import { images } from '../../assets';
 import colorsPES from '../../constants/colors';
 
 

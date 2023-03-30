@@ -9,15 +9,23 @@ import {
   getProductsByGenres,
   getStore,
 } from './ProductService';
-import React, { useState, createContext } from 'react';
+import React, {useState, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ProductContext = createContext();
 
 export const ProductsContextProvider = props => {
-  const { children } = props;
+  const {children} = props;
   const [products, setProducts] = useState([]);
-  const [genres, setGenres] = useState([]);
+  const [genres, setGenres] = useState([
+    {
+      _id: 'dfahsdkfhaksjhdfkjash',
+      label: 'Tất cả',
+      images:
+        'http://pes.store/images/2fba12b9-0511-4124-94eb-2ee01a2498b6.png',
+      status: false,
+    },
+  ]);
   const [detail, setDetail] = useState('');
   const [store, setStore] = useState([]);
   const [cart, setCart] = useState([]);
@@ -55,7 +63,8 @@ export const ProductsContextProvider = props => {
     try {
       const res = await getAllGenres();
       if (res.status == 'success') {
-        setGenres(res.data);
+        const tmp = [genres[0], ...res.data];
+        setGenres(tmp);
         return true;
       }
     } catch (error) {
@@ -81,8 +90,7 @@ export const ProductsContextProvider = props => {
       if (res.status == 'success') {
         console.log('add cart product ==>', res.data.message);
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     } catch (error) {
@@ -96,8 +104,7 @@ export const ProductsContextProvider = props => {
       if (res.status == 'success') {
         console.log('delete cart product ==>', res.data.message);
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     } catch (error) {
@@ -131,15 +138,15 @@ export const ProductsContextProvider = props => {
 
   const onGetCart = async () => {
     try {
-      const res = await getCart()
+      const res = await getCart();
       if (res.status == 'success') {
         setCart(res.data);
-        return res.data
+        return res.data;
       }
     } catch (error) {
       console.log('GET CART ERROR ==>', error);
     }
-  }
+  };
 
   return (
     <ProductContext.Provider
@@ -162,7 +169,8 @@ export const ProductsContextProvider = props => {
         flashSaleProducts,
         onGetAllFlashSaleProducts,
         onGetCart,
-        cart
+        setGenres,
+        cart,
       }}>
       {children}
     </ProductContext.Provider>

@@ -29,44 +29,7 @@ import { ConfirmDialog, SuccessDialog, FailDialog } from '../../components'
 
 const Cart = ({ navigation }) => {
 
-    const DATA = [
-        {
-            id: 1,
-            name: 'Giày MLB Bigball Chunky Mesh LikeNew Màu Trắng x1',
-            description: 'Giày Authentic',
-            price: 1999000,
-            image: images.detail_image,
-            quantity: 1
-
-        },
-        {
-            id: 2,
-            name: 'Giày MLB Bigball Chunky Mesh LikeNew Màu Trắng x1',
-            description: 'Giày Authentic',
-            price: 2000000,
-            image: images.detail_image,
-            quantity: 1
-
-        },
-        {
-            id: 3,
-            name: 'Giày MLB Bigball Chunky Mesh LikeNew Màu Trắng x1',
-            description: 'Giày Authentic',
-            price: 1999000,
-            image: images.detail_image,
-            quantity: 1
-
-        },
-        {
-            id: 4,
-            name: 'Giày MLB Bigball Chunky Mesh LikeNew Màu Trắng x1',
-            description: 'Giày Authentic',
-            price: 1999000,
-            image: images.detail_image,
-            quantity: 1
-
-        },
-    ]
+    
     const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
     const [successDialogVisible, setSuccessDialogVisible] = useState(false);
     const [failedDialogVisible, setFailedDialogVisible] = useState(false);
@@ -131,9 +94,6 @@ const Cart = ({ navigation }) => {
             throw error
         }
     }
-
-    // let prices = cartData.map((item) => item.stock.price)
-    // console.log('pricesssss', prices)
 
     return (
         <SafeAreaView style={styles.container}>
@@ -227,7 +187,7 @@ const Cart = ({ navigation }) => {
                                             fontSize: 16, color: colorsPES.black,
                                             marginLeft: 5
                                         }}>
-                                            {formatPrice(item.stock.price * item.quantity)}
+                                            {446456654}
                                         </Text>
                                     </TouchableOpacity>
                                     <View style={styles.quantityContainer}>

@@ -11,7 +11,7 @@ const PESButtonOutline = ({on_press, btn_text}) => {
         justifyContent: 'center',
         width: '100%',
         height: 44,
-        borderRadius: 60,
+        borderRadius: 10,
         borderWidth: 0.5,
         borderColor: '#5865F2',
       }}>

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, Alert, StatusBar, Modal, TextInput } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
-import { icons } from '.././../assets';
-import { images } from '.././../assets';
+import { icons } from '../../assets';
+import { images } from '../../assets';
 import colorsPES from '../../constants/colors';
 import { UserContext } from '../../api/authservice/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';

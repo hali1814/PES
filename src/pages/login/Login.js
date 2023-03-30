@@ -23,8 +23,8 @@ const Login = props => {
   const {navigation, route} = props;
   const [errorPhoneNumber, setErrorPhoneNumber] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('0918865377');
-  const [password, setPassword] = useState('hunglong0209');
+  const [phoneNumber, setPhoneNumber] = useState('0865658544');
+  const [password, setPassword] = useState('123');
   const isValidationOK = () =>
     phoneNumber.length > 0 &&
     password.length > 0 &&
@@ -155,7 +155,7 @@ const Login = props => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.facebookLogin}>
+        <TouchableOpacity style={styles.googleLogin}>
           <Image style={{width: 18, height: 18}} source={icons.facebookIcon} />
           <View style={{height: 20, marginLeft: 8}}>
             <Text
@@ -238,8 +238,9 @@ const styles = StyleSheet.create({
 
   termContainer: {
     width: '100%',
-    height: 32,
     marginTop: 16,
+    paddingVertical: 10,
+    
   },
 
   loginText: {
@@ -254,7 +255,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 8,
-    borderRadius: 60,
+    borderRadius: 5,
   },
 
   registerText: {
@@ -281,13 +282,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+
   },
 
   googleLogin: {
     width: 157.5,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    height: 44,
+    height: 49,
     borderWidth: 1,
     borderColor: colorsPES.borderColorBlue,
     borderRadius: 8,

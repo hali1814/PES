@@ -28,10 +28,18 @@ export const PESFlatList = ({navigation, onPressFlatlist}) => {
 
   return (
     <FlatList
-      pagingEnabled
+      scrollEnabled = {false}
       data={currentProducts}
       numColumns={2}
       keyExtractor={item => item._id}
+      style={{height: '100%'}}
+      refreshing={false}
+      showsVerticalScrollIndicator={false}
+      columnWrapperStyle={{
+        flex: 0.5,
+        justifyContent: 'space-between',
+        paddingRight: 5
+      }}
       renderItem={({item}) => (
         <PESListItem
           navigation={navigation}

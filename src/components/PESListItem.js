@@ -1,26 +1,35 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+} from 'react-native';
+import React, {useContext, useEffect} from 'react';
 import color from '../styles/colors';
-import { icons } from '../assets';
+import {icons} from '../assets';
 import Fonts from '../assets/fonts/fonts';
-import { ProductContext } from '../api/authservice/ProductAPI/ProductContext';
+import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Detail from '../pages/detail/Detail';
-import { formatPrice } from '../utils/MoneyFormat';
+import {formatPrice} from '../utils/MoneyFormat';
 
 const PESListItem = props => {
-  const { item, navigation, onPress } = props;
+  const {item, navigation, onPress} = props;
 
   const navigationPush = () => {
-    navigation.navigate('Detail', { id: item._id, type: item.type });
+    navigation.navigate('Detail', {id: item._id, type: item.type});
   };
 
   const price = item.stock[0].price;
 
   return (
     <TouchableOpacity onPress={navigationPush} style={styles.Container}>
-      <View style={{ width: '100%', height: 180.5 }}>
-        <Image source={{ uri: item.images[0] }} style={styles.imgProduct} />
-      </View>
+      <ImageBackground
+        source={{uri: item.images[0]}}
+        style={styles.imgProduct}
+      />
+
       {/* Sale */}
       <View
         style={{
@@ -32,17 +41,31 @@ const PESListItem = props => {
         </View>
       </View>
       {/* Title với About */}
-      <View style={{ marginTop: 12 }}>
+      <View
+        style={{
+          marginTop: 6,
+          paddingHorizontal: 6,
+          height: 69,
+          justifyContent: 'space-evenly',
+        }}>
         <Text numberOfLines={1} style={styles.textName}>
           {item.name}
         </Text>
-        <Text numberOfLines={2} style={styles.textAbout}>
-          {item.description}
-        </Text>
-      </View>
-      {/* Price */}
-      <View style={{ marginTop: 4 }}>
-        <Text style={styles.textPrice}>{formatPrice(price)}</Text>
+        {/* Price */}
+        <View style={{flexDirection: 'row',  justifyContent: 'space-between'}}>
+          <Text style={styles.textPrice}>{formatPrice(price)}</Text>
+          <Text
+            style={{
+              fontSize: 10,
+              fontFamily: Fonts.Work_SemiBold,
+              fontWeight: '100',
+              
+     
+              textAlignVertical: 'bottom'
+            }}>
+            {item.sold} sold
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -67,13 +90,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   Container: {
-    flex: 1,
-    borderRadius: 4,
+    flex: 0.5,
     backgroundColor: color.WHITE,
-    width: 165.5,
-    padding: 12,
-    margin: 10,
+    height: 230,
     flexDirection: 'column',
+    marginLeft: 5,
+    marginBottom: 5
   },
   headerContainer: {
     flexDirection: 'row',
@@ -96,7 +118,7 @@ const styles = StyleSheet.create({
   imgProduct: {
     width: '100%',
     resizeMode: 'cover',
-    height: '100%',
+    height: 161,
   },
   headerTextContainer: {
     flexDirection: 'column',
@@ -108,7 +130,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     fontSize: 15,
     fontFamily: Fonts.Work_SemiBold,
-    color: color.BLACK,
+    fontWeight: 'bold'
   },
   textAbout: {
     marginTop: 4,
@@ -120,6 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Fonts.Work_SemiBold,
     alignContent: 'center',
+    textAlignVertical: 'bottom',
     color: color.MAIN,
   },
   imgContainer: {

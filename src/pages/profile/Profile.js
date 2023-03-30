@@ -9,8 +9,8 @@ import {
   StatusBar,
 } from 'react-native';
 import React, {useContext, useEffect} from 'react';
-import {icons} from '.././../assets';
-import {images} from '.././../assets';
+import {icons} from '../../assets';
+import {images} from '../../assets';
 import colorsPES from '../../constants/colors';
 import {UserContext} from '../../api/authservice/UserContext';
 import Fonts from '../../assets/fonts/fonts';

@@ -5,20 +5,21 @@ import {
   TouchableOpacity,
   Image,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import color from '../styles/colors';
-import { icons } from '../assets';
+import {icons} from '../assets';
 import Fonts from '../assets/fonts/fonts';
-import { ProductContext } from '../api/authservice/ProductAPI/ProductContext';
+import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Detail from '../pages/detail/Detail';
-import { formatPrice } from '../utils/MoneyFormat';
+import {formatPrice} from '../utils/MoneyFormat';
 
 const PESListFlashSale = props => {
-  const { item, navigation, onPress } = props;
+  const {item, navigation, onPress} = props;
 
   const navigationPush = () => {
-    navigation.push('Detail', { id: item._id, type: item.type });
+    navigation.push('Detail', {id: item._id, type: item.type});
   };
 
   const price = item.stock[0].price;
@@ -26,9 +27,10 @@ const PESListFlashSale = props => {
   return (
     <TouchableOpacity onPress={navigationPush} style={styles.Container}>
       {/* image */}
-      <View style={{ width: '100%', height: 140, borderRadius: 4 }}>
-        <Image source={{ uri: item.images[0] }} style={styles.imgProduct} />
-      </View>
+      <ImageBackground
+        style={{height: 160, width: 150}}
+        source={{uri: item.images[0]}}
+      />
       {/* Sale */}
       <View
         style={{
@@ -39,8 +41,42 @@ const PESListFlashSale = props => {
           <Text style={styles.txtSale}>{item.sale}%</Text>
         </View>
       </View>
-      <View style={{ alignItems: 'center', marginTop: 4 }}>
+      <View style={{alignItems: 'center'}}>
         <Text style={styles.textPrice}>{formatPrice(price)}</Text>
+      </View>
+      <View
+        style={{
+          backgroundColor: 'pink',
+          height: 15,
+          width: 130,
+          alignSelf: 'center',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-evenly',
+          borderRadius: 50,
+        }}>
+        <View
+          style={{
+            backgroundColor: '#FC2947',
+            height: '100%',
+            width: 30,
+            borderBottomLeftRadius: 50,
+            borderTopLeftRadius: 50,
+          }}
+        />
+        <Text
+          style={{
+            fontSize: 10,
+            fontFamily: Fonts.Work_SemiBold,
+            color: 'white',
+            fontWeight: 'bold',
+            position: 'relative',
+            width: 100,
+            paddingRight: 30,
+            textAlign: 'center',
+          }}>
+          {item.sold} SOLD
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -66,10 +102,11 @@ const styles = StyleSheet.create({
   },
   Container: {
     flex: 1,
-    borderRadius: 4,
-    backgroundColor: color.WHITE,
-    width: 126,
-    margin: 10,
+    borderRadius: 1,
+
+    width: 150,
+    height: 210,
+    margin: 2.5,
     flexDirection: 'column',
   },
   headerContainer: {
@@ -77,7 +114,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
 
-  imgSale: { width: 16, height: 16, alignSelf: 'center', tintColor: color.WHITE },
+  imgSale: {width: 16, height: 16, alignSelf: 'center', tintColor: color.WHITE},
 
   imgProduct: {
     width: '100%',
