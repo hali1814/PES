@@ -5,9 +5,11 @@ import {
   getAllProducts,
   getCart,
   getDetail,
+  calculatorBill,
   getFlashSale,
   getProductsByGenres,
   getStore,
+  declineCart
 } from './ProductService';
 import React, {useState, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,7 +21,7 @@ export const ProductsContextProvider = props => {
   const [products, setProducts] = useState([]);
   const [genres, setGenres] = useState([
     {
-      _id: 'dfahsdkfhaksjhdfkjash',
+      _id: 'dfahsdkfhaksjhdfkjash', // Không xóa ID của HÀO HOA OKEEE
       label: 'Tất cả',
       images:
         'http://pes.store/images/2fba12b9-0511-4124-94eb-2ee01a2498b6.png',
@@ -112,6 +114,21 @@ export const ProductsContextProvider = props => {
     }
   };
 
+  const onCalculator = async (voucher_shipping, voucher_pes) => {
+    try {
+      const res = await calculatorBill(voucher_shipping, voucher_pes);
+      if (res.status == 'success') {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('onCalculator failed ===>', error);
+    }
+  };
+
+
+
+
+
   const onGetProductsByGenre = async _id => {
     try {
       const res = await getProductsByGenres(_id);
@@ -148,17 +165,33 @@ export const ProductsContextProvider = props => {
     }
   };
 
+  const onDeclineCart = async (idProduct, size, color) => {
+    try {
+      const res = await declineCart(idProduct, size, color);
+      if (res.status == 'success') {
+        console.log('add cart product ==>', res.data.message);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log('onAddCart failed ===>', error);
+    }
+  };
+
   return (
     <ProductContext.Provider
       value={{
         onDeleteCart,
         productsByGenre,
         onAddCart,
+        onDeclineCart,
         setCart,
         onGetProductsByGenre,
         setProductsByGenre,
         onGetAllProducts,
         setProducts,
+        onCalculator,
         products,
         onGetAllGenre,
         genres,

@@ -4,6 +4,7 @@ import {icons} from '../assets';
 import color from '../styles/colors';
 import {textsPES} from '../constants/string';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Fonts from '../assets/fonts/fonts';
 
 const PESHeader = ({title, onPress, navigation}) => {
   return (
@@ -21,6 +22,7 @@ const PESHeader = ({title, onPress, navigation}) => {
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{title}</Text>
       </View>
+      <View style={styles.imageContainer}></View>
     </View>
   );
 };
@@ -32,23 +34,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 54,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignSelf: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 7,
+    width: '100%',
+    backgroundColor: 'white'
   },
   imageContainer: {
     width: 24,
     height: 24,
-    paddingHorizontal: 16,
   },
   textContainer: {
     alignItems: 'center',
-    width: '100%',
   },
 
   titleText: {
     color: color.TEXT_PRIMARY,
-    fontWeight: '600',
+    fontWeight: '300',
+    fontFamily: Fonts.Man_ExtraBold,
     fontSize: 16,
   },
 });

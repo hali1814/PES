@@ -1,532 +1,633 @@
 import {
-    StyleSheet, Text, View, SafeAreaView,
-    TouchableOpacity, FlatList, Image, ScrollView,
-    ActivityIndicator, Alert, Modal
-} from 'react-native'
-import React, { useEffect, useState, useContext } from 'react'
-import Icon from 'react-native-vector-icons/Ionicons'
-import Fonts from '../../assets/fonts/fonts'
-import colorsPES from '../../constants/colors'
-import { icons, images } from '../../assets'
-import color from '../../styles/colors'
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+  Alert,
+  Modal,
+  StatusBar,
+} from 'react-native';
+import React, {useEffect, useState, useContext} from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Fonts from '../../assets/fonts/fonts';
+import colorsPES from '../../constants/colors';
+import {icons, images} from '../../assets';
+import color from '../../styles/colors';
+import {formatPrice} from '../../utils/MoneyFormat';
 import {
-    txtVoucher,
-    voucherContainer,
-    voucherText,
+  txtVoucher,
+  voucherContainer,
+  voucherText,
 } from '../shop/components/styles';
 import {
-    addCartButton,
-    buyButton,
-    buyContainer,
-    buyText,
-    payContainer,
-    payMoneyText,
-    payText,
+  addCartButton,
+  buyButton,
+  buyContainer,
+  buyText,
+  payContainer,
+  payMoneyText,
+  payText,
 } from '../detail/components/styles';
-import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext'
-import { formatPrice } from '../../utils/MoneyFormat';
-import { ConfirmDialog, SuccessDialog, FailDialog } from '../../components'
+import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import {ConfirmDialog, SuccessDialog, FailDialog} from '../../components';
+import { addCart } from '../../api/authservice/ProductAPI/ProductService';
 
-const Cart = ({ navigation }) => {
+const Cart = ({navigation}) => {
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+  const [successDialogVisible, setSuccessDialogVisible] = useState(false);
+  const [failedDialogVisible, setFailedDialogVisible] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
-    
-    const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
-    const [successDialogVisible, setSuccessDialogVisible] = useState(false);
-    const [failedDialogVisible, setFailedDialogVisible] = useState(false);
-    const [isSelected, setIsSelected] = useState(false);
+  const handlePress = () => {
+    setIsSelected(!isSelected);
+  };
 
-    const handlePress = () => {
-        setIsSelected(!isSelected);
-    };
+  const handleSuccess = () => {
+    setSuccessDialogVisible(true);
+  };
+  const handleSuccessDialogClose = () => {
+    setSuccessDialogVisible(false);
+  };
 
-    const handleSuccess = () => {
-        setSuccessDialogVisible(true);
-    };
-    const handleSuccessDialogClose = () => {
-        setSuccessDialogVisible(false);
-    };
+  const handleFailed = () => {
+    setFailedDialogVisible(true);
+  };
+  const handleFailedDialogClose = () => {
+    setFailedDialogVisible(false);
+  };
+  const handleConfirm = (idProduct, size, color) => {
+    setId(idProduct);
+    setSize(size);
+    setColorProduct(color);
+    setConfirmDialogVisible(true);
+  };
 
-    const handleFailed = () => {
-        setFailedDialogVisible(true);
-    };
-    const handleFailedDialogClose = () => {
-        setFailedDialogVisible(false);
-    };
-    const handleConfirm = (idProduct, size, color) => {
-        setId(idProduct)
-        setSize(size)
-        setColorProduct(color)
-        setConfirmDialogVisible(true);
-    };
-    const handleConfirmDialogClose = () => {
-        setConfirmDialogVisible(false);
-    };
-    const { cart, onGetCart, onDeleteCart } = useContext(ProductContext)
-    const [cartData, setCartData] = useState([])
-    const [id, setId] = useState('')
-    const [size, setSize] = useState('')
-    const [colorProduct, setColorProduct] = useState('')
-    const [quantity, setQuantity] = useState(0)
-    const [stock, setStock] = useState('')
+  
 
 
-    useEffect(() => {
+  const handleConfirmDialogClose = (idProduct, size, color) => {
+    setId(idProduct)
+    setSize(size)
+    setColorProduct(color)
+    setConfirmDialogVisible(true);
+  };
+  const {cart, onGetCart, onDeleteCart, onDeclineCart, onAddCart} = useContext(ProductContext);
+  const [cartData, setCartData] = useState([]);
+  const [id, setId] = useState('');
+  const [size, setSize] = useState('');
+  const [colorProduct, setColorProduct] = useState('');
+  const [quantity, setQuantity] = useState(0);
+  const [stock, setStock] = useState('');
+
+  useEffect(() => {
+    onGetCart();
+  }, []);
+
+  // const GetAllCart = async () => {
+  //     const cartItem = await onGetCart()
+  //     setStock(cartItem.stock)
+  //     setCartData(cartItem)
+  // }
+
+  const deleteCart = async () => {
+    try {
+      const res = await onDeleteCart(id, size, colorProduct);
+      if (res == false) {
+        handleFailed();
+      } else {
+        handleSuccess();
         onGetCart()
-    }, [])
-
-    // const GetAllCart = async () => {
-    //     const cartItem = await onGetCart()
-    //     setStock(cartItem.stock)
-    //     setCartData(cartItem)
-    // }
-
-    const deleteCart = async () => {
-        try {
-            const res = await onDeleteCart(id, size, colorProduct)
-            if (res == false) {
-                handleFailed()
-            } else {
-                handleSuccess()
-                setTimeout(() => { navigation.navigate('Cart') }, 2000)
-            }
-        } catch (error) {
-            console.log('error', error)
-            throw error
-        }
+        setConfirmDialogVisible(false)
+        setTimeout(()=>handleSuccessDialogClose(), 3000)
+        
+      }
+    } catch (error) {
+      console.log('error', error);
+      throw error;
     }
+  };
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView
-                nestedScrollEnabled
-                showsVerticalScrollIndicator={false}
-            >
-                {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 18, fontWeight: '700', color: colorsPES.black }}>Giỏ hàng</Text>
-                </View> */}
-                <View style={styles.cartContainer}>
-                    <View style={styles.titleContainer}>
-                        <Text
-                            style={{
-                                fontSize: 18, fontWeight: '600',
-                                fontFamily: Fonts.Man_SemiBold, color: colorsPES.borderColorBlue
-                            }}>
-                            Giỏ hàng
-                        </Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text
-                                style={{
-                                    marginEnd: 12, fontSize: 12, fontWeight: '400',
-                                    color: colorsPES.black, fontFamily: Fonts.Work_Light
-                                }}>
-                                Tất cả
-                            </Text>
-                            <TouchableOpacity>
-                                <Icon
-                                    name='ellipse-outline'
-                                    size={25}
-                                    color={colorsPES.primary}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <FlatList
-                        data={cart}
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={(item) => item.idProduct}
-                        renderItem={({ item }) => (
-                            <View style={styles.productContainer}>
-                                <TouchableOpacity
-                                    onPress={handlePress}
-                                >
-                                    <Icon
-                                        name={isSelected ? 'checkmark-circle-outline' : 'ellipse-outline'}
-                                        size={25}
-                                        color={colorsPES.primary}
-                                    />
-                                </TouchableOpacity>
-                                <Image style={{ width: 44, height: 44, marginStart: 8 }} source={{ uri: item.images[0] }} resizeMode='cover' />
-                                <View style={styles.productContent}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <Text style={{
-                                            color: colorsPES.black,
-                                            fontSize: 16, fontWeight: '600',
-                                            marginRight: 30, width: '60%',
-                                            textTransform: 'capitalize'
-                                        }}>
-                                            {item.name}
-                                        </Text>
-                                        <TouchableOpacity
-                                            onPress={() => { handleConfirm(item.idProduct, item.size, item.color) }}
-                                        >
-                                            <Icon
-                                                name='trash-outline'
-                                                size={25}
-                                                color={colorsPES.red}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
+  const declineCart = async (id, size, colorProduct, quantity) => {
+    try {
+      if (quantity == 1) {
+        handleConfirmDialogClose(id, size, colorProduct)
+        return
+      }
+      const res = await onDeclineCart(id, size, colorProduct);
+      if (!res) {
+        handleFailed();
+      } else {
+        onGetCart()
+      }
+    } catch (error) {
+      console.log('error', error);
+      throw error;
+    }
+  };
 
-                                    <TouchableOpacity
-                                        onPress={() => { navigation.navigate('Detail', { id: item.idProduct }) }}
-                                        style={{
-                                            flexDirection: 'row', alignItems: 'center',
-                                            width: '50%',
-                                            marginTop: 4,
-                                            justifyContent: 'space-between'
-                                        }}>
-                                        <Text
-                                            numberOfLines={2}
-                                            style={{
-                                                fontWeight: '400',
-                                                fontSize: 13, color: colorsPES.inActive,
-                                                width: '90%'
-                                            }}>{item.description}</Text>
-                                        <Text style={{
-                                            fontWeight: '600',
-                                            fontSize: 16, color: colorsPES.black,
-                                            marginLeft: 5
-                                        }}>
-                                            {446456654}
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <View style={styles.quantityContainer}>
-                                        <TouchableOpacity
-                                            style={{
-                                                backgroundColor: colorsPES.grey,
-                                                borderRadius: 3, width: 20, height: 20,
-                                                justifyContent: 'center',
-                                                alignItems: 'center'
-                                            }}
-                                        >
-                                            <Text style={{
-                                                fontWeight: '400',
-                                                fontSize: 13, color: colorsPES.inActive,
-                                                backgroundColor: colorsPES.grey,
-                                            }}>
-                                                -
-                                            </Text>
-                                        </TouchableOpacity>
-                                        <Text style={{ marginHorizontal: 5 }}>{item.quantity}</Text>
-                                        <TouchableOpacity
-                                            onPress={() => { setQuantity(item.quantity + 1) }}
-                                            style={{
-                                                backgroundColor: colorsPES.grey,
-                                                borderRadius: 3, width: 20, height: 20,
-                                                justifyContent: 'center',
-                                                alignItems: 'center'
-                                            }}
-                                        >
-                                            <Text style={{
-                                                fontWeight: '400',
-                                                fontSize: 13, color: colorsPES.inActive,
-                                                backgroundColor: colorsPES.grey,
-                                            }}>
-                                                +
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </View>
-                        )}
-                    />
-                </View>
-                <TouchableOpacity style={{ marginTop: 10 }}>
-                    <Image source={images.aplyVoucher} resizeMode='cover' style={{ width: '100%' }} />
-                </TouchableOpacity>
-                <View style={styles.payContainer}>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                        }}>
-                        <Text
-                            style={{
-                                fontFamily: Fonts.Work_SemiBold,
-                                fontSize: 16,
-                                color: color.TEXT_PRIMARY,
-                            }}>
-                            {'Phương thức thanh toán'}
-                        </Text>
-                        <TouchableOpacity onPress={() => { }} style={{ flexDirection: 'row' }}>
-                            <Text style={styles.txtVoucher}>{'Xem tất cả'}</Text>
-                            <Image
-                                source={icons.chevronRight_icon}
-                                style={{ width: 16, height: 16, marginLeft: 2 }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                    <ScrollView showsHorizontalScrollIndicator={false}
-                        horizontal style={{ marginTop: 16 }}>
-                        <TouchableOpacity style={styles.payView}>
-                            <Image source={icons.payIcon} style={{ width: 16, height: 16 }} />
-                            <View
-                                style={{
-                                    marginLeft: 8,
-                                    width: '83%',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                }}>
-                                <Text
-                                    numberOfLines={1}
-                                    style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
-                                    {'Thanh toán khi nhận hàng'}
-                                </Text>
-                                <Text
-                                    numberOfLines={1}
-                                    style={{
-                                        fontFamily: Fonts.Work_Regular,
-                                        fontSize: 11,
-                                        color: color.TEXT_SECOND,
-                                        marginTop: 8,
-                                    }}>
-                                    {'Thanh toán khi nhận hàng'}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.payView}>
-                            <Image
-                                source={icons.payMomoIcon}
-                                style={{ width: 16, height: 16 }}
-                            />
-                            <View
-                                style={{
-                                    marginLeft: 8,
-                                    width: '83%',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                }}>
-                                <Text
-                                    numberOfLines={1}
-                                    style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
-                                    {'Momo'}
-                                </Text>
-                                <Text
-                                    numberOfLines={1}
-                                    style={{
-                                        fontFamily: Fonts.Work_Regular,
-                                        fontSize: 11,
-                                        color: color.TEXT_SECOND,
-                                        marginTop: 8,
-                                    }}>
-                                    {'Liên kết ví Momo để thanh toán'}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.payView}>
-                            <Image
-                                source={icons.payZaloIcon}
-                                style={{ width: 16, height: 16 }}
-                            />
-                            <View
-                                style={{
-                                    marginLeft: 8,
-                                    width: '83%',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                }}>
-                                <Text
-                                    numberOfLines={1}
-                                    style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
-                                    {'Zalopay'}
-                                </Text>
-                                <Text
-                                    numberOfLines={1}
-                                    style={{
-                                        fontFamily: Fonts.Work_Regular,
-                                        fontSize: 11,
-                                        color: color.TEXT_SECOND,
-                                        marginTop: 8,
-                                    }}>
-                                    {'Liên kết ví Zalopay để thanh toán'}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </ScrollView>
-                </View>
-                <View style={styles.billContainer}>
-                    <Text
-                        style={{
-                            fontFamily: Fonts.Work_SemiBold,
-                            fontSize: 16,
-                            color: color.TEXT_PRIMARY,
-                        }}>
-                        {'Thông tin thanh toán'}
-                    </Text>
-                    <View
-                        style={{
-                            marginTop: 16,
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                        }}>
-                        <View
-                            style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
-                                {'Tiền hàng'}
-                            </Text>
-                            <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
-                                {'1,999,999'}đ
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginTop: 8,
-                            }}>
-                            <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
-                                {'Phí vận chuyển'}
-                            </Text>
-                            <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
-                                {'Miễn phí'}
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginTop: 8,
-                            }}>
-                            <Text style={{ fontFamily: Fonts.Work_SemiBold, fontSize: 14 }}>
-                                {'Tổng tiền'}
-                            </Text>
-                            <Text style={{ fontFamily: Fonts.Work_SemiBold, fontSize: 14 }}>
-                                {'1,999,999'}đ
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView >
-            <View
+  const plusCart = async (id, size, colorProduct) => {
+    try {
+      const res = await onAddCart(id, size, colorProduct, 1);
+      if (!res) {
+        handleFailed();
+      } else {
+        onGetCart()
+      }
+    } catch (error) {
+      console.log('error', error);
+      throw error;
+    }
+  };
+
+  return (
+    <View style={{flex: 1}}>
+      <View
+        style={{
+          height: StatusBar.currentHeight,
+          width: '100%',
+          backgroundColor: color.MAIN,
+        }}
+      />
+      <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+        <StatusBar
+          hidden={false}
+          backgroundColor="transparent"
+          translucent={true}
+          barStyle={'light-content'}
+        />
+        <View
+          style={{
+            height: 50,
+            width: '100%',
+            backgroundColor: color.MAIN,
+            flexDirection: 'row',
+            paddingHorizontal: 5,
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Image
+              source={icons.chevronBackWhite_icon}
+              style={{width: 24, height: 24}}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: '600',
+              fontFamily: Fonts.Man_SemiBold,
+              color: 'white',
+              marginLeft: 10,
+            }}>
+            Giỏ hàng
+          </Text>
+        </View>
+        <View style={{width: '100%'}}>
+          <FlatList
+            scrollEnabled={false}
+            data={cart}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}) => (
+              <View
                 style={{
-                    height: 75,
-                    backgroundColor: color.WHITE,
-                    justifyContent: 'flex-start',
+                  backgroundColor: 'white',
+                  marginBottom: 10,
+                  width: '100%',
+                  height: 140,
                 }}>
-                <View style={payContainer}>
-                    <View style={{ flexDirection: 'column' }}>
-                        <View style={{ height: 20, justifyContent: 'center' }}>
-                            <Text style={payText}>{'Thanh Toán'}</Text>
-                        </View>
-                        <View style={{ height: 30, justifyContent: 'center' }}>
-                            <Text style={payMoneyText}>{'2.000.000'}đ</Text>
-                        </View>
-                    </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingTop: 10,
+                    paddingHorizontal: 10,
+                  }}>
+                  <Image
+                    style={{height: 70, width: 80}}
+                    source={
+                      !item
+                        ? require('../../assets/images/haohoa_scanQR.png')
+                        : {uri: item.images[0]}
+                    }
+                  />
+                  <View style={{width: '70%'}}>
+                    <Text
+                      style={{
+                        fontSize: 17,
+                        fontFamily: Fonts.Work_Bold,
+                        color: color.MAIN,
+                        width: '70%',
+                      }}>
+                      {item?.name.toString().toUpperCase() || ''}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontFamily: Fonts.Work_Bold,
+                        color: color.TEXT_SECOND,
+                        width: '70%',
+                      }}>
+                      SIZE: {item?.size.toString().toUpperCase()}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontFamily: Fonts.Work_Bold,
+                        color: color.TEXT_SECOND,
+                        width: '70%',
+                      }}>
+                      COLOR: {item?.color.toString().toUpperCase()}
+                    </Text>
+                  </View>
 
-                    {/* ButtonBuy */}
-                    <TouchableOpacity>
-                        <View style={buyButton}>
-                            <View style={buyContainer}>
-                                <Text style={buyText}>{'Mua ngay'}</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                  <TouchableOpacity onPress= {() =>handleConfirmDialogClose(item.idProduct, item.size, item.color)}>
+                    <Image
+                      style={{
+                        height: 15,
+                        width: 15,
+                        tintColor: color.TEXT_SECOND,
+                      }}
+                      source={require('../../assets/images/haohoa_cancel.png')}
+                    />
+                  </TouchableOpacity>
                 </View>
-            </View>
-            <SuccessDialog
-                visible={successDialogVisible}
-                onPress={handleSuccessDialogClose}
-                message="Xoá sản phẩm thành công !"
-            />
-            <FailDialog
-                visible={failedDialogVisible}
-                onPress={handleFailedDialogClose}
-                message="Xoá sản phẩm thất bại !"
-            />
-            <ConfirmDialog
-                visible={confirmDialogVisible}
-                onCancelPress={handleConfirmDialogClose}
-                onPress={deleteCart}
-                message="Bạn chắc chắn muốn xóa khỏi giỏ hàng ?"
-                confirmMessage='Xóa'
-            />
-        </SafeAreaView>
-    )
-}
 
-export default Cart
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: 20,
+                    paddingHorizontal: 10,
+                    marginLeft: 10,
+                  }}>
+                  <View style={{width: 80}}></View>
+                  <View style={styles.quantity}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        declineCart(item?.idProduct, item?.size, item?.color, item?.quantity)
+                      }}>
+                      <View style={styles.quantitybutton}>
+                        <Text style={{fontSize: 18}}>-</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <View style={styles.quantityNumber}>
+                      <Text style={{fontSize: 18}}>{item?.quantity}</Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        plusCart(item?.idProduct, item?.size, item?.color)
+                      }}>
+                      <View style={styles.quantitybutton}>
+                        <Text style={{fontSize: 18}}>+</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: 150,
+                      justifyContent: 'flex-end',
+                      alignItems: 'flex-end',
+                    }}>
+                    <Text>X </Text>
+                    <Text>
+                      {formatPrice(
+                        item?.stock.price *
+                          (1 - item?.sale / 100) *
+                          item?.quantity,
+                      )}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+          />
+        </View>
+
+        <View style={styles.billContainer}>
+          <Text
+            style={{
+              fontFamily: Fonts.Work_SemiBold,
+              fontSize: 16,
+              color: color.TEXT_PRIMARY,
+            }}>
+            {'Thông tin thanh toán'}
+          </Text>
+          <View
+            style={{
+              marginTop: 16,
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+                {'Tiền hàng'}
+              </Text>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+                {formatPrice(
+                  cart.reduce((init, item) => {
+                    init +=
+                      item?.stock.price *
+                      (1 - item?.sale / 100) *
+                      item?.quantity;
+                    return init;
+                  }, 0),
+                )}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 8,
+              }}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+                {'Phí vận chuyển'}
+              </Text>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+                {formatPrice(30000)}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 8,
+              }}>
+              <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 14}}>
+                {'Tổng tiền'}
+              </Text>
+              <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 14}}>
+                {formatPrice(
+                  cart.reduce((init, item) => {
+                    init +=
+                      item?.stock.price *
+                      (1 - item?.sale / 100) *
+                      item?.quantity;
+                    return init;
+                  }, 0) + 30000,
+                )}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+      <View
+        style={{
+          justifyContent: 'flex-start',
+          paddingVertical: 10
+        }}>
+          {/* ButtonBuy */}
+          <View style={{paddingHorizontal: 5}}>
+            {/* ButtonBuy */}
+            <TouchableOpacity
+              style={{
+                backgroundColor: color.MAIN,
+                height: 45,
+                width: '100%',
+                borderRadius: 5,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => {
+                if (cart.length == 0) Alert.alert('list cart rongggg')
+                else {
+                  navigation.navigate('OrderConfirmation')
+                }
+              }}>
+              <Text style={[styles.textTitle, {color: 'white'}]}>
+                TIẾN THÀNH ĐẶT HÀNG
+              </Text>
+            </TouchableOpacity>
+          </View>
+    
+      </View>
+      <SuccessDialog
+        visible={successDialogVisible}
+        onPress={handleSuccessDialogClose}
+        message="Xoá sản phẩm thành công !"
+      />
+      <FailDialog
+        visible={failedDialogVisible}
+        onPress={handleFailedDialogClose}
+        message="Xoá sản phẩm thất bại !"
+      />
+      <ConfirmDialog
+        visible={confirmDialogVisible}
+        onCancelPress={() => setConfirmDialogVisible(false)}
+        onPress={deleteCart}
+        message="Bạn chắc chắn muốn xóa khỏi giỏ hàng ?"
+        confirmMessage="Xóa"
+      />
+    </View>
+  );
+};
+
+export default Cart;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 10,
+  },
 
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        paddingHorizontal: 10,
-    },
+  billContainer: {
+    paddingHorizontal: 12,
+    paddingVertical: 16,
+    backgroundColor: color.WHITE,
+    marginTop: 8,
+    borderRadius: 4,
+  },
 
-    billContainer: {
-        paddingHorizontal: 12,
-        paddingVertical: 16,
-        backgroundColor: color.WHITE,
-        marginTop: 8,
-        borderRadius: 4,
-    },
+  txtVoucher: {
+    fontSize: 13,
+    color: color.MAIN,
+    fontFamily: Fonts.Work_SemiBold,
+  },
 
-    txtVoucher: {
-        fontSize: 13,
-        color: color.MAIN,
-        fontFamily: Fonts.Work_SemiBold,
-    },
+  payContainer: {
+    marginTop: 8,
+    borderRadius: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 16,
+    backgroundColor: color.WHITE,
+  },
 
-    payContainer: {
-        marginTop: 8,
-        borderRadius: 4,
-        paddingHorizontal: 12,
-        paddingVertical: 16,
-        backgroundColor: color.WHITE,
-    },
+  payView: {
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+    borderWidth: 0.5,
+    borderColor: color.MAIN,
+    borderRadius: 4,
+    flexDirection: 'row',
+    width: 200,
+    marginLeft: 8,
+    height: 70,
+  },
 
-    payView: {
-        paddingHorizontal: 8,
-        paddingVertical: 12,
-        borderWidth: 0.5,
-        borderColor: color.MAIN,
-        borderRadius: 4,
-        flexDirection: 'row',
-        width: 200,
-        marginLeft: 8,
-        height: 70
-    },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    width: 250,
+  },
 
-    quantityContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        width: 250
-    },
+  productContent: {
+    marginStart: 10,
+  },
 
-    productContent: {
-        marginStart: 10
-    },
+  productContainer: {
+    marginTop: 16,
+    flexDirection: 'row',
+    padding: 8,
+  },
 
-    productContainer: {
-        marginTop: 16,
-        flexDirection: 'row',
-        padding: 8,
-    },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 
-    titleContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
+  cartContainer: {
+    width: '100%',
+    height: '60%',
+    backgroundColor: colorsPES.white,
+    marginTop: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 16,
+  },
 
-    cartContainer: {
-        width: '100%',
-        height: '60%',
-        backgroundColor: colorsPES.white,
-        marginTop: 10,
-        paddingHorizontal: 12,
-        paddingVertical: 16
-    },
+  container: {
+    flex: 1,
+    paddingHorizontal: 12,
+    paddingTop: 10,
+  },
+  buyButton: {
+    width: '90%',
+    paddingVertical: 10,
+    backgroundColor: colorsPES.borderColorBlue,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
 
-    container: {
-        flex: 1,
-        paddingHorizontal: 12,
-        paddingTop: 10
+  quantityNumber: {
+    width: 50,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colorsPES.inActive,
+  },
 
-    },
-})
+  quantitybutton: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: color.TEXT_SECOND,
+  },
+
+  quantity: {
+    flexDirection: 'row',
+    marginRight: 20,
+  },
+
+  quantityContainer: {
+    marginTop: 20,
+    justifyContent: 'space-between',
+    width: '100%',
+    marginLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  sizeContainer: {
+    marginTop: 20,
+    justifyContent: 'flex-start',
+    width: '100%',
+    marginLeft: 20,
+  },
+
+  contentText: {
+    color: colorsPES.black,
+    fontSize: 16,
+    backgroundColor: '#CFD8DC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    padding: 10,
+  },
+
+  textTitle: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: colorsPES.black,
+  },
+
+  colorContainer: {
+    marginTop: 20,
+    width: '100%',
+    paddingHorizontal: 10,
+  },
+
+  stockContainer: {
+    marginLeft: 20,
+    justifyContent: 'flex-end',
+  },
+
+  imageContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
+
+  contentContainer: {
+    backgroundColor: colorsPES.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingBottom: 20,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  customSale: {
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderTopRightRadius: 4,
+    borderBottomLeftRadius: 4,
+    backgroundColor: color.MAIN,
+    alignItems: 'center',
+  },
+  imgSale: {
+    width: 16,
+    height: 16,
+    tintColor: color.WHITE,
+  },
+  txtSale: {
+    color: color.WHITE,
+    fontFamily: Fonts.Work_Medium,
+    fontSize: 14,
+    marginLeft: 4,
+  },
+});

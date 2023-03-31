@@ -13,7 +13,6 @@ const Orderstyles = StyleSheet.create({
   },
   scrollContainer: {
     paddingHorizontal: 12,
-    paddingVertical: 12,
   },
   Address: {},
   AddressText: {

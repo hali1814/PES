@@ -27,6 +27,7 @@ import Detail from '../pages/detail/Detail';
 import {Product} from '../pages/product';
 import Shop from '../pages/shop/Shop';
 import ShopDetail from '../pages/detail/ShopDetail';
+import SelectVoucher from '../pages/voucher/SelectVoucher';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,6 +54,9 @@ const AppStackScreen = () => {
       <appStack.Screen name="ChangeAddress" component={ChangeAddress} />
       <appStack.Screen name="AddAddress" component={AddAddress} />
       <appStack.Screen name="Voucher" component={Voucher} />
+      <appStack.Screen name="Cart" component={Cart} />
+      <appStack.Screen name="OrderConfirmation" component={OrderConfirmation} />
+      <appStack.Screen name="SelectVoucher" component={SelectVoucher} />
     </appStack.Navigator>
   );
 };
@@ -69,12 +73,12 @@ const MyTab = ({navigation}) => {
               case 'Home':
                 iconName = focused ? 'ios-home' : 'ios-home-outline';
                 break;
-              case 'Cart':
-                iconName = focused ? 'cart' : 'cart-outline';
-                break;
-              case 'Bill':
-                iconName = focused ? 'wallet' : 'wallet-outline';
-                break;
+              // case 'Cart':
+              //   iconName = focused ? 'cart' : 'cart-outline';
+              //   break;
+              // case 'Bill':
+              //   iconName = focused ? 'wallet' : 'wallet-outline';
+              //   break;
               case 'Notification':
                 iconName = focused ? 'notifications' : 'notifications-outline';
                 break;
@@ -104,16 +108,11 @@ const MyTab = ({navigation}) => {
           component={Product}
           options={{title: 'Trang chủ', headerTitleAlign: 'center'}}
         />
-        <Tab.Screen
-          name="Cart"
-          component={Cart}
-          options={{ title: 'Giỏ hàng', headerTitleAlign: 'center' }}
-        />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Bill"
           component={OrderConfirmation}
           options={{title: 'Bill', headerTitleAlign: 'center'}}
-        />
+        /> */}
         <Tab.Screen
           name="Notification"
           component={Profile}

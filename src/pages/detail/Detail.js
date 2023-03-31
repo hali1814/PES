@@ -73,7 +73,7 @@ const Detail = props => {
       }
       return initValue;
     }, {});
-    changeSizeFollowColor(tmp[0])
+    changeSizeFollowColor(tmp[0]);
     setColorsModal(tmp);
     setDetailColor(tmp[0]);
     setVisible(true);
@@ -94,19 +94,23 @@ const Detail = props => {
     });
     const tmpSize = [];
     for (let key in checkSameSizeAndColor) {
-        if (checkSameSizeAndColor[key].includes(color)) {
-          tmpSize.push({size: key, available: true});
-        } else {
-          tmpSize.push({size: key, available: false});
-        }
-
+      if (checkSameSizeAndColor[key].includes(color)) {
+        tmpSize.push({size: key, available: true});
+      } else {
+        tmpSize.push({size: key, available: false});
+      }
     }
-
-    
-
     setDetailSize(false);
     setSizesModal(tmpSize);
+   
   };
+
+  const  getPriceCurrent = (color, size) => {
+    stock.forEach((e)=> {
+      if (e.color == color && e.size == size) setDetailPrice(e.price)
+    })
+  }
+
 
   const closeDialog = () => {
     setVisible(false);
@@ -135,8 +139,8 @@ const Detail = props => {
   }, []);
 
   const [detailImage, setDetailImage] = useState('');
-  const [detailPrice, setDetailPrice] = useState('');
-  const [detailPrice1, setDetailPrice1] = useState('');
+  const [detailPrice, setDetailPrice] = useState(0);
+
 
   const [stock, setStock] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -146,8 +150,6 @@ const Detail = props => {
     setDetaiData(productModal);
     setStock(productModal.stock);
     setDetailImage(productModal.images[0]);
-    setDetailPrice(productModal.stock[0].price);
-    setDetailPrice1(productModal.stock[1].price);
     // setDetailColor(productModal.stock[0].color);
     // setDetailColor1(productModal.stock[1].color);
     // setDetailSize(productModal.stock[0].size);
@@ -504,7 +506,7 @@ const Detail = props => {
           <FlatList
             scrollEnabled={false}
             data={productsByGenre}
-            keyExtractor={item => item._id}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({item}) => (
               <TouchableOpacity
                 onPress={() => {
@@ -582,14 +584,14 @@ const Detail = props => {
                     source={{uri: detailImage}}
                     style={{height: 120, width: 120}}
                   />
-                  <View style={{justifyContent: 'flex-end'}}>
+                  <View style={{justifyContent: 'flex-end', marginLeft: 10}}>
                     <Text
                       style={{
                         fontSize: 18,
                         fontFamily: Fonts.Work_SemiBold,
                         color: color.MAIN,
                       }}>
-                      {formatPrice(12000)}
+                      {formatPrice(detailPrice * (1 - sale / 100))}
                     </Text>
                     <Text
                       style={{
@@ -597,7 +599,7 @@ const Detail = props => {
                         fontFamily: Fonts.Work_SemiBold,
                         color: color.TEXT_SECOND,
                       }}>
-                      Kho : 4663
+                      Kho : {detaiData.sold}
                     </Text>
                   </View>
                 </View>
@@ -680,7 +682,9 @@ const Detail = props => {
                 <View style={{flexDirection: 'row'}}>
                   {sizesModal.map((item, index) => (
                     <TouchableOpacity
-                      onPress={() => setDetailSize(item.size)}
+                      onPress={() => {
+                        getPriceCurrent(detailColor, item.size)
+                        setDetailSize(item.size)}}
                       disabled={!item.available}
                       key={index}
                       style={{
@@ -789,35 +793,26 @@ const Detail = props => {
           height: 75,
           backgroundColor: color.WHITE,
           position: 'relative',
+          paddingVertical: 2,
           bottom: 0,
           borderColor: color.BORDER_BOTTOM,
           borderTopWidth: 1,
         }}>
-        <View style={payContainer}>
-          <View style={{flexDirection: 'column'}}>
-            <View style={{height: 20, justifyContent: 'center'}}>
-              <Text style={payText}>{'Thanh Toán'}</Text>
-            </View>
-            <View style={{height: 35, justifyContent: 'center'}}>
-              <Text style={payMoneyText}>{formatPrice(price)}</Text>
-            </View>
-          </View>
-          {/* AddCart */}
-          <TouchableOpacity onPress={addCart}>
-            <View style={addCartButton}>
-              <Image
-                source={icons.cartAdd_icon}
-                style={{width: 24, height: 24}}
-              />
-            </View>
-          </TouchableOpacity>
+        <View style={{paddingHorizontal: 5}}>
+          <Text>Giao Nhanh Miễn Phí tại TP.HCM Và Hà Nội</Text>
+
           {/* ButtonBuy */}
-          <TouchableOpacity onPress={showDialog}>
-            <View style={buyButton}>
-              <View style={buyContainer}>
-                <Text style={buyText}>{'Mua ngay'}</Text>
-              </View>
-            </View>
+          <TouchableOpacity
+            style={{
+              backgroundColor: color.MAIN,
+              height: 45,
+              width: '100%',
+              borderRadius: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={showDialog}>
+            <Text style={[styles.textTitle, {color: 'white'}]}>MUA ONLINE</Text>
           </TouchableOpacity>
         </View>
       </View>

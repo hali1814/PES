@@ -57,7 +57,7 @@ const Product = ({navigation, onPressProducts}) => {
   useEffect(() => {
     onGetAllProducts();
     onGetAllFlashSaleProducts();
-    // effectTextSearch();
+    effectTextSearch();
   }, []);
 
   const images = [

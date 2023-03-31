@@ -38,13 +38,12 @@ export default PESVoucher;
 
 const styles = StyleSheet.create({
   imageBGContainer: {
-    width: 343,
+    width: '98%',
     height: 82,
     alignSelf: 'center',
     justifyContent: 'center',
-    marginTop: 8,
     paddingLeft: 12,
-    position: 'relative',
+    alignSelf: 'center',
   },
   Container: {
     flexDirection: 'row',

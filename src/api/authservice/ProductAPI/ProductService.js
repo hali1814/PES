@@ -39,3 +39,16 @@ export const deleteCart = async (idProduct, size, color) => {
   const result = await customAxios().post('/api/cart/delete/product', data);
   return result;
 };
+
+export const declineCart = async (idProduct, size, color) => {
+  const data = { idProduct: idProduct, size: size, color: color, quantity: 1 }
+  const result = await customAxios().post('/api/cart/decline/product', data);
+  return result;
+};
+
+
+export const calculatorBill = async (voucher_shipping, voucher_pes) => {
+  const data = { voucher_shipping, voucher_pes }
+  const result = await customAxios().post('/api/bill/calculator', data);
+  return result;
+};
