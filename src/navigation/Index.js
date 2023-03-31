@@ -28,8 +28,18 @@ import {Product} from '../pages/product';
 import Shop from '../pages/shop/Shop';
 import ShopDetail from '../pages/detail/ShopDetail';
 import SelectVoucher from '../pages/voucher/SelectVoucher';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {
+  Awaiting,
+  Delivered,
+  AwaitingPickUp,
+  Shipping,
+  Canceled
+} from '../pages/order-status'
+
 
 const Tab = createBottomTabNavigator();
+const topTab = createMaterialTopTabNavigator()
 
 const appStack = createStackNavigator();
 
@@ -42,6 +52,7 @@ const AppStackScreen = () => {
         },
         headerTintColor: colorsPES.background,
         headerShown: false,
+        headerTitleAlign: 'center'
       }}>
       <appStack.Screen name="Loading" component={Loading} />
       <appStack.Screen name="MyTab" component={MyTab} />
@@ -49,6 +60,7 @@ const AppStackScreen = () => {
       <appStack.Screen name="Shop" component={Shop} />
       <appStack.Screen name="ShopDetail" component={ShopDetail} />
       <appStack.Screen name="MyProfileDetail" component={MyProfileDetail} />
+      <appStack.Screen name="OrderTab" component={OrderTab} options={{ headerShown: true, title: 'Đơn mua sản phẩm' }} />
       <appStack.Screen name="MyFeedback" component={MyFeedback} />
       <appStack.Screen name="ChangePassword" component={ChangePassword} />
       <appStack.Screen name="ChangeAddress" component={ChangeAddress} />
@@ -127,5 +139,23 @@ const MyTab = ({navigation}) => {
     </>
   );
 };
+
+const OrderTab = ({ navigation }) => {
+  return (
+    <topTab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: { fontSize: 10 },
+        tabBarStyle: { backgroundColor: colorsPES.white },
+        tabBarPressColor: colorsPES.borderColorBlue,
+      }}
+    >
+      <topTab.Screen name="Awaiting" component={Awaiting} options={{ title: 'Chờ xác nhận', }} />
+      <topTab.Screen name="AwaitingPickup" component={AwaitingPickUp} options={{ title: 'Chờ lấy hàng' }} />
+      <topTab.Screen name="Shipping" component={Shipping} options={{ title: 'Đang giao' }} />
+      <topTab.Screen name="Delivered" component={Delivered} options={{ title: 'Đã giao' }} />
+      <topTab.Screen name="Cancel" component={Canceled} options={{ title: 'Đã hủy' }} />
+    </topTab.Navigator>
+  );
+}
 
 export default AppStackScreen;
