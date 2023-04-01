@@ -52,3 +52,14 @@ export const calculatorBill = async (voucher_shipping, voucher_pes) => {
   const result = await customAxios().post('/api/bill/calculator', data);
   return result;
 };
+
+export const createBillService = async (voucher_shipping, voucher_pes) => {
+  const data = { voucher_shipping, voucher_pes }
+  const result = await customAxios().post('/api/bill/add', data);
+  return result;
+};
+
+export const getBillsByStatus = async (status) => {
+  const result = await customAxios().get(`/api/bills/${status}`);
+  return result;
+};

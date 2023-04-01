@@ -36,7 +36,7 @@ import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 import {UserContext} from '../../api/authservice/UserContext';
 import {formatPrice} from '../../utils/MoneyFormat';
 const OrderConfirmation = ({navigation}) => {
-  const {onCalculator} = useContext(ProductContext);
+  const {onCalculator, createBills} = useContext(ProductContext);
   const {onGetUserInfor, user} = useContext(UserContext);
   const [dataBill, setDataBill] = useState('');
 
@@ -48,6 +48,16 @@ const OrderConfirmation = ({navigation}) => {
       console.log(OrderConfirmation.toString(), err.toString());
     }
   };
+
+  const onCreateBills = async () => {
+    try {
+      const tmp = await createBills('', '');
+      if (tmp) navigation.navigate('OrderTab')
+      else console.log('fails create bills') // add thêm thông báo thất bại
+    } catch (err) {
+      console.log(OrderConfirmation.toString(), err.toString());
+    }
+  }
   useEffect(() => {
     getCalculator();
     onGetUserInfor();
@@ -407,6 +417,7 @@ const OrderConfirmation = ({navigation}) => {
                 marginTop: 8,
               }}>
               <TouchableOpacity
+              onPress={()=> onCreateBills()}
                 style={{
                   width: '100%',
                   height: 40,

@@ -1,63 +1,46 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+
 import colorsPES from '../../constants/colors'
 import { formatPrice } from '../../utils/MoneyFormat'
-
+import React, {useEffect, useState, useContext} from 'react'
+import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 const AwaitingPickUp = () => {
+    const {onGetStatusBills} = useContext(ProductContext);
+    const [dataBills, setDataBills] = useState()
+    
+    const getDataBills = async () => {
+        const data = await onGetStatusBills(1)
+        setDataBills(data)
+    }
+    useEffect(()=>{
+        getDataBills()
+    })
 
-    const DATA = [
-        {
-            id: 1,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        },
-        {
-            id: 2,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        },
-        {
-            id: 3,
-            shopName: 'HungLong SHOP',
-            image: require('../../assets/images/shoes.png'),
-            productName: 'Quạt mini USB kẹp hoặc để bàn',
-            size: 'L',
-            quantity: 2,
-            price: 100000,
-            totalPrice: 200000,
-        }
-    ]
+
+
+  
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.contentContainer}>
-                <FlatList
-                    data={DATA}
-                    keyExtractor={(item) => item.id}
+            <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={dataBills}
+                    keyExtractor={(item) => item._id}
                     renderItem={({ item }) => (
                         <View style={styles.itemContainer}>
                             <View style={styles.imageContainer}>
-                                <Image source={item.image} style={{ width: 60, height: 60 }} />
+                                <Image source={item ? {uri: item.productDetails.images[0]} : require('../../assets/images/haohoa_scanQR.png')} style={{ width: 60, height: 60 }} />
                             </View>
                             <View style={styles.productInfor}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <Text style={styles.title}>{item.productName}</Text>
+                                    <Text style={styles.title}>{item.productDetails.name}</Text>
                                     <Text style={styles.text}>x{item.quantity}</Text>
                                 </View>
                                 <Text style={styles.text}>7 ngày trả hàng</Text>
                                 <View style={styles.totalPriceContainer}>
                                     <Text style={styles.text}>Tổng thanh toán : </Text>
-                                    <Text style={styles.priceText}>{formatPrice(item.totalPrice)}</Text>
+                                    <Text style={styles.priceText}>{formatPrice(item?.amount || 0)}</Text>
                                 </View>
                                 <View style={{ alignItems: 'flex-end' }}>
                                     <View style={styles.status}>

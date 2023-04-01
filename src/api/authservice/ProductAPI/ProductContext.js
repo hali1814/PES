@@ -5,11 +5,13 @@ import {
   getAllProducts,
   getCart,
   getDetail,
+  getBillsByStatus,
   calculatorBill,
   getFlashSale,
   getProductsByGenres,
   getStore,
-  declineCart
+  declineCart,
+  createBillService
 } from './ProductService';
 import React, {useState, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -179,6 +181,29 @@ export const ProductsContextProvider = props => {
     }
   };
 
+  
+  const onGetStatusBills = async (status) => {
+    try {
+      const res = await getBillsByStatus(status);
+      if (res.status == 'success') {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('onGetStatusBills failed ===>', error);
+    }
+  };
+
+  const createBills = async (voucher_shipping, voucher_pes) => {
+    try {
+      const res = await createBillService(voucher_shipping, voucher_pes);
+      if (res.status == 'success') {
+        return true;
+      }else return false;
+    } catch (error) {
+      console.log('createBills failed ===>', error);
+    }
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -199,11 +224,13 @@ export const ProductsContextProvider = props => {
         detail,
         onGetStore,
         store,
+        onGetStatusBills,
         flashSaleProducts,
         onGetAllFlashSaleProducts,
         onGetCart,
         setGenres,
         cart,
+        createBills
       }}>
       {children}
     </ProductContext.Provider>
