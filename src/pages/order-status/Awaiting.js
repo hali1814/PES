@@ -1,23 +1,23 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, FlatList, TouchableOpacity } from 'react-native'
-import React, {useEffect, useState, useContext} from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import colorsPES from '../../constants/colors'
 import { formatPrice } from '../../utils/MoneyFormat'
-import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 const Awaiting = () => {
-    const {onGetStatusBills} = useContext(ProductContext);
+    const { onGetStatusBills } = useContext(ProductContext);
     const [dataBills, setDataBills] = useState()
-    
+
     const getDataBills = async () => {
         const data = await onGetStatusBills(0)
         data.reverse()
         setDataBills(data)
     }
-    useEffect(()=>{
+    useEffect(() => {
         getDataBills()
-    })
-    console.log(dataBills)
+    }, [])
+    // console.log(dataBills)
 
-    
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.contentContainer}>
@@ -28,7 +28,7 @@ const Awaiting = () => {
                     renderItem={({ item }) => (
                         <View style={styles.itemContainer}>
                             <View style={styles.imageContainer}>
-                                <Image source={item ? {uri: item.productDetails.images[0]} : require('../../assets/images/haohoa_scanQR.png')} style={{ width: 60, height: 60 }} />
+                                <Image source={item ? { uri: item.productDetails.images[0] } : require('../../assets/images/haohoa_scanQR.png')} style={{ width: 60, height: 60 }} />
                             </View>
                             <View style={styles.productInfor}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

@@ -2,35 +2,35 @@ import { StyleSheet, Text, View, SafeAreaView, Image, FlatList, TouchableOpacity
 
 import colorsPES from '../../constants/colors'
 import { formatPrice } from '../../utils/MoneyFormat'
-import React, {useEffect, useState, useContext} from 'react'
-import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import React, { useEffect, useState, useContext } from 'react'
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 const AwaitingPickUp = () => {
-    const {onGetStatusBills} = useContext(ProductContext);
+    const { onGetStatusBills } = useContext(ProductContext);
     const [dataBills, setDataBills] = useState()
-    
+
     const getDataBills = async () => {
         const data = await onGetStatusBills(1)
         setDataBills(data)
     }
-    useEffect(()=>{
+    useEffect(() => {
         getDataBills()
-    })
+    }, [])
 
 
 
-  
+
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.contentContainer}>
-            <FlatList
+                <FlatList
                     showsVerticalScrollIndicator={false}
                     data={dataBills}
                     keyExtractor={(item) => item._id}
                     renderItem={({ item }) => (
                         <View style={styles.itemContainer}>
                             <View style={styles.imageContainer}>
-                                <Image source={item ? {uri: item.productDetails.images[0]} : require('../../assets/images/haohoa_scanQR.png')} style={{ width: 60, height: 60 }} />
+                                <Image source={item ? { uri: item.productDetails.images[0] } : require('../../assets/images/haohoa_scanQR.png')} style={{ width: 60, height: 60 }} />
                             </View>
                             <View style={styles.productInfor}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

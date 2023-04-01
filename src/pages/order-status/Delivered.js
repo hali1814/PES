@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 
 import colorsPES from '../../constants/colors';
-import {formatPrice} from '../../utils/MoneyFormat';
-import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
-import React, {useEffect, useState, useContext} from 'react';
+import { formatPrice } from '../../utils/MoneyFormat';
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
+import React, { useEffect, useState, useContext } from 'react';
 const Delivered = () => {
-  const {onGetStatusBills} = useContext(ProductContext);
+  const { onGetStatusBills } = useContext(ProductContext);
   const [dataBills, setDataBills] = useState();
 
   const getDataBills = async () => {
@@ -22,7 +22,7 @@ const Delivered = () => {
   };
   useEffect(() => {
     getDataBills();
-  });
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
@@ -30,16 +30,16 @@ const Delivered = () => {
           showsVerticalScrollIndicator={false}
           data={dataBills}
           keyExtractor={item => item._id}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View style={styles.itemContainer}>
               <View style={styles.imageContainer}>
                 <Image
                   source={
                     item
-                      ? {uri: item.productDetails.images[0]}
+                      ? { uri: item.productDetails.images[0] }
                       : require('../../assets/images/haohoa_scanQR.png')
                   }
-                  style={{width: 60, height: 60}}
+                  style={{ width: 60, height: 60 }}
                 />
               </View>
               <View style={styles.productInfor}>
@@ -59,9 +59,9 @@ const Delivered = () => {
                     {formatPrice(item?.amount || 0)}
                   </Text>
                 </View>
-                <View style={{alignItems: 'flex-end'}}>
+                <View style={{ alignItems: 'flex-end' }}>
                   <View style={styles.status}>
-                    <Text style={{color: colorsPES.borderColorBlue}}>
+                    <Text style={{ color: colorsPES.borderColorBlue }}>
                       Đang đối soát
                     </Text>
                   </View>
