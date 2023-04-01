@@ -65,6 +65,8 @@ const icons = {
   payZaloIcon: require('../assets/icons/zalopay.png'),
   cardIcon: require('../assets/icons/Card.png'),
   chatIcon: require('../assets/icons/chat.png'),
+  FilterIcon: require('../assets/icons/Filter.png'),
+  BoxSearchIcon: require('../assets/icons/Box-search.png'),
 };
 
 const images = {

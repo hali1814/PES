@@ -27,6 +27,7 @@ import Detail from '../pages/detail/Detail';
 import {Product} from '../pages/product';
 import Shop from '../pages/shop/Shop';
 import ShopDetail from '../pages/detail/ShopDetail';
+import Notification from '../pages/notification/Notification';
 
 const Tab = createBottomTabNavigator();
 
@@ -116,7 +117,7 @@ const MyTab = ({navigation}) => {
         />
         <Tab.Screen
           name="Notification"
-          component={Profile}
+          component={Notification}
           options={{title: 'Thông báo', headerTitleAlign: 'center'}}
         />
         <Tab.Screen
