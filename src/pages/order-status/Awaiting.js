@@ -14,7 +14,7 @@ const Awaiting = () => {
     }
     useEffect(()=>{
         getDataBills()
-    })
+    },[])
     console.log(dataBills)
 
     

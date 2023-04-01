@@ -14,7 +14,7 @@ const AwaitingPickUp = () => {
     }
     useEffect(()=>{
         getDataBills()
-    })
+    },[])
 
 
 

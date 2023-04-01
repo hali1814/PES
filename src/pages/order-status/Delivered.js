@@ -22,7 +22,7 @@ const Delivered = () => {
   };
   useEffect(() => {
     getDataBills();
-  });
+  },[]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>

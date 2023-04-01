@@ -21,7 +21,7 @@ const Shipping = () => {
   };
   useEffect(() => {
     getDataBills();
-  });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

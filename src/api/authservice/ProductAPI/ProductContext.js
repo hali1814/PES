@@ -44,6 +44,7 @@ export const ProductsContextProvider = props => {
   const [cartLoading, setCartLoading] = useState(false)
   const [cartQuantity, setCartQuantity] = useState()
   const [cartQuantityLoading, setCartQuantityLoading] = useState(false)
+  const [dataBill, setDataBill] = useState('');
 
   const onGetAllProducts = async () => {
     setFlashSaleLoading(true)
@@ -132,16 +133,13 @@ export const ProductsContextProvider = props => {
     try {
       const res = await calculatorBill(voucher_shipping, voucher_pes);
       if (res.status == 'success') {
+        setDataBill(res.data);
         return res.data;
       }
     } catch (error) {
       console.log('onCalculator failed ===>', error);
     }
   };
-
-
-
-
 
   const onGetProductsByGenre = async _id => {
     setRelatedProductLoading(true)
@@ -275,7 +273,10 @@ export const ProductsContextProvider = props => {
         cartQuantity,
         setCartQuantity,
         cartQuantityLoading,
-        setCartQuantityLoading
+        setCartQuantityLoading,
+        dataBill,
+         setDataBill
+ 
       }}>
       {children}
     </ProductContext.Provider>

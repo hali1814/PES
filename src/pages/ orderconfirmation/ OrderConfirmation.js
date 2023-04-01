@@ -35,31 +35,33 @@ import {
 import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 import {UserContext} from '../../api/authservice/UserContext';
 import {formatPrice} from '../../utils/MoneyFormat';
-const OrderConfirmation = ({navigation}) => {
-  const {onCalculator, createBills} = useContext(ProductContext);
-  const {onGetUserInfor, user} = useContext(UserContext);
-  const [dataBill, setDataBill] = useState('');
 
-  const getCalculator = async () => {
+const OrderConfirmation = ({navigation}) => {
+  const {onCalculator, createBills, dataBill, setDataBill} =
+    useContext(ProductContext);
+  const {
+    onGetUserInfor,
+    user,
+    voucher_shipping,
+    voucher_pes,
+    setVoucher_pes,
+    setVoucher_shipping,
+  } = useContext(UserContext);
+
+  const onCreateBills = async (voucher_shipping, voucher_pes) => {
     try {
-      const tmp = await onCalculator('', '');
-      setDataBill(tmp);
+      const tmp = await createBills(voucher_shipping, voucher_pes);
+      if (tmp) navigation.navigate('OrderTab');
+      else console.log('fails create bills'); // add thêm thông báo thất bại
+
+      setVoucher_pes('')
+      setVoucher_shipping('')
     } catch (err) {
       console.log(OrderConfirmation.toString(), err.toString());
     }
   };
-
-  const onCreateBills = async () => {
-    try {
-      const tmp = await createBills('', '');
-      if (tmp) navigation.navigate('OrderTab')
-      else console.log('fails create bills') // add thêm thông báo thất bại
-    } catch (err) {
-      console.log(OrderConfirmation.toString(), err.toString());
-    }
-  }
   useEffect(() => {
-    getCalculator();
+    onCalculator(voucher_shipping, voucher_pes);
     onGetUserInfor();
   }, []);
 
@@ -183,7 +185,7 @@ const OrderConfirmation = ({navigation}) => {
         </View>
 
         <TouchableOpacity
-        onPress={() => navigation.navigate('SelectVoucher')}
+          onPress={() => navigation.navigate('SelectVoucher')}
           style={{
             backgroundColor: 'white',
             marginTop: 4,
@@ -209,9 +211,44 @@ const OrderConfirmation = ({navigation}) => {
               {'PES Vouchers'}
             </Text>
           </View>
-          <Text style={[txtVoucher, {width: '60%', textAlign: 'right'}]}>
-            {'Chọn Vouchers'}
-          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '60%',
+              justifyContent: 'flex-end',
+            }}>
+            {!voucher_shipping || (
+              <View
+                style={{
+                  borderColor: '#B5F1CC',
+                  borderWidth: 1,
+                  padding: 2,
+                  marginRight: 5,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 7,
+                    color: '#B5F1CC',
+                    fontFamily: Fonts.Man_Bold,
+                  }}>
+                  Free Shipping Voucher
+                </Text>
+              </View>
+            )}
+
+            {!voucher_pes || (
+              <View
+                style={{
+                  borderColor: '#FA7070',
+                  borderWidth: 1,
+                  padding: 2,
+                  fontFamily: Fonts.Man_Bold,
+                }}>
+                <Text style={{fontSize: 7, color: '#FA7070'}}>PES Voucher</Text>
+              </View>
+            )}
+          </View>
+
           <Image
             source={icons.chevronRight_icon}
             style={{width: 16, height: 16, marginLeft: 2}}
@@ -417,7 +454,7 @@ const OrderConfirmation = ({navigation}) => {
                 marginTop: 8,
               }}>
               <TouchableOpacity
-              onPress={()=> onCreateBills()}
+                onPress={() => onCreateBills(voucher_shipping, voucher_pes)}
                 style={{
                   width: '100%',
                   height: 40,

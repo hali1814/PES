@@ -20,6 +20,9 @@ export const UserContextProvider = props => {
   const [voucher, setVoucher] = useState([]);
   const [profileLoading, setProfileLoading] = useState(false)
 
+  const [voucher_shipping, setVoucher_shipping] = useState('')
+  const [voucher_pes, setVoucher_pes] = useState('')
+
   const onRegister = async (
     userName,
     password,
@@ -177,7 +180,11 @@ export const UserContextProvider = props => {
         onChangeProfile,
         onUpload,
         profileLoading,
-        setProfileLoading
+        setProfileLoading,
+        voucher_pes,
+        setVoucher_pes,
+        voucher_shipping,
+        setVoucher_shipping
       }}>
       {children}
     </UserContext.Provider>
