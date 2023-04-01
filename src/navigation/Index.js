@@ -5,9 +5,9 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import React, { useState } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import colorsPES from '../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
@@ -19,12 +19,12 @@ import {
   MyProfileDetail,
   MyFeedback,
 } from '../pages/profile';
-import {Cart} from '../pages/cart';
-import {ProductsNavigation} from '../api/authservice/ProductAPI/ProductNavigation';
+import { Cart } from '../pages/cart';
+import { ProductsNavigation } from '../api/authservice/ProductAPI/ProductNavigation';
 import OrderConfirmation from '../pages/ orderconfirmation/ OrderConfirmation';
 import Loading from '../pages/loading/Loading';
 import Detail from '../pages/detail/Detail';
-import {Product} from '../pages/product';
+import { Product } from '../pages/product';
 import Shop from '../pages/shop/Shop';
 import ShopDetail from '../pages/detail/ShopDetail';
 import SelectVoucher from '../pages/voucher/SelectVoucher';
@@ -36,6 +36,10 @@ import {
   Shipping,
   Canceled
 } from '../pages/order-status'
+import PESHeader from '../components/PESHeader';
+import OrderHeader from '../components/OrderHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const Tab = createBottomTabNavigator();
@@ -43,7 +47,7 @@ const topTab = createMaterialTopTabNavigator()
 
 const appStack = createStackNavigator();
 
-const AppStackScreen = () => {
+const AppStackScreen = ({ navigation }) => {
   return (
     <appStack.Navigator
       screenOptions={{
@@ -52,7 +56,7 @@ const AppStackScreen = () => {
         },
         headerTintColor: colorsPES.background,
         headerShown: false,
-        headerTitleAlign: 'center'
+        headerTitleAlign: 'center',
       }}>
       <appStack.Screen name="Loading" component={Loading} />
       <appStack.Screen name="MyTab" component={MyTab} />
@@ -60,7 +64,24 @@ const AppStackScreen = () => {
       <appStack.Screen name="Shop" component={Shop} />
       <appStack.Screen name="ShopDetail" component={ShopDetail} />
       <appStack.Screen name="MyProfileDetail" component={MyProfileDetail} />
-      <appStack.Screen name="OrderTab" component={OrderTab} options={{ headerShown: true, title: 'Đơn mua sản phẩm' }} />
+      <appStack.Screen name="OrderTab" component={OrderTab}
+        options={({ navigation }) => ({
+          headerShown: true,
+          title: 'Đơn mua sản phẩm',
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{ marginStart: 10 }}
+              onPress={() => navigation.navigate('MyTab')}
+            >
+              <Ionicons
+                name='arrow-back-outline'
+                size={30}
+                color={colorsPES.black}
+              />
+            </TouchableOpacity>
+          )
+        })}
+      />
       <appStack.Screen name="MyFeedback" component={MyFeedback} />
       <appStack.Screen name="ChangePassword" component={ChangePassword} />
       <appStack.Screen name="ChangeAddress" component={ChangeAddress} />
@@ -73,12 +94,12 @@ const AppStackScreen = () => {
   );
 };
 
-const MyTab = ({navigation}) => {
+const MyTab = ({ navigation }) => {
   return (
     <>
       <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
             switch (route.name) {
@@ -118,7 +139,7 @@ const MyTab = ({navigation}) => {
         <Tab.Screen
           name="Home"
           component={Product}
-          options={{title: 'Trang chủ', headerTitleAlign: 'center'}}
+          options={{ title: 'Trang chủ', headerTitleAlign: 'center' }}
         />
         {/* <Tab.Screen
           name="Bill"
@@ -128,12 +149,12 @@ const MyTab = ({navigation}) => {
         <Tab.Screen
           name="Notification"
           component={Profile}
-          options={{title: 'Thông báo', headerTitleAlign: 'center'}}
+          options={{ title: 'Thông báo', headerTitleAlign: 'center' }}
         />
         <Tab.Screen
           name="Profile"
           component={Profile}
-          options={{title: 'Tài khoản', headerTitleAlign: 'center'}}
+          options={{ title: 'Tài khoản', headerTitleAlign: 'center' }}
         />
       </Tab.Navigator>
     </>
