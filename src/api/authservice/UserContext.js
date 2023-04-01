@@ -8,16 +8,17 @@ import {
   changeProfile,
   upload,
 } from './UserService';
-import React, {useState, createContext} from 'react';
+import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const UserContext = createContext();
 
 export const UserContextProvider = props => {
-  const {children} = props;
+  const { children } = props;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState([]);
   const [voucher, setVoucher] = useState([]);
+  const [profileLoading, setProfileLoading] = useState(false)
 
   const onRegister = async (
     userName,
@@ -128,10 +129,12 @@ export const UserContextProvider = props => {
   };
 
   const onGetUserInfor = async () => {
+    setProfileLoading(true)
     try {
       const res = await getUserInfor();
       if (res.status == 'success') {
         setUser(res.data);
+        setProfileLoading(false)
         console.log(res.data);
       } else if (res.status == 'inactive') {
         const message = res.data.message;
@@ -173,6 +176,8 @@ export const UserContextProvider = props => {
         setVoucher,
         onChangeProfile,
         onUpload,
+        profileLoading,
+        setProfileLoading
       }}>
       {children}
     </UserContext.Provider>

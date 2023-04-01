@@ -46,9 +46,13 @@ export const declineCart = async (idProduct, size, color) => {
   return result;
 };
 
-
 export const calculatorBill = async (voucher_shipping, voucher_pes) => {
   const data = { voucher_shipping, voucher_pes }
   const result = await customAxios().post('/api/bill/calculator', data);
   return result;
 };
+
+export const countCart = async () => {
+  const result = await customAxios().get('/api/cart/count')
+  return result
+}
