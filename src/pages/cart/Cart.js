@@ -12,13 +12,13 @@ import {
   Modal,
   StatusBar,
 } from 'react-native';
-import React, {useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Fonts from '../../assets/fonts/fonts';
 import colorsPES from '../../constants/colors';
-import {icons, images} from '../../assets';
+import { icons, images } from '../../assets';
 import color from '../../styles/colors';
-import {formatPrice} from '../../utils/MoneyFormat';
+import { formatPrice } from '../../utils/MoneyFormat';
 import {
   txtVoucher,
   voucherContainer,
@@ -33,11 +33,11 @@ import {
   payMoneyText,
   payText,
 } from '../detail/components/styles';
-import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
-import {ConfirmDialog, SuccessDialog, FailDialog} from '../../components';
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
+import { ConfirmDialog, SuccessDialog, FailDialog } from '../../components';
 import { addCart } from '../../api/authservice/ProductAPI/ProductService';
 
-const Cart = ({navigation}) => {
+const Cart = ({ navigation }) => {
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [successDialogVisible, setSuccessDialogVisible] = useState(false);
   const [failedDialogVisible, setFailedDialogVisible] = useState(false);
@@ -67,7 +67,7 @@ const Cart = ({navigation}) => {
     setConfirmDialogVisible(true);
   };
 
-  
+
 
 
   const handleConfirmDialogClose = (idProduct, size, color) => {
@@ -76,7 +76,7 @@ const Cart = ({navigation}) => {
     setColorProduct(color)
     setConfirmDialogVisible(true);
   };
-  const {cart, onGetCart, onDeleteCart, onDeclineCart, onAddCart} = useContext(ProductContext);
+  const { cart, onGetCart, onDeleteCart, onDeclineCart, onAddCart, cartLoading, onCountCart } = useContext(ProductContext);
   const [cartData, setCartData] = useState([]);
   const [id, setId] = useState('');
   const [size, setSize] = useState('');
@@ -87,6 +87,8 @@ const Cart = ({navigation}) => {
   useEffect(() => {
     onGetCart();
   }, []);
+
+
 
   // const GetAllCart = async () => {
   //     const cartItem = await onGetCart()
@@ -102,9 +104,9 @@ const Cart = ({navigation}) => {
       } else {
         handleSuccess();
         onGetCart()
+        onCountCart()
         setConfirmDialogVisible(false)
-        setTimeout(()=>handleSuccessDialogClose(), 3000)
-        
+        setTimeout(() => handleSuccessDialogClose(), 3000)
       }
     } catch (error) {
       console.log('error', error);
@@ -145,7 +147,7 @@ const Cart = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View
         style={{
           height: StatusBar.currentHeight,
@@ -175,7 +177,7 @@ const Cart = ({navigation}) => {
             }}>
             <Image
               source={icons.chevronBackWhite_icon}
-              style={{width: 24, height: 24}}
+              style={{ width: 24, height: 24 }}
             />
           </TouchableOpacity>
           <Text
@@ -189,128 +191,140 @@ const Cart = ({navigation}) => {
             Giỏ hàng
           </Text>
         </View>
-        <View style={{width: '100%'}}>
-          <FlatList
-            scrollEnabled={false}
-            data={cart}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item}) => (
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  marginBottom: 10,
-                  width: '100%',
-                  height: 140,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingTop: 10,
-                    paddingHorizontal: 10,
-                  }}>
-                  <Image
-                    style={{height: 70, width: 80}}
-                    source={
-                      !item
-                        ? require('../../assets/images/haohoa_scanQR.png')
-                        : {uri: item.images[0]}
-                    }
-                  />
-                  <View style={{width: '70%'}}>
-                    <Text
+        {
+          cartLoading
+            ? (<ActivityIndicator size='large' color={colorsPES.borderColorBlue} />)
+            : (
+              <View style={{ width: '100%', height: '100%' }}>
+                <FlatList
+                  scrollEnabled={false}
+                  data={cart}
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => (
+                    <View
                       style={{
-                        fontSize: 17,
-                        fontFamily: Fonts.Work_Bold,
-                        color: color.MAIN,
-                        width: '70%',
+                        backgroundColor: 'white',
+                        marginVertical: 10,
+                        width: '100%',
+                        height: 140,
                       }}>
-                      {item?.name.toString().toUpperCase() || ''}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontFamily: Fonts.Work_Bold,
-                        color: color.TEXT_SECOND,
-                        width: '70%',
-                      }}>
-                      SIZE: {item?.size.toString().toUpperCase()}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontFamily: Fonts.Work_Bold,
-                        color: color.TEXT_SECOND,
-                        width: '70%',
-                      }}>
-                      COLOR: {item?.color.toString().toUpperCase()}
-                    </Text>
-                  </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingTop: 10,
+                          paddingHorizontal: 10,
+                        }}>
+                        <Image
+                          style={{ height: 70, width: 80 }}
+                          source={
+                            !item
+                              ? require('../../assets/images/haohoa_scanQR.png')
+                              : { uri: item.images[0] }
+                          }
+                        />
+                        <View style={{ width: '70%' }}>
+                          <Text
+                            style={{
+                              fontSize: 17,
+                              fontFamily: Fonts.Work_Bold,
+                              color: color.MAIN,
+                              width: '70%',
+                            }}>
+                            {item?.name.toString().toUpperCase() || ''}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: Fonts.Work_Bold,
+                              color: color.TEXT_SECOND,
+                              width: '70%',
+                            }}>
+                            SIZE: {item?.size.toString().toUpperCase()}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontFamily: Fonts.Work_Bold,
+                              color: color.TEXT_SECOND,
+                              width: '70%',
+                            }}>
+                            COLOR: {item?.color.toString().toUpperCase()}
+                          </Text>
+                        </View>
 
-                  <TouchableOpacity onPress= {() =>handleConfirmDialogClose(item.idProduct, item.size, item.color)}>
-                    <Image
-                      style={{
-                        height: 15,
-                        width: 15,
-                        tintColor: color.TEXT_SECOND,
-                      }}
-                      source={require('../../assets/images/haohoa_cancel.png')}
-                    />
-                  </TouchableOpacity>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: 20,
-                    paddingHorizontal: 10,
-                    marginLeft: 10,
-                  }}>
-                  <View style={{width: 80}}></View>
-                  <View style={styles.quantity}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        declineCart(item?.idProduct, item?.size, item?.color, item?.quantity)
-                      }}>
-                      <View style={styles.quantitybutton}>
-                        <Text style={{fontSize: 18}}>-</Text>
+                        <TouchableOpacity onPress={() => handleConfirmDialogClose(item.idProduct, item.size, item.color)}>
+                          <Image
+                            style={{
+                              height: 15,
+                              width: 15,
+                              tintColor: color.TEXT_SECOND,
+                            }}
+                            source={require('../../assets/images/haohoa_cancel.png')}
+                          />
+                        </TouchableOpacity>
                       </View>
-                    </TouchableOpacity>
-                    <View style={styles.quantityNumber}>
-                      <Text style={{fontSize: 18}}>{item?.quantity}</Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          marginTop: 20,
+                          paddingHorizontal: 10,
+                          marginLeft: 10,
+                        }}>
+                        <View style={{ width: 80 }}></View>
+                        <View style={styles.quantity}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              declineCart(item?.idProduct, item?.size, item?.color, item?.quantity)
+                            }}>
+                            <View style={styles.quantitybutton}>
+                              <Text style={{ fontSize: 18 }}>-</Text>
+                            </View>
+                          </TouchableOpacity>
+                          <View style={styles.quantityNumber}>
+                            <Text style={{ fontSize: 18 }}>{item?.quantity}</Text>
+                          </View>
+                          <TouchableOpacity
+                            onPress={() => {
+                              plusCart(item?.idProduct, item?.size, item?.color)
+                            }}>
+                            <View style={styles.quantitybutton}>
+                              <Text style={{ fontSize: 18 }}>+</Text>
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            width: 150,
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                          }}>
+                          <Text>X </Text>
+                          <Text>
+                            {formatPrice(
+                              item?.stock.price *
+                              (1 - item?.sale / 100) *
+                              item?.quantity,
+                            )}
+                          </Text>
+                        </View>
+                      </View>
                     </View>
-                    <TouchableOpacity
-                      onPress={() => {
-                        plusCart(item?.idProduct, item?.size, item?.color)
-                      }}>
-                      <View style={styles.quantitybutton}>
-                        <Text style={{fontSize: 18}}>+</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      width: 150,
-                      justifyContent: 'flex-end',
-                      alignItems: 'flex-end',
-                    }}>
-                    <Text>X </Text>
-                    <Text>
-                      {formatPrice(
-                        item?.stock.price *
-                          (1 - item?.sale / 100) *
-                          item?.quantity,
-                      )}
-                    </Text>
-                  </View>
-                </View>
+                  )}
+                />
               </View>
-            )}
-          />
-        </View>
-
+            )
+        }
+      </ScrollView>
+      <View
+        style={{
+          justifyContent: 'flex-start',
+          paddingVertical: 10,
+          marginTop: 20,
+        }}>
+        {/* ButtonBuy */}
         <View style={styles.billContainer}>
           <Text
             style={{
@@ -327,11 +341,11 @@ const Cart = ({navigation}) => {
               justifyContent: 'space-between',
             }}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
                 {'Tiền hàng'}
               </Text>
-              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
                 {formatPrice(
                   cart.reduce((init, item) => {
                     init +=
@@ -349,10 +363,10 @@ const Cart = ({navigation}) => {
                 justifyContent: 'space-between',
                 marginTop: 8,
               }}>
-              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
                 {'Phí vận chuyển'}
               </Text>
-              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
                 {formatPrice(30000)}
               </Text>
             </View>
@@ -362,10 +376,10 @@ const Cart = ({navigation}) => {
                 justifyContent: 'space-between',
                 marginTop: 8,
               }}>
-              <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_SemiBold, fontSize: 14 }}>
                 {'Tổng tiền'}
               </Text>
-              <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 14}}>
+              <Text style={{ fontFamily: Fonts.Work_SemiBold, fontSize: 14 }}>
                 {formatPrice(
                   cart.reduce((init, item) => {
                     init +=
@@ -379,36 +393,29 @@ const Cart = ({navigation}) => {
             </View>
           </View>
         </View>
-      </ScrollView>
-      <View
-        style={{
-          justifyContent: 'flex-start',
-          paddingVertical: 10
-        }}>
+        <View style={{ paddingHorizontal: 5 }}>
           {/* ButtonBuy */}
-          <View style={{paddingHorizontal: 5}}>
-            {/* ButtonBuy */}
-            <TouchableOpacity
-              style={{
-                backgroundColor: color.MAIN,
-                height: 45,
-                width: '100%',
-                borderRadius: 5,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => {
-                if (cart.length == 0) Alert.alert('list cart rongggg')
-                else {
-                  navigation.navigate('OrderConfirmation')
-                }
-              }}>
-              <Text style={[styles.textTitle, {color: 'white'}]}>
-                TIẾN THÀNH ĐẶT HÀNG
-              </Text>
-            </TouchableOpacity>
-          </View>
-    
+          <TouchableOpacity
+            style={{
+              backgroundColor: color.MAIN,
+              height: 45,
+              width: '100%',
+              borderRadius: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              if (cart.length == 0) Alert.alert('list cart rongggg')
+              else {
+                navigation.navigate('OrderConfirmation')
+              }
+            }}>
+            <Text style={[styles.textTitle, { color: 'white' }]}>
+              TIẾN THÀNH ĐẶT HÀNG
+            </Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
       <SuccessDialog
         visible={successDialogVisible}
@@ -427,7 +434,7 @@ const Cart = ({navigation}) => {
         message="Bạn chắc chắn muốn xóa khỏi giỏ hàng ?"
         confirmMessage="Xóa"
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -7,10 +7,11 @@ import {
   Image,
   SafeAreaView,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useContext, useEffect} from 'react';
-import {icons} from '../../assets';
-import {images} from '../../assets';
+import React, { useContext, useEffect, useState } from 'react';
+import { icons } from '../../assets';
+import { images } from '../../assets';
 import colorsPES from '../../constants/colors';
 import { UserContext } from '../../api/authservice/UserContext';
 import Fonts from '../../assets/fonts/fonts';
@@ -18,12 +19,20 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import color from '../../styles/colors';
 
 const Profile = ({ navigation }) => {
-  const { onGetUserInfor, user, setUser } = useContext(UserContext);
+  const { onGetUserInfor, user, profileLoading } = useContext(UserContext);
 
   useEffect(() => {
     onGetUserInfor();
+    checkAvatar()
     return () => { };
-  }, []);
+  }, [user.avatar]);
+
+  const [userAvatar, setUserAvatar] = useState(require('../../assets/images/avatar.png'))
+
+  const checkAvatar = () => {
+    user.avatar ? setUserAvatar(user.avatar) : setUserAvatar(userAvatar);
+  }
+  console.log('userAvatar', userAvatar)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -46,24 +55,32 @@ const Profile = ({ navigation }) => {
           }}
           style={styles.userInforContainer}>
           <View style={styles.userInfor}>
-            <View style={styles.avatar}>
-              <Image
-                style={{ width: '100%', height: '100%', borderRadius: 100 }}
-                source={{ uri: user.avatar }}
-                resizeMode="cover"
-              />
-            </View>
-            <View style={styles.userNameContainer}>
-              <Text style={styles.usernameText}>{user.nickName}</Text>
-              <Text
-                style={StyleSheet.create({
-                  fontFamily: Fonts.Work_Regular,
-                  fontSize: 11,
-                  color: colorsPES.white,
-                })}>
-                Xem/chỉnh sửa thông tin cá nhân
-              </Text>
-            </View>
+            {
+              profileLoading
+                ? (<ActivityIndicator size='large' color={colorsPES.white} />)
+                : (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.avatar}>
+                      <Image
+                        style={{ width: '100%', height: '100%', borderRadius: 100 }}
+                        source={{ uri: userAvatar.toString() }}
+                        resizeMode="cover"
+                      />
+                    </View>
+                    <View style={styles.userNameContainer}>
+                      <Text style={styles.usernameText}>{user.nickName}</Text>
+                      <Text
+                        style={StyleSheet.create({
+                          fontFamily: Fonts.Work_Regular,
+                          fontSize: 11,
+                          color: colorsPES.white,
+                        })}>
+                        Xem/chỉnh sửa thông tin cá nhân
+                      </Text>
+                    </View>
+                  </View>
+                )
+            }
           </View>
           <View>
             <Icon name="chevron-forward-outline" size={30} color="#ffffff" />
@@ -366,5 +383,6 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
+    paddingVertical: 25,
   },
 });

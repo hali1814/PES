@@ -10,12 +10,13 @@ import {
   FlatList,
   StatusBar,
   Modal,
+  ActivityIndicator
 } from 'react-native';
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import color from '../../styles/colors';
-import {icons, images} from '../../assets';
+import { icons, images } from '../../assets';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SuccessDialog, FailDialog} from '../../components';
+import { SuccessDialog, FailDialog } from '../../components';
 import {
   addCartButton,
   buyButton,
@@ -47,21 +48,21 @@ import {
   voucherContainer,
   voucherText,
 } from './components/styles';
-import {textsPES} from '../../constants/string';
+import { textsPES } from '../../constants/string';
 import PESShop from '../../components/PESShop';
 import PESProductDescription from '../../components/PESProductDescription';
 import PESRelatedProducts from '../../components/PESRelatedProducts';
 import Fonts from '../../assets/fonts/fonts';
-import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
-import {formatPrice} from '../../utils/MoneyFormat';
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
+import { formatPrice } from '../../utils/MoneyFormat';
 import colorsPES from '../../constants/colors';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 
-const {width: screenWidth} = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get('window');
 
 const Detail = props => {
-  const {route, navigation} = props;
-  const {id, type} = route.params;
+  const { route, navigation } = props;
+  const { id, type } = route.params;
   const [visible, setVisible] = useState(false);
   const showDialog = () => {
     const tmp = [];
@@ -95,18 +96,18 @@ const Detail = props => {
     const tmpSize = [];
     for (let key in checkSameSizeAndColor) {
       if (checkSameSizeAndColor[key].includes(color)) {
-        tmpSize.push({size: key, available: true});
+        tmpSize.push({ size: key, available: true });
       } else {
-        tmpSize.push({size: key, available: false});
+        tmpSize.push({ size: key, available: false });
       }
     }
     setDetailSize(false);
     setSizesModal(tmpSize);
-   
+
   };
 
-  const  getPriceCurrent = (color, size) => {
-    stock.forEach((e)=> {
+  const getPriceCurrent = (color, size) => {
+    stock.forEach((e) => {
       if (e.color == color && e.size == size) setDetailPrice(e.price)
     })
   }
@@ -122,6 +123,9 @@ const Detail = props => {
     productsByGenre,
     onGetProductsByGenre,
     onAddCart,
+    relatedProductLoading,
+    detailLoading,
+    onCountCart
   } = useContext(ProductContext);
 
   const [imageList, setImageList] = useState([]);
@@ -136,6 +140,7 @@ const Detail = props => {
 
   useEffect(() => {
     getDetailProduct();
+
   }, []);
 
   const [detailImage, setDetailImage] = useState('');
@@ -162,7 +167,7 @@ const Detail = props => {
   useEffect(() => {
     onGetProductsByGenre(type);
 
-    return () => {};
+    return () => { };
   }, []);
 
   const addCart = async () => {
@@ -173,8 +178,9 @@ const Detail = props => {
         handleFailed();
       } else {
         handleSuccess();
+        onCountCart()
         setTimeout(() => {
-          navigation.navigate('Cart'), 2000;
+          navigation.navigate('MyTab'), 2000;
         });
       }
     } catch (error) {
@@ -202,7 +208,7 @@ const Detail = props => {
 
   useEffect(() => {
     if (detail.images) {
-      const images = detail.images.map(image => ({uri: image}));
+      const images = detail.images.map(image => ({ uri: image }));
       setImageList(images);
     }
   }, [detail]);
@@ -210,7 +216,7 @@ const Detail = props => {
   //Bộ đếm số ảnh
   //Thay vì sử dụng Math.floor, chúng tôi đã sử dụng Math.ceil để đảm bảo rằng index được bắt đầu từ 1.
   const handleScroll = e => {
-    const {nativeEvent} = e || {};
+    const { nativeEvent } = e || {};
     if (!nativeEvent || !nativeEvent.contentOffset) {
       return;
     }
@@ -221,10 +227,10 @@ const Detail = props => {
     setCurrentImage(imageIndex);
   };
 
-  const renderItem = ({item, index}) => (
+  const renderItem = ({ item, index }) => (
     <Image
       source={item || require('../../assets/images/haohoa_scanQR.png')}
-      style={{width: screenWidth, height: 375}}
+      style={{ width: screenWidth, height: 375 }}
     />
   );
 
@@ -260,21 +266,29 @@ const Detail = props => {
             justifyContent: 'flex-end',
           }}>
           <View>
-            {imageList.length > 0 && (
-              <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                pagingEnabled
-                onScroll={handleScroll}
-                data={imageList}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={renderItem}
-                contentContainerStyle={{
-                  width: screenWidth * imageList.length,
-                  height: 375,
-                }}
-              />
-            )}
+            {
+              detailLoading
+                ? (<ActivityIndicator size='large' color={colorsPES.borderColorBlue} />)
+                : (
+                  <View>
+                    {imageList.length > 0 && (
+                      <FlatList
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        pagingEnabled
+                        onScroll={handleScroll}
+                        data={imageList}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={renderItem}
+                        contentContainerStyle={{
+                          width: screenWidth * imageList.length,
+                          height: 375,
+                        }}
+                      />
+                    )}
+                  </View>
+                )
+            }
             <SafeAreaView style={SafeAreaContainer}>
               <View
                 style={{
@@ -291,7 +305,7 @@ const Detail = props => {
                   }}>
                   <Image
                     source={icons.chevronBackWhite_icon}
-                    style={{width: 24, height: 24}}
+                    style={{ width: 24, height: 24 }}
                   />
                 </TouchableOpacity>
               </View>
@@ -315,13 +329,13 @@ const Detail = props => {
         {/* Title và Price */}
         <View style={productsContainer}>
           <View style={productsBG}>
-            <View style={{position: 'absolute', right: 0}}>
+            <View style={{ position: 'absolute', right: 0 }}>
               <View style={styles.customSale}>
                 <Image source={icons.tagSale_icon} style={styles.imgSale} />
                 <Text style={styles.txtSale}>{sale ? `${sale}` : ''}%</Text>
               </View>
             </View>
-            <View style={{width: '100%'}}>
+            <View style={{ width: '100%' }}>
               <Text
                 style={{
                   fontFamily: Fonts.Work_SemiBold,
@@ -345,7 +359,7 @@ const Detail = props => {
                   : ''}
               </Text>
             </View>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <Text
                 style={{
                   fontFamily: Fonts.Work_SemiBold,
@@ -360,12 +374,12 @@ const Detail = props => {
           </View>
         </View>
         {/* Voucher */}
-        <View style={{paddingHorizontal: 12, marginTop: 90}}>
+        <View style={{ paddingHorizontal: 12, marginTop: 90 }}>
           <View style={voucherContainer}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <Image
                 source={icons.voucher_icon}
-                style={{width: 32, height: 32}}
+                style={{ width: 32, height: 32 }}
               />
               <View
                 style={{
@@ -379,73 +393,80 @@ const Detail = props => {
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => {}}
-              style={{flexDirection: 'row', alignItems: 'center'}}>
+              onPress={() => { }}
+              style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={txtVoucher}>{textsPES.txtDetail}</Text>
               <Image
                 source={icons.chevronRight_icon}
-                style={{width: 16, height: 16, marginLeft: 2}}
+                style={{ width: 16, height: 16, marginLeft: 2 }}
               />
             </TouchableOpacity>
           </View>
         </View>
         <ScrollView pagingEnabled>
-          {/* AdminShop */}
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Shop', {ShopID});
-            }}
-            style={{paddingHorizontal: 12, marginTop: 8}}>
-            <View style={ContainerShop}>
-              <View style={headerContainerShop}>
-                <View style={{flexDirection: 'row'}}>
-                  <Image
-                    source={
-                      detail
-                        ? {uri: detail && detail.shop.avatar}
-                        : require('../../assets/images/logo.png')
-                    }
-                    style={{width: 32, height: 32, borderRadius: 360}}
-                  />
-                  <View style={userNameContainer}>
-                    <Text style={shopNameText}>
-                      {detail && detail.shop.nameShop}
-                    </Text>
-                    <Text style={phoneText}>{detail && detail.shop.email}</Text>
-                  </View>
-                </View>
-                <View>
-                  <Image
-                    source={icons.crown_icon}
-                    style={{
-                      width: 24,
-                      height: 24,
-                    }}
-                  />
-                </View>
-              </View>
+          {
+            detailLoading
+              ? (<ActivityIndicator size='large' color={colorsPES.borderColorBlue} />)
+              : (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('Shop', { ShopID });
+                  }}
+                  style={{ paddingHorizontal: 12, marginTop: 8 }}>
+                  <View style={ContainerShop}>
+                    <View style={headerContainerShop}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Image
+                          source={
+                            detail
+                              ? { uri: detail && detail.shop.avatar }
+                              : require('../../assets/images/logo.png')
+                          }
+                          style={{ width: 32, height: 32, borderRadius: 360 }}
+                        />
+                        <View style={userNameContainer}>
+                          <Text style={shopNameText}>
+                            {detail && detail.shop.nameShop}
+                          </Text>
+                          <Text style={phoneText}>{detail && detail.shop.email}</Text>
+                        </View>
+                      </View>
+                      <View>
+                        <Image
+                          source={icons.crown_icon}
+                          style={{
+                            width: 24,
+                            height: 24,
+                          }}
+                        />
+                      </View>
+                    </View>
 
-              <View style={{paddingHorizontal: 12}}>
-                <View style={showReaching}>
-                  <PESShop
-                    imgUri={icons.shopBag_icon}
-                    txtShop={'Đã bán:'}
-                    txt2Shop={detail && detail.sold}
-                  />
-                  <PESShop
-                    imgUri={icons.storeHeart_icon}
-                    txtShop={'Thích:'}
-                    txt2Shop={'200'}
-                  />
-                  <PESShop
-                    imgUri={icons.star_icon}
-                    txtShop={'Đánh giá:'}
-                    txt2Shop={'4.5'}
-                  />
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
+                    <View style={{ paddingHorizontal: 12 }}>
+                      <View style={showReaching}>
+                        <PESShop
+                          imgUri={icons.shopBag_icon}
+                          txtShop={'Đã bán:'}
+                          txt2Shop={detail && detail.sold}
+                        />
+                        <PESShop
+                          imgUri={icons.storeHeart_icon}
+                          txtShop={'Thích:'}
+                          txt2Shop={'200'}
+                        />
+                        <PESShop
+                          imgUri={icons.star_icon}
+                          txtShop={'Đánh giá:'}
+                          txt2Shop={'4.5'}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )
+          }
+          {/* AdminShop */}
+
           {/* Mô tả chi tiết */}
           <View style={descriptionContainer}>
             <View style={descriptionBG}>
@@ -458,11 +479,11 @@ const Detail = props => {
                   }}>
                   <Text style={descriptionText}>{'Mô tả chi tiết'}</Text>
                   <TouchableOpacity
-                    style={{flexDirection: 'row', alignItems: 'center'}}>
+                    style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={detailText}>{'Chi tiết'}</Text>
                     <Image
                       source={icons.chevronRight_icon}
-                      style={{width: 16, height: 16}}
+                      style={{ width: 16, height: 16 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -477,21 +498,21 @@ const Detail = props => {
                       text1={'Màu'}
                       text2={detail && detail.stock[0].color}
                     />
-                    <View style={{paddingTop: 8}}>
+                    <View style={{ paddingTop: 8 }}>
                       <PESProductDescription
                         icon={icons.size_icon}
                         text1={'Size'}
                         text2={detail && detail.stock[0].size}
                       />
                     </View>
-                    <View style={{paddingTop: 8}}>
+                    <View style={{ paddingTop: 8 }}>
                       <PESProductDescription
                         icon={icons.location_icon}
                         text1={'Khu vực'}
                         text2={'Hồ Chí Minh, Hà Nội'}
                       />
                     </View>
-                    <View style={{paddingTop: 8}}>
+                    <View style={{ paddingTop: 8 }}>
                       <PESProductDescription
                         icon={icons.local_icon}
                         text1={'Thương hiệu'}
@@ -503,71 +524,77 @@ const Detail = props => {
               </View>
             </View>
           </View>
-          <FlatList
-            scrollEnabled={false}
-            data={productsByGenre}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('ShopDetail', {
-                    ID: item._id,
-                    type: item.type,
-                  });
-                }}
-                style={{
-                  height: 104,
-                  width: '100%',
-                  backgroundColor: color.WHITE,
-                  borderRadius: 4,
-                  padding: 12,
-                  flexDirection: 'row',
-                }}>
-                <View>
-                  <Image
-                    source={{uri: item.images[0]}}
-                    style={{width: 80, height: 80}}
-                  />
-                </View>
-                <View
-                  style={{
-                    width: '73%',
-                    marginLeft: 12,
-                    flexDirection: 'column',
-                    paddingRight: 20,
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: Fonts.Work_SemiBold,
-                      fontSize: 14,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    {item.name}
-                  </Text>
-                  <Text
-                    numberOfLines={2}
-                    style={{
-                      fontFamily: Fonts.Work_Regular,
-                      color: color.TEXT_SECOND,
-                      fontSize: 14,
-                      alignItems: 'center',
-                    }}>
-                    {item.description}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: Fonts.Work_SemiBold,
-                      fontSize: 15,
-                      alignItems: 'center',
-                    }}>
-                    {item.stock[0].price}đ
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+          {
+            relatedProductLoading
+              ? (<ActivityIndicator size='large' color={colorsPES.borderColorBlue} />)
+              : (
+                <FlatList
+                  scrollEnabled={false}
+                  data={productsByGenre}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('ShopDetail', {
+                          ID: item._id,
+                          type: item.type,
+                        });
+                      }}
+                      style={{
+                        height: 104,
+                        width: '100%',
+                        backgroundColor: color.WHITE,
+                        borderRadius: 4,
+                        padding: 12,
+                        flexDirection: 'row',
+                      }}>
+                      <View>
+                        <Image
+                          source={{ uri: item.images[0] }}
+                          style={{ width: 80, height: 80 }}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          width: '73%',
+                          marginLeft: 12,
+                          flexDirection: 'column',
+                          paddingRight: 20,
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: Fonts.Work_SemiBold,
+                            fontSize: 14,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          {item.name}
+                        </Text>
+                        <Text
+                          numberOfLines={2}
+                          style={{
+                            fontFamily: Fonts.Work_Regular,
+                            color: color.TEXT_SECOND,
+                            fontSize: 14,
+                            alignItems: 'center',
+                          }}>
+                          {item.description}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: Fonts.Work_SemiBold,
+                            fontSize: 15,
+                            alignItems: 'center',
+                          }}>
+                          {item.stock[0].price}đ
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                />
+              )
+          }
         </ScrollView>
 
         <Modal visible={visible} transparent animationType="slide">
@@ -581,10 +608,10 @@ const Detail = props => {
                 }}>
                 <View style={styles.imageContainer}>
                   <Image
-                    source={{uri: detailImage}}
-                    style={{height: 120, width: 120}}
+                    source={{ uri: detailImage }}
+                    style={{ height: 120, width: 120 }}
                   />
-                  <View style={{justifyContent: 'flex-end', marginLeft: 10}}>
+                  <View style={{ justifyContent: 'flex-end', marginLeft: 10 }}>
                     <Text
                       style={{
                         fontSize: 18,
@@ -631,7 +658,7 @@ const Detail = props => {
                   Màu
                 </Text>
                 {/* select color */}
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   {colorsModal.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
@@ -679,12 +706,13 @@ const Detail = props => {
                   SIZE
                 </Text>
                 {/* select size */}
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   {sizesModal.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
                         getPriceCurrent(detailColor, item.size)
-                        setDetailSize(item.size)}}
+                        setDetailSize(item.size)
+                      }}
                       disabled={!item.available}
                       key={index}
                       style={{
@@ -693,8 +721,8 @@ const Detail = props => {
                           detailSize == item.size
                             ? 'white'
                             : item.available
-                            ? '#F5F5F5'
-                            : '#FAFAFA',
+                              ? '#F5F5F5'
+                              : '#FAFAFA',
                         borderColor: color.MAIN,
                         borderWidth: detailSize == item.size ? 2 : 0,
                         paddingHorizontal: 10,
@@ -730,18 +758,18 @@ const Detail = props => {
                       quantity == 1 ? quantity : setQuantity(quantity - 1);
                     }}>
                     <View style={styles.quantitybutton}>
-                      <Text style={{fontSize: 18}}>-</Text>
+                      <Text style={{ fontSize: 18 }}>-</Text>
                     </View>
                   </TouchableOpacity>
                   <View style={styles.quantityNumber}>
-                    <Text style={{fontSize: 18}}>{quantity}</Text>
+                    <Text style={{ fontSize: 18 }}>{quantity}</Text>
                   </View>
                   <TouchableOpacity
                     onPress={() => {
                       setQuantity(quantity + 1);
                     }}>
                     <View style={styles.quantitybutton}>
-                      <Text style={{fontSize: 18}}>+</Text>
+                      <Text style={{ fontSize: 18 }}>+</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -798,7 +826,7 @@ const Detail = props => {
           borderColor: color.BORDER_BOTTOM,
           borderTopWidth: 1,
         }}>
-        <View style={{paddingHorizontal: 5}}>
+        <View style={{ paddingHorizontal: 5 }}>
           <Text>Giao Nhanh Miễn Phí tại TP.HCM Và Hà Nội</Text>
 
           {/* ButtonBuy */}
@@ -812,7 +840,7 @@ const Detail = props => {
               alignItems: 'center',
             }}
             onPress={showDialog}>
-            <Text style={[styles.textTitle, {color: 'white'}]}>MUA ONLINE</Text>
+            <Text style={[styles.textTitle, { color: 'white' }]}>MUA ONLINE</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -11,15 +11,16 @@ import {
   getProductsByGenres,
   getStore,
   declineCart,
-  createBillService
+  createBillService,
+  countCart,
 } from './ProductService';
-import React, {useState, createContext} from 'react';
+import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ProductContext = createContext();
 
 export const ProductsContextProvider = props => {
-  const {children} = props;
+  const { children } = props;
   const [products, setProducts] = useState([]);
   const [genres, setGenres] = useState([
     {
@@ -36,12 +37,21 @@ export const ProductsContextProvider = props => {
   const [productID, setProductID] = useState([]);
   const [flashSaleProducts, setFlashSaleProducts] = useState([]);
   const [productsByGenre, setProductsByGenre] = useState([]);
+  const [flashSaleLoading, setFlashSaleLoading] = useState(false)
+  const [productLoading, setProductLoading] = useState(false)
+  const [relatedProductLoading, setRelatedProductLoading] = useState(false)
+  const [detailLoading, setDetailLoading] = useState(false)
+  const [cartLoading, setCartLoading] = useState(false)
+  const [cartQuantity, setCartQuantity] = useState()
+  const [cartQuantityLoading, setCartQuantityLoading] = useState(false)
 
   const onGetAllProducts = async () => {
+    setFlashSaleLoading(true)
     try {
       const res = await getAllProducts();
       if (res.status == 'success') {
         setProducts(res.data);
+        setFlashSaleLoading(false)
         return true;
       }
     } catch (error) {
@@ -50,12 +60,12 @@ export const ProductsContextProvider = props => {
   };
 
   const onGetAllFlashSaleProducts = async () => {
+    setProductLoading(true)
     try {
       const res = await getFlashSale();
-      // console.log('ssssssdd', res);
       if (res.status == 'success') {
         setFlashSaleProducts(res.data);
-
+        setProductLoading(false)
         return true;
       }
     } catch (error) {
@@ -77,10 +87,12 @@ export const ProductsContextProvider = props => {
   };
 
   const onGetDetail = async _id => {
+    setDetailLoading(true)
     try {
       const res = await getDetail(_id);
       if (res.status == 'success') {
         setDetail(res.data);
+        setDetailLoading(false)
         return res.data;
       }
     } catch (error) {
@@ -132,10 +144,12 @@ export const ProductsContextProvider = props => {
 
 
   const onGetProductsByGenre = async _id => {
+    setRelatedProductLoading(true)
     try {
       const res = await getProductsByGenres(_id);
       if (res.status == 'success') {
         setProductsByGenre(res.data);
+        setRelatedProductLoading(false)
         return true;
       }
     } catch (error) {
@@ -156,10 +170,12 @@ export const ProductsContextProvider = props => {
   };
 
   const onGetCart = async () => {
+    setCartLoading(true)
     try {
       const res = await getCart();
       if (res.status == 'success') {
         setCart(res.data);
+        setCartLoading(false)
         return res.data;
       }
     } catch (error) {
@@ -203,6 +219,20 @@ export const ProductsContextProvider = props => {
       console.log('createBills failed ===>', error);
     }
   };
+  const onCountCart = async () => {
+    try {
+      const res = await countCart()
+      if (res.status === 'success') {
+        setCartQuantity(res.data.quantityCart)
+        return true
+      } else {
+        return false
+      }
+    } catch (error) {
+      console.log('onCountCart failed ===>', error);
+      throw error
+    }
+  }
 
   return (
     <ProductContext.Provider
@@ -230,7 +260,22 @@ export const ProductsContextProvider = props => {
         onGetCart,
         setGenres,
         cart,
-        createBills
+        createBills,
+        flashSaleLoading,
+        setFlashSaleLoading,
+        productLoading,
+        setProductLoading,
+        relatedProductLoading,
+        setRelatedProductLoading,
+        detailLoading,
+        setDetailLoading,
+        cartLoading,
+        setCartLoading,
+        onCountCart,
+        cartQuantity,
+        setCartQuantity,
+        cartQuantityLoading,
+        setCartQuantityLoading
       }}>
       {children}
     </ProductContext.Provider>

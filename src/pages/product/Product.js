@@ -10,9 +10,10 @@ import {
   StyleSheet,
   TextInput,
   StatusBar,
+  ActivityIndicator
 } from 'react-native';
 import color from '../../styles/colors';
-import {PESFlatList} from '../../components/PESFlatList';
+import { PESFlatList } from '../../components/PESFlatList';
 import {
   flatlistContainer,
   headerContainer,
@@ -20,20 +21,29 @@ import {
   imgVoucher2,
 } from './components/styles';
 
-import {icons, images} from '../../assets';
+import { icons, images } from '../../assets';
 import PESCategories from '../../components/PESCategories';
 import Fonts from '../../assets/fonts/fonts';
 const width = Dimensions.get('screen').width / 2 - 30;
-import React, {useState, useEffect, useContext} from 'react';
-import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 import PESListItem from '../../components/PESListItem';
 import PESListFlashSale from '../../components/PESListFlashSale';
-import {SliderBox} from 'react-native-image-slider-box';
-import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
+import { SliderBox } from 'react-native-image-slider-box';
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import colorsPES from '../../constants/colors';
 
-const Product = ({navigation, onPressProducts}) => {
-  const {onGetAllProducts, onGetAllFlashSaleProducts, flashSaleProducts} =
-    useContext(ProductContext);
+const Product = ({ navigation, onPressProducts }) => {
+  const {
+    onGetAllProducts,
+    onGetAllFlashSaleProducts,
+    flashSaleProducts,
+    flashSaleLoading,
+    productLoading,
+    onCountCart,
+    cartQuantity,
+  } = useContext(ProductContext);
+
   const listTextSearch = [
     'Áo sơ mi',
     'Quần tây',
@@ -43,7 +53,7 @@ const Product = ({navigation, onPressProducts}) => {
     'Áo khác jumber',
   ];
   const [textSearch, setTextSearch] = useState(listTextSearch[0]);
-  const notificantion = () => {};
+  const notificantion = () => { };
 
   const effectTextSearch = () => {
     let i = 1;
@@ -60,6 +70,14 @@ const Product = ({navigation, onPressProducts}) => {
     effectTextSearch();
   }, []);
 
+  useEffect(() => {
+    onCountCart()
+    return () => { }
+  }, [cartQuantity])
+
+  // console.log('cart quantity >>>> ', cartQuantity)
+
+
   const images = [
     'https://img.freepik.com/premium-vector/88-shopping-day-sale-banner-background-business-vector-illustration_500223-916.jpg?w=1380',
     'https://img.freepik.com/premium-vector/vector-1111-shopping-day-poster-banner-with-gift-box-shopping-bag_139523-695.jpg?w=1380',
@@ -74,7 +92,7 @@ const Product = ({navigation, onPressProducts}) => {
   ];
 
   return (
-    <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
+    <SafeAreaView style={{ width: '100%', backgroundColor: '#F0F2F5' }}>
       <StatusBar
         hidden={false}
         backgroundColor="transparent"
@@ -105,7 +123,7 @@ const Product = ({navigation, onPressProducts}) => {
             onPress={() => console.log('search')}
             activeOpacity={1}
             style={styles.customSearch}>
-            <Image source={icons.search_icon} style={{width: 20, height: 20}} />
+            <Image source={icons.search_icon} style={{ width: 20, height: 20 }} />
             <Text
               style={{
                 fontSize: 15,
@@ -115,17 +133,37 @@ const Product = ({navigation, onPressProducts}) => {
               }}>
               {textSearch}
             </Text>
-            <View style={{width: '19%'}}></View>
+            <View style={{ width: '19%' }}></View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Cart');
             }}>
-            <Image source={icons.cardIcon} style={{width: 24, height: 24}} />
+            <View>
+              <Image source={icons.cardIcon} style={{ width: 35, height: 35 }} />
+              {
+                cartQuantity == 0
+                  ? (<View></View>)
+                  : (
+                    <View
+                      style={{
+                        position: 'absolute', width: 20,
+                        height: 20, backgroundColor: colorsPES.red,
+                        padding: 5, top: 0, right: 0,
+                        justifyContent: 'center', alignItems: 'center',
+                        borderRadius: 5,
+                      }}
+                    >
+                      <Text style={{ color: colorsPES.white, fontSize: 7 }}>{cartQuantity}</Text>
+                    </View>
+                  )
+              }
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={notificantion}>
-            <Image source={icons.chatIcon} style={{width: 24, height: 24}} />
-          </TouchableOpacity>
+          {/* <TouchableOpacity onPress={notificantion}>
+            <Image source={icons.chatIcon} style={{ width: 24, height: 24 }} />
+
+          </TouchableOpacity> */}
         </View>
         {/* FlashSale */}
         <View
@@ -149,7 +187,7 @@ const Product = ({navigation, onPressProducts}) => {
               justifyContent: 'space-between',
             }}>
             <Image
-              style={{height: 28, width: 28, tintColor: color.TEXT_SECOND}}
+              style={{ height: 28, width: 28, tintColor: color.TEXT_SECOND }}
               source={require('../../assets/images/haohoa_scanQR.png')}
             />
             <View
@@ -160,7 +198,7 @@ const Product = ({navigation, onPressProducts}) => {
                 backgroundColor: color.BORDER_BOTTOM,
               }}
             />
-            <View style={{height: '100%', width: '42%'}}>
+            <View style={{ height: '100%', width: '42%' }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -201,7 +239,7 @@ const Product = ({navigation, onPressProducts}) => {
                 backgroundColor: color.BORDER_BOTTOM,
               }}
             />
-            <View style={{height: '100%', width: '40%'}}>
+            <View style={{ height: '100%', width: '40%' }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -280,8 +318,8 @@ const Product = ({navigation, onPressProducts}) => {
                   size={24}
                   strokeWidth={2}
                   colors="#A30000">
-                  {({remainingTime}) => (
-                    <Text style={{color: 'black', alignSelf: 'center'}}>
+                  {({ remainingTime }) => (
+                    <Text style={{ color: 'black', alignSelf: 'center' }}>
                       {remainingTime}
                     </Text>
                   )}
@@ -295,8 +333,8 @@ const Product = ({navigation, onPressProducts}) => {
                   size={24}
                   strokeWidth={2}
                   colors="#A30000">
-                  {({remainingTime}) => (
-                    <Text style={{color: 'black', alignSelf: 'center'}}>
+                  {({ remainingTime }) => (
+                    <Text style={{ color: 'black', alignSelf: 'center' }}>
                       {remainingTime}
                     </Text>
                   )}
@@ -312,10 +350,10 @@ const Product = ({navigation, onPressProducts}) => {
                   colors="#A30000"
                   onComplete={() => {
                     // do your stuff here
-                    return {shouldRepeat: true, delay: 1}; // repeat animation in 1.5 seconds
+                    return { shouldRepeat: true, delay: 1 }; // repeat animation in 1.5 seconds
                   }}>
-                  {({remainingTime}) => (
-                    <Text style={{color: 'black', alignSelf: 'center'}}>
+                  {({ remainingTime }) => (
+                    <Text style={{ color: 'black', alignSelf: 'center' }}>
                       {remainingTime}
                     </Text>
                   )}
@@ -324,18 +362,25 @@ const Product = ({navigation, onPressProducts}) => {
             </View>
           </View>
           {/* FlatListFlashSale */}
-          <View>
-            <FlatList
-              pagingEnabled
-              data={flashSaleProducts}
-              showsHorizontalScrollIndicator={false}
-              horizontal
-              keyExtractor={item => item._id}
-              renderItem={({item}) => (
-                <PESListFlashSale navigation={navigation} item={item} />
-              )}
-            />
-          </View>
+          {
+            flashSaleLoading
+              ? (<ActivityIndicator size='large' color={colorsPES.borderColorBlue} />)
+              : (
+                <View>
+                  <FlatList
+                    pagingEnabled
+                    data={flashSaleProducts}
+                    showsHorizontalScrollIndicator={false}
+                    horizontal
+                    keyExtractor={item => item._id}
+                    renderItem={({ item }) => (
+                      <PESListFlashSale navigation={navigation} item={item} />
+                    )}
+                  />
+                </View>
+              )
+          }
+
         </View>
 
         <View
@@ -368,10 +413,15 @@ const Product = ({navigation, onPressProducts}) => {
           }}>
           <PESCategories />
         </View>
-
-        <View style={flatlistContainer}>
-          <PESFlatList navigation={navigation} />
-        </View>
+        {
+          productLoading
+            ? (<ActivityIndicator size='large' color={colorsPES.borderColorBlue} />)
+            : (
+              <View style={flatlistContainer}>
+                <PESFlatList navigation={navigation} />
+              </View>
+            )
+        }
       </ScrollView>
     </SafeAreaView>
   );
