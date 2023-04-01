@@ -41,6 +41,7 @@ export const ProductsContextProvider = props => {
   const [detailLoading, setDetailLoading] = useState(false)
   const [cartLoading, setCartLoading] = useState(false)
   const [cartQuantity, setCartQuantity] = useState()
+  const [cartQuantityLoading, setCartQuantityLoading] = useState(false)
 
   const onGetAllProducts = async () => {
     setFlashSaleLoading(true)
@@ -246,7 +247,9 @@ export const ProductsContextProvider = props => {
         setCartLoading,
         onCountCart,
         cartQuantity,
-        setCartQuantity
+        setCartQuantity,
+        cartQuantityLoading,
+        setCartQuantityLoading
       }}>
       {children}
     </ProductContext.Provider>

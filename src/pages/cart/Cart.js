@@ -107,7 +107,6 @@ const Cart = ({ navigation }) => {
         onCountCart()
         setConfirmDialogVisible(false)
         setTimeout(() => handleSuccessDialogClose(), 3000)
-
       }
     } catch (error) {
       console.log('error', error);
@@ -148,7 +147,7 @@ const Cart = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View
         style={{
           height: StatusBar.currentHeight,
@@ -196,7 +195,7 @@ const Cart = ({ navigation }) => {
           cartLoading
             ? (<ActivityIndicator size='large' color={colorsPES.borderColorBlue} />)
             : (
-              <View style={{ width: '100%' }}>
+              <View style={{ width: '100%', height: '100%' }}>
                 <FlatList
                   scrollEnabled={false}
                   data={cart}
@@ -206,7 +205,7 @@ const Cart = ({ navigation }) => {
                     <View
                       style={{
                         backgroundColor: 'white',
-                        marginBottom: 10,
+                        marginVertical: 10,
                         width: '100%',
                         height: 140,
                       }}>
@@ -266,7 +265,6 @@ const Cart = ({ navigation }) => {
                           />
                         </TouchableOpacity>
                       </View>
-
                       <View
                         style={{
                           flexDirection: 'row',
@@ -319,6 +317,14 @@ const Cart = ({ navigation }) => {
               </View>
             )
         }
+      </ScrollView>
+      <View
+        style={{
+          justifyContent: 'flex-start',
+          paddingVertical: 10,
+          marginTop: 20,
+        }}>
+        {/* ButtonBuy */}
         <View style={styles.billContainer}>
           <Text
             style={{
@@ -387,13 +393,6 @@ const Cart = ({ navigation }) => {
             </View>
           </View>
         </View>
-      </ScrollView>
-      <View
-        style={{
-          justifyContent: 'flex-start',
-          paddingVertical: 10
-        }}>
-        {/* ButtonBuy */}
         <View style={{ paddingHorizontal: 5 }}>
           {/* ButtonBuy */}
           <TouchableOpacity
@@ -435,7 +434,7 @@ const Cart = ({ navigation }) => {
         message="Bạn chắc chắn muốn xóa khỏi giỏ hàng ?"
         confirmMessage="Xóa"
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
