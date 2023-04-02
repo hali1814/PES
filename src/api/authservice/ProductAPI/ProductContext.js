@@ -45,6 +45,7 @@ export const ProductsContextProvider = props => {
   const [cartQuantity, setCartQuantity] = useState()
   const [cartQuantityLoading, setCartQuantityLoading] = useState(false)
   const [dataBill, setDataBill] = useState('');
+  const [billLoading, setBillLoading] = useState(false)
 
   const onGetAllProducts = async () => {
     setFlashSaleLoading(true)
@@ -130,10 +131,12 @@ export const ProductsContextProvider = props => {
   };
 
   const onCalculator = async (voucher_shipping, voucher_pes) => {
+    setBillLoading(true)
     try {
       const res = await calculatorBill(voucher_shipping, voucher_pes);
       if (res.status == 'success') {
         setDataBill(res.data);
+        setBillLoading(false)
         return res.data;
       }
     } catch (error) {
@@ -195,7 +198,7 @@ export const ProductsContextProvider = props => {
     }
   };
 
-  
+
   const onGetStatusBills = async (status) => {
     try {
       const res = await getBillsByStatus(status);
@@ -212,7 +215,7 @@ export const ProductsContextProvider = props => {
       const res = await createBillService(voucher_shipping, voucher_pes);
       if (res.status == 'success') {
         return true;
-      }else return false;
+      } else return false;
     } catch (error) {
       console.log('createBills failed ===>', error);
     }
@@ -275,8 +278,10 @@ export const ProductsContextProvider = props => {
         cartQuantityLoading,
         setCartQuantityLoading,
         dataBill,
-         setDataBill
- 
+        setDataBill,
+        billLoading,
+        setBillLoading,
+
       }}>
       {children}
     </ProductContext.Provider>

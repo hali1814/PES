@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native'
 import React, { useEffect, useContext } from 'react'
 import { icons } from '../../assets';
 import { images } from '../../assets';
@@ -20,7 +20,7 @@ const Voucher = ({ navigation }) => {
     }, [])
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <PESHeader navigation={navigation} title={'Voucher'} />
             <FlatList
                 data={voucher}
@@ -39,7 +39,7 @@ const Voucher = ({ navigation }) => {
                 )}
             />
 
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        paddingHorizontal: 10
+        marginVertical: 10,
+        paddingVertical: 22,
     },
 })
