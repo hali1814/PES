@@ -52,7 +52,7 @@ const Shop = props => {
   // const DetailShopID = store.products?._id;
 
   return (
-    <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5'}}>
+    <SafeAreaView style={{width: '100%', backgroundColor: '#F0F2F5', flex: 1}}>
       <PESHeader title={'Cửa Hàng'} navigation={navigation} />
       <View style={{flexDirection: 'column', marginTop: 8}}>
         {/* Search */}
@@ -73,12 +73,16 @@ const Shop = props => {
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* Shop */}
-          <View style={{marginTop: 12, paddingHorizontal: 12}}>
+          <View style={{marginTop: 12, paddingHorizontal: 5}}>
             <View style={ContainerShop}>
               <View style={headerContainerShop}>
                 <View style={{flexDirection: 'row'}}>
                   <Image
-                    source={{uri: store.avatar}}
+                    source={
+                      store
+                        ? {uri: store.avatar}
+                        : require('../../assets/images/haohoa_scanQR.png')
+                    }
                     style={{width: 32, height: 32, borderRadius: 360}}
                   />
                   <View style={userNameContainer}>
@@ -120,48 +124,47 @@ const Shop = props => {
           </View>
 
           {/* Categories */}
-          <View
+          {/* <View
             style={{
               width: '100%',
               marginTop: 12,
             }}>
             <PESCategories />
+          </View> */}
+          <View
+            style={{
+              width: '100%',
+              marginTop: 5,
+              height: 85,
+              paddingLeft: 5,
+            }}>
+            <PESCategories />
           </View>
 
-          {/* Voucher */}
-          <View style={{marginTop: 12, paddingHorizontal: 12}}>
-            <View style={voucherContainer}>
-              <View style={{flexDirection: 'row'}}>
-                <Image
-                  source={icons.voucher_icon}
-                  style={{width: 35, height: 35}}
-                />
-                <View style={{alignSelf: 'center', marginLeft: 12}}>
-                  <Text style={voucherText}>{textsPES.txtVoucher}</Text>
-                </View>
-              </View>
-              <TouchableOpacity
-                onPress={() => {}}
-                style={{flexDirection: 'row'}}>
-                <Text style={txtVoucher}>{textsPES.txtDetail}</Text>
-                <Image
-                  source={icons.chevronRight_icon}
-                  style={{width: 16, height: 16, marginLeft: 2}}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
+          {/* <View style={flatlistContainer}>
+            <PESFlatList navigation={navigation} />
+          </View> */}
 
           {/* List Products */}
-          <View style={{marginTop: 12}}>
+          <View style={{marginTop: 5, paddingBottom: 110}}>
             <FlatList
-              pagingEnabled
-              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
               data={store.products}
               numColumns={2}
               keyExtractor={item => item._id}
+              refreshing={false}
+              showsVerticalScrollIndicator={false}
+              columnWrapperStyle={{
+                flex: 0.5,
+                justifyContent: 'space-between',
+                paddingRight: 5,
+              }}
               renderItem={({item}) => (
-                <PESListItemShop navigation={navigation} item={item} />
+                <PESListItem
+                  navigation={navigation}
+                  onPressListItem={''}
+                  item={item}
+                />
               )}
             />
           </View>

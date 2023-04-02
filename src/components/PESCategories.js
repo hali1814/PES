@@ -6,14 +6,13 @@ import PESListCategories from './PESListCategories';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 
 const PESCategories = () => {
-  const {onGetAllGenre, genres, onGetProductsByGenre, setGenres} =
+  const {onGetAllGenre, genres, onGetProductsByGenre, setGenres, onGetAllProducts} =
     useContext(ProductContext);
 
   const [isFocused, setIsFocused] = useState('dfahsdkfhaksjhdfkjash');
 
   useEffect(() => {
     onGetAllGenre();
-    onGetProductsByGenre();
   }, []);
 
   return (
@@ -27,6 +26,8 @@ const PESCategories = () => {
           item={item}
           isFocused={isFocused}
           setIsFocused={setIsFocused}
+          onGetProductsByGenre={onGetProductsByGenre}
+          onGetAllProducts={onGetAllProducts}
         />
       )}
     />

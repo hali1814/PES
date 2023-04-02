@@ -5,7 +5,7 @@ import {icons} from '../assets';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import Fonts from '../assets/fonts/fonts';
 
-const PESListCategories = ({item, onSelectCategory, isFocused, setIsFocused}) => {
+const PESListCategories = ({item, onGetProductsByGenre, isFocused, setIsFocused, onGetAllProducts}) => {
   const {onGetAllGenre} =
     useContext(ProductContext);
 
@@ -18,7 +18,13 @@ const PESListCategories = ({item, onSelectCategory, isFocused, setIsFocused}) =>
   }, []);
 
   const onPressCategory = () => {
+    if (item._id == 'dfahsdkfhaksjhdfkjash') {
+      onGetAllProducts()
+    }
+    else onGetProductsByGenre(item._id)
+
     setIsFocused(item._id)
+    
   };
 
   return (

@@ -47,12 +47,12 @@ export const ProductsContextProvider = props => {
   const [dataBill, setDataBill] = useState('');
 
   const onGetAllProducts = async () => {
-    setFlashSaleLoading(true)
+    
+
     try {
       const res = await getAllProducts();
       if (res.status == 'success') {
         setProducts(res.data);
-        setFlashSaleLoading(false)
         return true;
       }
     } catch (error) {
@@ -61,12 +61,12 @@ export const ProductsContextProvider = props => {
   };
 
   const onGetAllFlashSaleProducts = async () => {
-    setProductLoading(true)
+    setFlashSaleLoading(true)
     try {
       const res = await getFlashSale();
       if (res.status == 'success') {
         setFlashSaleProducts(res.data);
-        setProductLoading(false)
+        setFlashSaleLoading(false)
         return true;
       }
     } catch (error) {
@@ -142,12 +142,15 @@ export const ProductsContextProvider = props => {
   };
 
   const onGetProductsByGenre = async _id => {
-    setRelatedProductLoading(true)
+    // setRelatedProductLoading(true)
+    setProductLoading(true)
     try {
       const res = await getProductsByGenres(_id);
       if (res.status == 'success') {
+        setProducts(res.data)
         setProductsByGenre(res.data);
-        setRelatedProductLoading(false)
+        setProductLoading(false)
+        // setRelatedProductLoading(false)
         return true;
       }
     } catch (error) {

@@ -9,7 +9,7 @@ export const PESFlatList = ({navigation, onPressFlatlist}) => {
   const {onGetAllProducts, products} = useContext(ProductContext);
 
   const [currentProducts, setCurrentProducts] = useState([]);
-
+  
   useEffect(() => {
     onGetAllProducts();
   }, []);
