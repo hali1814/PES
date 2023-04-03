@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "225166278712",
+    "project_id": "peshop-b50bf",
+    "storage_bucket": "peshop-b50bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225166278712:android:451a722fb03bd0ba7826cd",
+        "android_client_info": {
+          "package_name": "com.garduationfpt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225166278712-vhtrmm2qqkp2m0sgcoal8ffkunc8vukm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeMKzC-LF5D6LkZtu_v7ZkjNGzQiDUCRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225166278712-vhtrmm2qqkp2m0sgcoal8ffkunc8vukm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

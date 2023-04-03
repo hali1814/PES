@@ -11,10 +11,13 @@ import React, {useEffect, useRef} from 'react';
 import {containerLoading} from './components/styles';
 import {images} from '../../assets';
 import {useNavigation} from '@react-navigation/native';
-
+import messaging from '@react-native-firebase/messaging';
 const Loading = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
+
+
+
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
