@@ -40,6 +40,7 @@ import PESHeader from '../components/PESHeader';
 import OrderHeader from '../components/OrderHeader';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Notification from '../pages/notification/Notification';
 
 const Tab = createBottomTabNavigator();
 const topTab = createMaterialTopTabNavigator();
@@ -149,7 +150,7 @@ const MyTab = ({navigation}) => {
         /> */}
         <Tab.Screen
           name="Notification"
-          component={Profile}
+          component={Notification}
           options={{title: 'Thông báo', headerTitleAlign: 'center'}}
         />
         <Tab.Screen
