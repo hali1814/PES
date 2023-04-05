@@ -6,7 +6,6 @@ const Stack = createStackNavigator();
 import { Login, Register, OTPScreen } from '../../pages/login';
 import Onboarding from '../../pages/onboarding/Onboarding';
 const UserNavigation = () => {
- 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Onboarding" component={Onboarding} />

@@ -6,119 +6,99 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import color from '../../styles/colors';
 import {icons, images} from '../../assets';
 import Fonts from '../../assets/fonts/fonts';
+import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 
 const Notification = () => {
-  const notifications = [
-    {
-      id: 1,
-      title: 'Bạn đã đặt hàng thành công!',
-      content: 'Mã sản phẩm "75488484848" Giày MLB Royal Collection ',
-      image: images.detail_image,
-    },
-    {
-      id: 2,
-      title: 'Bạn đã đặt hàng thành công!',
-      content: 'Mã sản phẩm "75488484848" Giày MLB Royal Collection ',
-      image: images.detail_image,
-    },
-    {
-      id: 3,
-      title: 'Bạn đã đặt hàng thành công!',
-      content: 'Mã sản phẩm "75488484848" Giày MLB Royal Collection ',
-      image: images.detail_image,
-    },
-  ];
+  const {getListNotification} = useContext(ProductContext);
+  const [data, setData] = useState([]);
   const renderItem = ({item}) => (
     <View
+      elevation={2}
       style={{
-        marginTop: 12,
         paddingVertical: 12,
-        height: 104,
+        height: 120,
         paddingHorizontal: 12,
-        backgroundColor: '#EAEFFF',
+        backgroundColor: item.status == 0 ? '#EAEBF6' : 'white',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 4,
       }}>
-      <View
-        style={{
-          height: '100%',
-          width: '75%',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}>
-        <Text
+      <TouchableOpacity
+        style={{height: '100%', width: '100%', flexDirection: 'row'}}>
+        <View
           style={{
-            color: '#66BD50',
-            fontFamily: Fonts.Work_Regular,
-            fontSize: 13,
+            height: '100%',
+            width: '75%',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            paddingHorizontal: 5,
           }}>
-          {item.title}
-        </Text>
-        <Text
-          style={{
-            fontFamily: Fonts.Work_Regular,
-            fontSize: 13,
-            color: color.BLACK,
-          }}>
-          {item.content}
-        </Text>
-        <View style={{width: '36%'}}>
-          <TouchableOpacity
+          <Text
             style={{
-              flexDirection: 'row',
-              backgroundColor: color.MAIN,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 8,
-              paddingVertical: 4,
-              borderRadius: 4,
+              color: color.TEXT_PRIMARY,
+              fontFamily: Fonts.Man_SemiBold,
+              fontSize: 15,
             }}>
-            <Image source={icons.BoxSearchIcon} style={{width: 8, height: 8}} />
-            <Text
-              style={{
-                fontFamily: Fonts.Man_Regular,
-                color: color.BLACK,
-                fontSize: 8,
-                color: color.WHITE,
-              }}>
-              {'Kiểm Tra Đơn Hàng'}
-            </Text>
-          </TouchableOpacity>
+            {item.title}
+          </Text>
+          <Text
+            style={{
+              fontFamily: Fonts.Work_Regular,
+              fontSize: 14,
+              color: color.TEXT_PRIMARY,
+            }}>
+            {item.message}
+          </Text>
+          <View style={{width: '36%'}}></View>
         </View>
-      </View>
-      <Image
-        source={item.image}
-        style={{height: 80, width: 80, borderRadius: 4}}
-      />
+        <Image
+          source={
+            item
+              ? {uri: item.imagesProduct[0]}
+              : require('../../assets/images/haohoa_scanQR.png')
+          }
+          style={{height: 80, width: 80, borderRadius: 4}}
+        />
+      </TouchableOpacity>
     </View>
   );
 
+  const getAll = async () => {
+    const data = await getListNotification();
+    setData(data);
+  };
+
+  useEffect(() => {
+    getAll();
+  }, []);
+
   return (
     <ScrollView style={styles.Container}>
+      <StatusBar
+        backgroundColor="#fff"
+        barStyle="dark-content" // Here is where you change the font-color
+      />
       {/* TitleNotification */}
-      <View>
-        <View style={styles.ContainerHeader}>
-          <Text style={styles.TitleText}>{'Notifications'}</Text>
-          <View style={styles.CustomImage}>
-            <Image source={icons.FilterIcon} style={{height: 16, width: 16}} />
-          </View>
-        </View>
-        <Text style={{fontFamily: Fonts.Man_Regular, color: color.BLACK}}>
-          {'Bạn có 3 thông báo mới trong hôm nay'}
-        </Text>
+
+      <View style={styles.ContainerHeader}>
+        <Text style={styles.TitleText}>{'Notifications'}</Text>
       </View>
+      {/* <View style={styles.CustomImage}>
+            <Image source={icons.FilterIcon} style={{height: 16, width: 16}} />
+          </View> */}
       {/* FlatListItem */}
       <FlatList
-        data={notifications}
+        data={data}
+        scrollEnabled={false}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item._id.toString()}
       />
     </ScrollView>
   );
@@ -129,25 +109,27 @@ export default Notification;
 const styles = StyleSheet.create({
   Container: {
     height: '100%',
-    backgroundColor: color.WHITE,
     flex: 1,
-    paddingHorizontal: 16,
+    marginTop: StatusBar.currentHeight,
   },
   ContainerHeader: {
-    paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     justifyContent: 'space-between',
+    backgroundColor: 'white',
+    height: StatusBar.currentHeight * 2,
+    paddingHorizontal: 10,
   },
   TitleText: {
     fontFamily: Fonts.Man_SemiBold,
-    fontSize: 24,
-    color: color.BLACK,
+    fontSize: 20,
+    color: color.TEXT_PRIMARY,
   },
   CustomImage: {
     width: 32,
     height: 32,
+    marginTop: 20,
     backgroundColor: 'rgba(88, 101, 242, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',

@@ -8,13 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const AppNavigation = () => {
     const { isLoggedIn, setIsLoggedIn, user } = useContext(UserContext)
     const token = AsyncStorage.getItem('token');
-    // if (token.length !== null) {
-    //     isLoggedIn == true
-    // } else {
-    //     isLoggedIn == false
-    // }
-
-
+    
     return (
         <NavigationContainer>
             {

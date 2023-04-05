@@ -23,8 +23,8 @@ const Login = props => {
   const {navigation, route} = props;
   const [errorPhoneNumber, setErrorPhoneNumber] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('0865658544');
-  const [password, setPassword] = useState('123');
+  const [phoneNumber, setPhoneNumber] = useState('0918865377');
+  const [password, setPassword] = useState('hunglong0209');
   const isValidationOK = () =>
     phoneNumber.length > 0 &&
     password.length > 0 &&
@@ -53,7 +53,6 @@ const Login = props => {
     setConfirmDialogVisible(false);
   };
 
-  useEffect(() => {}, []);
 
   const {onLogin} = useContext(UserContext);
 

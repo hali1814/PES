@@ -66,3 +66,19 @@ export const countCart = async () => {
   const result = await customAxios().get('/api/cart/count')
   return result
 }
+
+export const countNotification = async () => {
+  const result = await customAxios().get('/api/notification/count')
+  return result
+}
+
+export const allNotification = async () => {
+  const result = await customAxios().get('/api/notification/all')
+  return result
+}
+
+export const sawNotification = async (idNotification) => {
+  const data = {idNotification}
+  const result = await customAxios().post('/api/notification/all', data)
+  return result
+}

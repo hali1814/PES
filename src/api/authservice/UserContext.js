@@ -7,21 +7,22 @@ import {
   register,
   changeProfile,
   upload,
+  setTokenDevice,
 } from './UserService';
-import React, { useState, createContext } from 'react';
+import React, {useState, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import messaging from '@react-native-firebase/messaging';
 export const UserContext = createContext();
 
 export const UserContextProvider = props => {
-  const { children } = props;
+  const {children} = props;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState([]);
   const [voucher, setVoucher] = useState([]);
-  const [profileLoading, setProfileLoading] = useState(false)
+  const [profileLoading, setProfileLoading] = useState(false);
 
-  const [voucher_shipping, setVoucher_shipping] = useState('')
-  const [voucher_pes, setVoucher_pes] = useState('')
+  const [voucher_shipping, setVoucher_shipping] = useState('');
+  const [voucher_pes, setVoucher_pes] = useState('');
 
   const onRegister = async (
     userName,
@@ -58,6 +59,16 @@ export const UserContextProvider = props => {
       if (res.status == 'success') {
         const token = res.data.token;
         await AsyncStorage.setItem('token', token);
+        //set tokenDevice
+        messaging()
+          .getToken()
+          .then(token => {
+            setTokenDevice(token);
+            // Gửi token lên máy chủ để lưu trữ và sử dụng sau này
+          });
+
+
+        //
         setIsLoggedIn(true);
         return true;
       } else if (res.status == 'inactive') {
@@ -132,12 +143,12 @@ export const UserContextProvider = props => {
   };
 
   const onGetUserInfor = async () => {
-    setProfileLoading(true)
+    setProfileLoading(true);
     try {
       const res = await getUserInfor();
       if (res.status == 'success') {
         setUser(res.data);
-        setProfileLoading(false)
+        setProfileLoading(false);
         console.log(res.data);
       } else if (res.status == 'inactive') {
         const message = res.data.message;
@@ -163,6 +174,18 @@ export const UserContextProvider = props => {
     return null;
   };
 
+  const setTokenDeviceContext = async tokenDevice => {
+    try {
+      const res = await setTokenDevice(tokenDevice);
+      if (res.status == 'success') {
+        return true;
+      } else return false;
+    } catch (error) {
+      console.log('onGetVoucher error', error);
+      throw error;
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -184,7 +207,8 @@ export const UserContextProvider = props => {
         voucher_pes,
         setVoucher_pes,
         voucher_shipping,
-        setVoucher_shipping
+        setVoucher_shipping,
+        setTokenDeviceContext,
       }}>
       {children}
     </UserContext.Provider>

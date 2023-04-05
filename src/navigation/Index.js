@@ -5,7 +5,7 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import colorsPES from '../constants/colors';
@@ -41,14 +41,15 @@ import OrderHeader from '../components/OrderHeader';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Notification from '../pages/notification/Notification';
-
+import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
+import messaging from '@react-native-firebase/messaging';
+import notifee from '@notifee/react-native';
 const Tab = createBottomTabNavigator();
 const topTab = createMaterialTopTabNavigator();
 
 const appStack = createStackNavigator();
 
 const AppStackScreen = ({navigation}) => {
-  
   return (
     <appStack.Navigator
       screenOptions={{
@@ -97,6 +98,54 @@ const AppStackScreen = ({navigation}) => {
 };
 
 const MyTab = ({navigation}) => {
+  const {countNotificationContext} = useContext(ProductContext);
+  const [countNotification, setCountNotification] = useState(0);
+
+  const callCountNotification = async () => {
+    const data = await countNotificationContext();
+    console.log(data);
+    setCountNotification(data);
+  };
+
+  useEffect(() => {
+    callCountNotification();
+    //notification
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+    console.log('setup firebase notification');
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+          setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+        }
+      });
+
+    // messaging().onMessage(async remoteMessage => {
+    //   console.log('notification on froground state ......', remoteMessage);
+    // });
+    messaging().onMessage(async message => {
+      console.log('Message received:', message);
+
+      // Extract data from message
+      const {title, body} = message?.notification;
+      console.log(title, body);
+      // Show notification
+      displayNotification(title, body)
+    });
+  }, []);
+
   return (
     <>
       <Tab.Navigator
@@ -123,7 +172,29 @@ const MyTab = ({navigation}) => {
               default:
                 break;
             }
-            return <Ionicons name={iconName} size={size} color={color} />;
+
+            if (route.name == 'Notification') {
+              return (
+                <View>
+                  <Ionicons name={iconName} size={size} color={color} />
+                  <View
+                    style={{
+                      height: 20,
+                      width: 20,
+                      position: 'absolute',
+                      top: -5,
+                      right: -7,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: '#F05F4B',
+                      borderRadius: 20,
+                    }}>
+                    <Text style={{color: 'white'}}>{countNotification}</Text>
+                  </View>
+                </View>
+              );
+            } else
+              return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: colorsPES.borderColorBlue,
           tabBarInactiveTintColor: colorsPES.inActive,
@@ -161,6 +232,36 @@ const MyTab = ({navigation}) => {
       </Tab.Navigator>
     </>
   );
+};
+
+const displayNotification = async (title, body) => {
+  try {
+    // Request permissions (required for iOS)
+  await notifee.requestPermission();
+
+  // Create a channel (required for Android)
+  const channelId = await notifee.createChannel({
+    id: 'default',
+    name: 'Default Channel',
+  });
+
+  // Display a notification
+  await notifee.displayNotification({
+    id: 'haohoa1805',
+    title: title,
+    body: body,
+    android: {
+      channelId,
+      // pressAction is needed if you want the notification to open the app when pressed
+      pressAction: {
+        id: 'default',
+      },
+    },
+  });
+  }catch(err) {
+    console.log(err.toString())
+  }
+  
 };
 
 const OrderTab = ({navigation}) => {

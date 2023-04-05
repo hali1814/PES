@@ -13,6 +13,9 @@ import {
   declineCart,
   createBillService,
   countCart,
+  countNotification,
+  allNotification,
+  sawNotification
 } from './ProductService';
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -235,6 +238,42 @@ export const ProductsContextProvider = props => {
     }
   }
 
+  const countNotificationContext = async () => {
+    try {
+      const res = await countNotification()
+      if (res.status === 'success') {
+        return res.data
+      }
+    } catch (error) {
+      console.log('countNotificationContext failed ===>', error);
+      throw error
+    }
+  }
+
+  const getListNotification = async () => {
+    try {
+      const res = await allNotification()
+      if (res.status === 'success') {
+        return res.data
+      }
+    } catch (error) {
+      console.log('countNotificationContext failed ===>', error);
+      throw error
+    }
+  }
+
+  const sawNotificationContext = async (idNotification) => {
+    try {
+      const res = await sawNotification(idNotification)
+      if (res.status === 'success') {
+        return res.data
+      }
+    } catch (error) {
+      console.log('sawNotificationContext failed ===>', error);
+      throw error
+    }
+  }
+
   return (
     <ProductContext.Provider
       value={{
@@ -278,7 +317,10 @@ export const ProductsContextProvider = props => {
         cartQuantityLoading,
         setCartQuantityLoading,
         dataBill,
-         setDataBill
+         setDataBill,
+         countNotificationContext,
+         getListNotification,
+         sawNotificationContext
  
       }}>
       {children}
