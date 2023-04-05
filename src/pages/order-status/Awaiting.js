@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, SafeAreaView, Image, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import colorsPES from '../../constants/colors'
 import { formatPrice } from '../../utils/MoneyFormat'
 import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 const Awaiting = () => {
-    const { onGetStatusBills } = useContext(ProductContext);
+    const { onGetStatusBills, billLoading } = useContext(ProductContext);
     const [dataBills, setDataBills] = useState()
 
     const getDataBills = async () => {
@@ -14,40 +14,47 @@ const Awaiting = () => {
     }
     useEffect(() => {
         getDataBills()
-    },[])
+    }, [])
     console.log(dataBills)
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.contentContainer}>
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={dataBills}
-                    keyExtractor={(item) => item._id}
-                    renderItem={({ item }) => (
-                        <View style={styles.itemContainer}>
-                            <View style={styles.imageContainer}>
-                                <Image source={item ? { uri: item.productDetails.images[0] } : require('../../assets/images/haohoa_scanQR.png')} style={{ width: 60, height: 60 }} />
-                            </View>
-                            <View style={styles.productInfor}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <Text style={styles.title}>{item.productDetails.name}</Text>
-                                    <Text style={styles.text}>x{item.quantity}</Text>
-                                </View>
-                                <View style={styles.totalPriceContainer}>
-                                    <Text style={styles.text}>Tổng thanh toán : </Text>
-                                    <Text style={styles.priceText}>{formatPrice(item?.amount || 0)}</Text>
-                                </View>
-                                <View style={{ alignItems: 'flex-end' }}>
-                                    <View style={styles.status}>
-                                        <Text style={{ color: colorsPES.borderColorBlue }}>Đang đối soát</Text>
+            {
+                billLoading
+                    ? <ActivityIndicator size='large' color={colorsPES.borderColorBlue} />
+                    : (
+                        <View style={styles.contentContainer}>
+                            <FlatList
+                                showsVerticalScrollIndicator={false}
+                                data={dataBills}
+                                keyExtractor={(item) => item._id}
+                                renderItem={({ item }) => (
+                                    <View style={styles.itemContainer}>
+                                        <View style={styles.imageContainer}>
+                                            <Image source={item ? { uri: item.productDetails.images[0] } : require('../../assets/images/haohoa_scanQR.png')} style={{ width: 60, height: 60 }} />
+                                        </View>
+                                        <View style={styles.productInfor}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                <Text style={styles.title}>{item.productDetails.name}</Text>
+                                                <Text style={styles.text}>x{item.quantity}</Text>
+                                            </View>
+                                            <View style={styles.totalPriceContainer}>
+                                                <Text style={styles.text}>Tổng thanh toán : </Text>
+                                                <Text style={styles.priceText}>{formatPrice(item?.amount || 0)}</Text>
+                                            </View>
+                                            <View style={{ alignItems: 'flex-end' }}>
+                                                <View style={styles.status}>
+                                                    <Text style={{ color: colorsPES.borderColorBlue }}>Đang đối soát</Text>
+                                                </View>
+                                            </View>
+                                        </View>
                                     </View>
-                                </View>
-                            </View>
+                                )}
+                            />
                         </View>
-                    )}
-                />
-            </View>
+                    )
+            }
+
         </SafeAreaView>
     )
 }
