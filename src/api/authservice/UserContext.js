@@ -8,6 +8,7 @@ import {
   changeProfile,
   upload,
   setTokenDevice,
+  activeUser
 } from './UserService';
 import React, {useState, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -186,6 +187,19 @@ export const UserContextProvider = props => {
     }
   };
 
+  const activeVoucherController = async (userName) => {
+    try {
+      const res = await activeUser(userName)
+      console.log(res)
+      if (res.status == 'success') {
+        return true;
+      } else return false;
+    } catch (error) {
+      console.log('activeVoucherController error', error);
+      throw error;
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -209,6 +223,7 @@ export const UserContextProvider = props => {
         voucher_shipping,
         setVoucher_shipping,
         setTokenDeviceContext,
+        activeVoucherController
       }}>
       {children}
     </UserContext.Provider>

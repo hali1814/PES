@@ -23,8 +23,8 @@ const Login = props => {
   const {navigation, route} = props;
   const [errorPhoneNumber, setErrorPhoneNumber] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('0918865377');
-  const [password, setPassword] = useState('hunglong0209');
+  const [phoneNumber, setPhoneNumber] = useState('0865658544');
+  const [password, setPassword] = useState('123');
   const isValidationOK = () =>
     phoneNumber.length > 0 &&
     password.length > 0 &&
@@ -53,8 +53,17 @@ const Login = props => {
     setConfirmDialogVisible(false);
   };
 
-
-  const {onLogin} = useContext(UserContext);
+  const {onLogin, setIsLoggedIn} = useContext(UserContext);
+  const checkToken = async ()=>{
+    const token = await AsyncStorage.getItem('token');
+    console.log(token)
+      if (token) {
+        setIsLoggedIn(true);
+      }
+  }
+  useEffect(()=>{
+    checkToken()
+  })
 
   const login = async () => {
     try {
@@ -216,7 +225,8 @@ const Login = props => {
           visible={confirmDialogVisible}
           onCancelPress={handleConfirmDialogClose}
           onPress={() => {
-            navigation.navigate('OTP', {phoneNumber: phoneNumber});
+            navigation.navigate('OTP', {phoneNumber: phoneNumber, password: password});
+            handleConfirmDialogClose()
           }}
           message="Tài khoản của bạn chưa được kích hoạt"
           confirmMessage="Nhập OTP"

@@ -74,3 +74,10 @@ export const setTokenDevice = async tokenDevice => {
   const result = await customAxios().post('/api/getTokenDevice', data);
   return result;
 };
+
+
+export const activeUser = async (userName) => {
+  const data = {userName}
+  const result = await customAxios().post('/api/active', data);
+  return result;
+};
