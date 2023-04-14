@@ -63,7 +63,7 @@ const Login = props => {
   }
   useEffect(()=>{
     checkToken()
-  })
+  }, [])
 
   const login = async () => {
     try {
