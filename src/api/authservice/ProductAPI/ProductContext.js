@@ -15,7 +15,11 @@ import {
   countCart,
   countNotification,
   allNotification,
-  sawNotification
+  sawNotification,
+  getUnRate,
+  pushRate,
+  cancelBill,
+  getBillsDetails
 } from './ProductService';
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -277,6 +281,60 @@ export const ProductsContextProvider = props => {
     }
   }
 
+
+  const getUnRateContext = async () => {
+    try {
+      const res = await getUnRate()
+      if (res.status === 'success') {
+        return res.data
+      }
+    } catch (error) {
+      console.log('getUnRateContext failed ===>', error);
+      throw error
+    }
+  }
+
+
+  const pushRateController = async (idRate, star, msg) => {
+    try {
+      const res = await pushRate(idRate, star, msg)
+      if (res.status === 'success') {
+        return true
+      }
+      return false
+    } catch (error) {
+      console.log('getUnRateContext failed ===>', error);
+      throw error
+    }
+  }
+
+  const cancelBillController = async (idBill) => {
+    try {
+      const res = await cancelBill(idBill)
+      if (res.status === 'success') {
+        return true
+      }
+      return false
+    } catch (error) {
+      console.log('cancelBillController failed ===>', error);
+      throw error
+    }
+  }
+
+  const getBillDetailsController = async (idBill) => {
+    try {
+      const res = await getBillsDetails(idBill)
+      if (res.status === 'success') {
+        return res.data
+      }else {
+        return false
+      }
+    } catch (error) {
+      console.log('getBillDetailsController failed ===>', error);
+      throw error
+    }
+  }
+
   return (
     <ProductContext.Provider
       value={{
@@ -326,7 +384,10 @@ export const ProductsContextProvider = props => {
          sawNotificationContext,
         billLoading,
         setBillLoading,
-
+        getUnRateContext,
+        pushRateController,
+        cancelBillController,
+        getBillDetailsController
       }}>
       {children}
     </ProductContext.Provider>

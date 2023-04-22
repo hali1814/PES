@@ -39,7 +39,7 @@ const ChangeAddress = ({ navigation, route }) => {
 
     useEffect(() => {
         onGetUserInfor();
-        console.log('address ===>', user.address)
+        // console.log('address ===>', user.address)
         return () => { }
     }, [])
 

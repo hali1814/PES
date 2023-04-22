@@ -82,3 +82,27 @@ export const sawNotification = async (idNotification) => {
   const result = await customAxios().post('/api/notification/all', data)
   return result
 }
+
+export const getUnRate = async () => {
+  const result = await customAxios().get('/api/rates/0')
+  return result
+}
+
+
+export const pushRate = async (idRate, start, msg) => {
+  const data = {idRate, start, msg}
+  const result = await customAxios().post('/api/rates/update', data)
+  return result
+}
+
+
+export const cancelBill = async (idBill) => {
+  const data = {idBill, reason: 'Bill đã bị hủy bởi bạn'}
+  const result = await customAxios().post('/api/bill/status/cancel', data)
+  return result
+}
+
+export const getBillsDetails = async (idBill) => {
+  const result = await customAxios().get(`/api/bill/${idBill}`)
+  return result
+}

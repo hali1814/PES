@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import colorsPES from '../constants/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
+import color from '../styles/colors';
+import Fonts from '../assets/fonts/fonts';
 
 export default function ConfirmDialog({
   visible,
@@ -21,12 +23,12 @@ export default function ConfirmDialog({
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles.container}>
         <View style={styles.background}>
-          <Icon name="alert-circle-outline" size={50} color="#FFFFFF" />
+          <Icon name="alert-circle-outline" size={50} color={color.MAIN} />
           <Text
             style={{
-              color: colorsPES.white,
+              color: color.TEXT_PRIMARY,
               fontSize: 16,
-              fontWeight: 'bold',
+              fontFamily: Fonts.Man_Bold,
               marginTop: 10,
             }}>
             {message}
@@ -88,12 +90,12 @@ const styles = StyleSheet.create({
   },
 
   background: {
-    backgroundColor: '#f44336',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
     paddingBottom: 20,
-    borderRadius: 10,
+    borderRadius: 4,
   },
   image: {
     width: 100,

@@ -98,7 +98,7 @@ const ShopDetail = props => {
     setDetailSize1(productModal.stock[1].size);
   };
 
-  console.log('productModal', detaiData);
+  // console.log('productModal', detaiData);
 
   useEffect(() => {
     onGetProductsByGenre(type);

@@ -9,45 +9,41 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
-import { icons } from '../../assets';
-import { images } from '../../assets';
+import React, {useContext, useEffect, useState} from 'react';
+import {icons} from '../../assets';
+import {images} from '../../assets';
 import colorsPES from '../../constants/colors';
-import { UserContext } from '../../api/authservice/UserContext';
+import {UserContext} from '../../api/authservice/UserContext';
 import Fonts from '../../assets/fonts/fonts';
 import Icon from 'react-native-vector-icons/Ionicons';
 import color from '../../styles/colors';
 
-const Profile = ({ navigation }) => {
-  const { onGetUserInfor, user, profileLoading } = useContext(UserContext);
+const Profile = ({navigation}) => {
+  const {onGetUserInfor, user, profileLoading} = useContext(UserContext);
 
   useEffect(() => {
     onGetUserInfor();
-    checkAvatar()
-    return () => { };
+    checkAvatar();
+    return () => {};
   }, [user.avatar]);
 
-  const [userAvatar, setUserAvatar] = useState(require('../../assets/images/avatar.png'))
+  const [userAvatar, setUserAvatar] = useState(
+    require('../../assets/images/avatar.png'),
+  );
 
   const checkAvatar = () => {
     user.avatar ? setUserAvatar(user.avatar) : setUserAvatar(userAvatar);
-  }
-  console.log('userAvatar', userAvatar)
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={colorsPES.white} />
+      <StatusBar barStyle="dark-content" backgroundColor={color.MAIN} />
       <View style={styles.headerContainer}>
-        <Image source={images.vectorBG} style={styles.vectorBG} />
         <View style={styles.notificationContainer}>
           <TouchableOpacity
-            onPress={() => { navigation.navigate('OrderTab') }}
-          >
-            <Image
-              source={icons.notificationIcon}
-              style={{ width: 32, height: 32 }}
-            />
-          </TouchableOpacity>
+            onPress={() => {
+              navigation.navigate('OrderTab');
+            }}></TouchableOpacity>
         </View>
         <TouchableOpacity
           onPress={() => {
@@ -55,69 +51,71 @@ const Profile = ({ navigation }) => {
           }}
           style={styles.userInforContainer}>
           <View style={styles.userInfor}>
-            {
-              profileLoading
-                ? (<ActivityIndicator size='large' color={colorsPES.white} />)
-                : (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={styles.avatar}>
-                      <Image
-                        style={{ width: '100%', height: '100%', borderRadius: 100 }}
-                        source={{ uri: userAvatar.toString() }}
-                        resizeMode="cover"
-                      />
-                    </View>
-                    <View style={styles.userNameContainer}>
-                      <Text style={styles.usernameText}>{user.nickName}</Text>
-                      <Text
-                        style={StyleSheet.create({
-                          fontFamily: Fonts.Work_Regular,
-                          fontSize: 11,
-                          color: colorsPES.white,
-                        })}>
-                        Xem/chỉnh sửa thông tin cá nhân
-                      </Text>
-                    </View>
-                  </View>
-                )
-            }
+            {profileLoading ? (
+              <ActivityIndicator size="large" color={colorsPES.white} />
+            ) : (
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={styles.avatar}>
+                  <Image
+                    style={{width: '100%', height: '100%', borderRadius: 100}}
+                    source={{uri: userAvatar.toString()}}
+                    resizeMode="cover"
+                  />
+                </View>
+                <View style={styles.userNameContainer}>
+                  <Text style={styles.usernameText}>{user.nickName}</Text>
+                  <Text
+                    style={StyleSheet.create({
+                      fontFamily: Fonts.Work_Regular,
+                      fontSize: 11,
+                      color: colorsPES.white,
+                    })}>
+                    Xem/chỉnh sửa thông tin cá nhân
+                  </Text>
+                </View>
+              </View>
+            )}
           </View>
           <View>
             <Icon name="chevron-forward-outline" size={30} color="#ffffff" />
           </View>
         </TouchableOpacity>
         <View style={styles.navBarContainer}>
-          <TouchableOpacity style={styles.navBar}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('OrderTab', { screen: 'Awaiting' })}
+            style={styles.navBar}>
             <Image
               source={icons.awaitingConfirmIcon}
-              style={{ width: 32, height: 32 }}
+              style={{width: 32, height: 32}}
             />
             <Text style={styles.navBarText}>Chờ xác nhận</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navBar}>
+          <TouchableOpacity onPress={() => navigation.navigate('OrderTab', { screen: 'AwaitingPickup' })} style={styles.navBar}>
             <Image
               source={icons.awaitingBillIcon}
-              style={{ width: 32, height: 32 }}
+              style={{width: 32, height: 32}}
             />
             <Text style={styles.navBarText}>Chờ lấy đơn</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navBar}>
+          <TouchableOpacity onPress={() => navigation.navigate('OrderTab', { screen: 'Shipping' })} style={styles.navBar}>
             <Image
               source={icons.onDeliveryIcon}
-              style={{ width: 32, height: 32 }}
+              style={{width: 32, height: 32}}
             />
-            <Text style={styles.navBarText}>Đang giao hàng</Text>
+            <Text style={styles.navBarText}>Đang giao</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navBar}>
-            <Image source={icons.ratingIcon} style={{ width: 32, height: 32 }} />
-            <Text style={styles.navBarText}>Đánh giá sản phẩm</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('MyFeedback')}
+            style={styles.navBar}>
+            <Image source={icons.ratingIcon} style={{width: 32, height: 32}} />
+            <Text style={styles.navBarText}>Đánh giá</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.memberRatingContainer}>
           <Image
             source={icons.crowIcon}
             resizeMode="contain"
-            style={{ position: 'absolute', opacity: 0.1 }}
+            style={{position: 'absolute', opacity: 0.1}}
           />
           <View>
             <Text
@@ -139,7 +137,7 @@ const Profile = ({ navigation }) => {
               {'Mua thêm để được thăng hạng'}
             </Text>
           </View>
-          <Image source={images.memberImage} style={{ width: 102, height: 24 }} />
+          <Image source={images.memberImage} style={{width: 102, height: 24}} />
         </View>
       </View>
       {/* Tiện ích */}
@@ -234,7 +232,7 @@ const Profile = ({ navigation }) => {
           <Image
             source={images.coinVoucherImage}
             resizeMode="cover"
-            style={{ width: 343, height: 71 }}
+            style={{width: 343, height: 71}}
           />
         </TouchableOpacity>
       </View>
@@ -310,7 +308,7 @@ const styles = StyleSheet.create({
 
   navBarText: {
     fontFamily: Fonts.Work_Medium,
-    fontSize: 13,
+    fontSize: 10,
     color: colorsPES.white,
     lineHeight: 18,
     marginTop: 8,
@@ -320,7 +318,7 @@ const styles = StyleSheet.create({
   navBar: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 70,
+    width: 80,
     height: 76,
   },
 
@@ -383,6 +381,6 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    paddingVertical: 25,
+    marginTop: StatusBar.currentHeight,
   },
 });

@@ -37,8 +37,8 @@ const MyProfileDetail = (props) => {
         try {
             const res = await onLogout()
             const token = await AsyncStorage.getItem('token')
-            console.log('token', token)
-            console.log(res)
+            // console.log('token', token)
+            // console.log(res)
             // setIsLoggedIn(!isLoggedIn)
             if (res) {
                 alert('logout failed')
@@ -261,11 +261,11 @@ const MyProfileDetail = (props) => {
                     type: response.assets[0].type,
                     name: response.assets[0].fileName,
                 });
-                console.log('uriiii', response.assets[0].uri)
+                // console.log('uriiii', response.assets[0].uri)
                 const result = await onUpload(formData);
-                console.log('link hinh neeeeee', result);
+                // console.log('link hinh neeeeee', result);
                 setAvatar(result.link);
-                console.log(avatar)
+                // console.log(avatar)
             }
         });
     };

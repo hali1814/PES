@@ -10,13 +10,13 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import React, { useState, useContext, useEffect } from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import PESHeader from '../../components/PESHeader';
 import color from '../../styles/colors';
 import Orderstyles from './components/styles';
 import Fonts from '../../assets/fonts/fonts';
-import { textsPES } from '../../constants/string';
-import { icons, images } from '../../assets';
+import {textsPES} from '../../constants/string';
+import {icons, images} from '../../assets';
 import {
   txtVoucher,
   voucherContainer,
@@ -33,16 +33,19 @@ import {
   payText,
 } from '../detail/components/styles';
 
-import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
-import { UserContext } from '../../api/authservice/UserContext';
-import { formatPrice } from '../../utils/MoneyFormat';
+import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import {UserContext} from '../../api/authservice/UserContext';
+import {formatPrice} from '../../utils/MoneyFormat';
 import colorsPES from '../../constants/colors';
 
-const OrderConfirmation = ({ navigation }) => {
+const OrderConfirmation = ({navigation}) => {
   const {
-    onCalculator, createBills, dataBill,
-    setDataBill, onCountCart,
-    billLoading
+    onCalculator,
+    createBills,
+    dataBill,
+    setDataBill,
+    onCountCart,
+    billLoading,
   } = useContext(ProductContext);
   const {
     onGetUserInfor,
@@ -59,9 +62,9 @@ const OrderConfirmation = ({ navigation }) => {
       if (tmp) navigation.navigate('OrderTab');
       else console.log('fails create bills'); // add thêm thông báo thất bại
 
-      onCountCart()
-      setVoucher_pes('')
-      setVoucher_shipping('')
+      onCountCart();
+      setVoucher_pes('');
+      setVoucher_shipping('');
     } catch (err) {
       console.log(OrderConfirmation.toString(), err.toString());
     }
@@ -72,7 +75,7 @@ const OrderConfirmation = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+    <View style={{flex: 1, marginTop: StatusBar.currentHeight}}>
       <StatusBar barStyle={'dark-content'} />
       {/* <PESHeader title={'Xác nhận đơn hàng'} /> */}
       <ScrollView
@@ -144,60 +147,62 @@ const OrderConfirmation = ({ navigation }) => {
               {'Sản phẩm'}
             </Text>
           </View>
-          {
-            billLoading
-              ? <ActivityIndicator size='large' color={colorsPES.borderColorBlue} />
-              : (
-                <FlatList
-                  scrollEnabled={false}
-                  data={dataBill.listBills}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => (
-                    <View style={styles.products}>
-                      <View
+          {billLoading ? (
+            <ActivityIndicator size="large" color={colorsPES.borderColorBlue} />
+          ) : (
+            <FlatList
+              scrollEnabled={false}
+              data={dataBill.listBills}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item}) => (
+                <View style={styles.products}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}>
+                    <Image
+                      source={images.voucher_image}
+                      style={{width: 44, height: 44, borderRadius: 4}}
+                    />
+                    <View style={styles.productTitle}>
+                      <Text
                         style={{
-                          flexDirection: 'row',
+                          fontFamily: Fonts.Work_SemiBold,
+                          fontSize: 14,
+                          color: color.TEXT_PRIMARY,
                         }}>
-                        <Image
-                          source={images.voucher_image}
-                          style={{ width: 44, height: 44, borderRadius: 4 }}
-                        />
-                        <View style={styles.productTitle}>
-                          <Text
-                            style={{
-                              fontFamily: Fonts.Work_SemiBold,
-                              fontSize: 14,
-                              color: color.TEXT_PRIMARY,
-                            }}>
-                            {item?.name.toString().toUpperCase()}
-                          </Text>
-                          <View style={styles.productMoney}>
-                            <Text
-                              style={{
-                                fontFamily: Fonts.Work_Regular,
-                                fontSize: 13,
-                              }}>
-                              {formatPrice(item.billProduct.original_price)}
-                            </Text>
-                            <Text
-                              style={{
-                                fontFamily: Fonts.Work_Regular,
-                                fontSize: 13,
-                              }}>
-                              {`x ${item?.quantity}`}
-                            </Text>
-                          </View>
-                        </View>
+                        {item?.name.toString().toUpperCase()}
+                      </Text>
+                      <View style={styles.productMoney}>
+                        <Text
+                          style={{
+                            fontFamily: Fonts.Work_Regular,
+                            fontSize: 13,
+                          }}>
+                          {formatPrice(item.billProduct.original_price)}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: Fonts.Work_Regular,
+                            fontSize: 13,
+                          }}>
+                          {`x ${item?.quantity}`}
+                        </Text>
                       </View>
                     </View>
-                  )}
-                />
-              )
-          }
+                  </View>
+                </View>
+              )}
+            />
+          )}
         </View>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('SelectVoucher')}
+          onPress={() =>
+            navigation.navigate('SelectVoucher', {
+              amountBill: dataBill?.totalBill?.origin_total,
+            })
+          }
           style={{
             backgroundColor: 'white',
             marginTop: 4,
@@ -256,17 +261,17 @@ const OrderConfirmation = ({ navigation }) => {
                   padding: 2,
                   fontFamily: Fonts.Man_Bold,
                 }}>
-                <Text style={{ fontSize: 7, color: '#FA7070' }}>PES Voucher</Text>
+                <Text style={{fontSize: 7, color: '#FA7070'}}>PES Voucher</Text>
               </View>
             )}
           </View>
 
-          <Text style={[txtVoucher, { width: '60%', textAlign: 'right' }]}>
+          <Text style={[txtVoucher, {width: '60%', textAlign: 'right'}]}>
             {'Chọn Vouchers'}
           </Text>
           <Image
             source={icons.chevronRight_icon}
-            style={{ width: 16, height: 16, marginLeft: 2 }}
+            style={{width: 16, height: 16, marginLeft: 2}}
           />
         </TouchableOpacity>
 
@@ -286,20 +291,20 @@ const OrderConfirmation = ({ navigation }) => {
               }}>
               {'Phương thức thanh toán'}
             </Text>
-            <TouchableOpacity onPress={() => { }} style={{ flexDirection: 'row' }}>
+            <TouchableOpacity onPress={() => {}} style={{flexDirection: 'row'}}>
               <Text style={txtVoucher}>{'Xem tất cả'}</Text>
               <Image
                 source={icons.chevronRight_icon}
-                style={{ width: 16, height: 16, marginLeft: 2 }}
+                style={{width: 16, height: 16, marginLeft: 2}}
               />
             </TouchableOpacity>
           </View>
           <ScrollView
             showsHorizontalScrollIndicator={false}
             horizontal
-            style={{ marginTop: 16 }}>
+            style={{marginTop: 16}}>
             <TouchableOpacity style={styles.payView}>
-              <Image source={icons.payIcon} style={{ width: 16, height: 16 }} />
+              <Image source={icons.payIcon} style={{width: 16, height: 16}} />
               <View
                 style={{
                   marginLeft: 8,
@@ -309,7 +314,7 @@ const OrderConfirmation = ({ navigation }) => {
                 }}>
                 <Text
                   numberOfLines={1}
-                  style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
+                  style={{fontFamily: Fonts.Work_Medium, fontSize: 14}}>
                   {'Thanh toán khi nhận hàng'}
                 </Text>
                 <Text
@@ -327,7 +332,7 @@ const OrderConfirmation = ({ navigation }) => {
             <TouchableOpacity style={styles.payView}>
               <Image
                 source={icons.payMomoIcon}
-                style={{ width: 16, height: 16 }}
+                style={{width: 16, height: 16}}
               />
               <View
                 style={{
@@ -338,7 +343,7 @@ const OrderConfirmation = ({ navigation }) => {
                 }}>
                 <Text
                   numberOfLines={1}
-                  style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
+                  style={{fontFamily: Fonts.Work_Medium, fontSize: 14}}>
                   {'Momo'}
                 </Text>
                 <Text
@@ -356,7 +361,7 @@ const OrderConfirmation = ({ navigation }) => {
             <TouchableOpacity style={styles.payView}>
               <Image
                 source={icons.payZaloIcon}
-                style={{ width: 16, height: 16 }}
+                style={{width: 16, height: 16}}
               />
               <View
                 style={{
@@ -367,7 +372,7 @@ const OrderConfirmation = ({ navigation }) => {
                 }}>
                 <Text
                   numberOfLines={1}
-                  style={{ fontFamily: Fonts.Work_Medium, fontSize: 14 }}>
+                  style={{fontFamily: Fonts.Work_Medium, fontSize: 14}}>
                   {'Zalopay'}
                 </Text>
                 <Text
@@ -400,11 +405,11 @@ const OrderConfirmation = ({ navigation }) => {
               justifyContent: 'space-between',
             }}>
             <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
                 {'Tạm tính'}
               </Text>
-              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
                 {formatPrice(dataBill?.totalBill?.origin_total || 0)}
               </Text>
             </View>
@@ -414,10 +419,10 @@ const OrderConfirmation = ({ navigation }) => {
                 justifyContent: 'space-between',
                 marginTop: 1,
               }}>
-              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
                 {'Giảm giá'}
               </Text>
-              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
                 - {formatPrice(dataBill?.totalBill?.total_discount_price || 0)}
               </Text>
             </View>
@@ -427,10 +432,10 @@ const OrderConfirmation = ({ navigation }) => {
                 justifyContent: 'space-between',
                 marginTop: 1,
               }}>
-              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
                 {'Phí vận chuyển'}
               </Text>
-              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
                 {formatPrice(dataBill?.totalBill?.total_shipping_price || 0)}
               </Text>
             </View>
@@ -440,10 +445,10 @@ const OrderConfirmation = ({ navigation }) => {
                 justifyContent: 'space-between',
                 marginTop: 1,
               }}>
-              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
                 {'Giảm phí vận chuyển'}
               </Text>
-              <Text style={{ fontFamily: Fonts.Work_Regular, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_Regular, fontSize: 14}}>
                 -{' '}
                 {formatPrice(dataBill?.totalBill?.total_discount_shipping || 0)}
               </Text>
@@ -454,10 +459,10 @@ const OrderConfirmation = ({ navigation }) => {
                 justifyContent: 'space-between',
                 marginTop: 8,
               }}>
-              <Text style={{ fontFamily: Fonts.Work_SemiBold, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 14}}>
                 {'Tổng tiền'}
               </Text>
-              <Text style={{ fontFamily: Fonts.Work_SemiBold, fontSize: 14 }}>
+              <Text style={{fontFamily: Fonts.Work_SemiBold, fontSize: 14}}>
                 {formatPrice(dataBill?.totalBill?.totalBill || 0)}
               </Text>
             </View>

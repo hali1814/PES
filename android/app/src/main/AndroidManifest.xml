@@ -9,8 +9,8 @@ pakage="com.garduationfpt">
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
+      android:icon="@mipmap/ic_pes"
+      android:roundIcon="@mipmap/ic_pes"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <activity

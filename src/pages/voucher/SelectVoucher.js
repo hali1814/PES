@@ -19,7 +19,7 @@ import Fonts from '../../assets/fonts/fonts';
 import {UserContext} from '../../api/authservice/UserContext';
 import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
 import {formatPrice} from '../../utils/MoneyFormat';
-const Voucher = ({navigation}) => {
+const Voucher = ({navigation, route}) => {
   const {
     ongetVoucher,
     voucher,
@@ -41,7 +41,7 @@ const Voucher = ({navigation}) => {
           height: StatusBar.currentHeight,
           backgroundColor: 'white',
         }}></View>
-      <PESHeader title={'PES VOUCHERS'} />
+      <PESHeader navigation={navigation} title={'PES VOUCHERS'} />
       <ScrollView style={{backgroundColor: 'white'}}>
         <View
           style={{
@@ -77,6 +77,7 @@ const Voucher = ({navigation}) => {
               if (item.type == 1) {
                 return (
                   <TouchableOpacity
+                    disabled={item?.min >= route.params.amountBill}
                     onPress={() => {
                       if (voucher_shipping == item.voucherId)
                         setVoucher_shipping('');
@@ -145,6 +146,17 @@ const Voucher = ({navigation}) => {
                     <Text style={{width: 120, textAlign: 'right'}}>
                       X {item.quantity}
                     </Text>
+                    <View
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'grey',
+                        position: 'absolute',
+                        opacity: 0.2,
+                        display:
+                          item?.min > route.params.amountBill ? 'flex' : 'none',
+                      }}
+                    />
                   </TouchableOpacity>
                 );
               }
@@ -185,6 +197,7 @@ const Voucher = ({navigation}) => {
               if (item.type == 0) {
                 return (
                   <TouchableOpacity
+                    disabled={item?.min > route.params.amountBill}
                     onPress={() => {
                       if (voucher_pes == item.voucherId) setVoucher_pes('');
                       else setVoucher_pes(item.voucherId);
@@ -252,6 +265,17 @@ const Voucher = ({navigation}) => {
                     <Text style={{width: 120, textAlign: 'right'}}>
                       X {item.quantity}
                     </Text>
+                    <View
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'grey',
+                        position: 'absolute',
+                        opacity: 0.2,
+                        display:
+                          item?.min > route.params.amountBill ? 'flex' : 'none',
+                      }}
+                    />
                   </TouchableOpacity>
                 );
               }

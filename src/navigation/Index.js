@@ -44,6 +44,11 @@ import Notification from '../pages/notification/Notification';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import messaging from '@react-native-firebase/messaging';
 import notifee from '@notifee/react-native';
+import color from '../styles/colors';
+import PostRate from '../pages/profile/PostRate';
+import Fonts from '../assets/fonts/fonts';
+import Bill from '../pages/bill/Bill';
+
 const Tab = createBottomTabNavigator();
 const topTab = createMaterialTopTabNavigator();
 
@@ -66,12 +71,13 @@ const AppStackScreen = ({navigation}) => {
       <appStack.Screen name="Shop" component={Shop} />
       <appStack.Screen name="ShopDetail" component={ShopDetail} />
       <appStack.Screen name="MyProfileDetail" component={MyProfileDetail} />
+      <appStack.Screen name="Bill" component={Bill} />
       <appStack.Screen
         name="OrderTab"
         component={OrderTab}
         options={({navigation}) => ({
           headerShown: true,
-          title: 'Đơn mua sản phẩm',
+          title: 'Đơn mua',
           headerLeft: () => (
             <TouchableOpacity
               style={{marginStart: 10}}
@@ -79,7 +85,7 @@ const AppStackScreen = ({navigation}) => {
               <Ionicons
                 name="arrow-back-outline"
                 size={30}
-                color={colorsPES.black}
+                color={color.MAIN}
               />
             </TouchableOpacity>
           ),
@@ -93,6 +99,7 @@ const AppStackScreen = ({navigation}) => {
       <appStack.Screen name="Cart" component={Cart} />
       <appStack.Screen name="OrderConfirmation" component={OrderConfirmation} />
       <appStack.Screen name="SelectVoucher" component={SelectVoucher} />
+      <appStack.Screen name="PostRate" component={PostRate} />
     </appStack.Navigator>
   );
 };
@@ -103,7 +110,7 @@ const MyTab = ({navigation}) => {
 
   const callCountNotification = async () => {
     const data = await countNotificationContext();
-    console.log(data);
+    // console.log(data);
     setCountNotification(data);
   };
 
@@ -142,7 +149,7 @@ const MyTab = ({navigation}) => {
       const {title, body} = message?.notification;
       console.log(title, body);
       // Show notification
-      displayNotification(title, body)
+      displayNotification(title, body, navigation);
     });
   }, []);
 
@@ -234,34 +241,38 @@ const MyTab = ({navigation}) => {
   );
 };
 
-const displayNotification = async (title, body) => {
+const displayNotification = async (title, body, navigation) => {
   try {
     // Request permissions (required for iOS)
-  await notifee.requestPermission();
+    await notifee.requestPermission();
 
-  // Create a channel (required for Android)
-  const channelId = await notifee.createChannel({
-    id: 'default',
-    name: 'Default Channel',
-  });
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
 
-  // Display a notification
-  await notifee.displayNotification({
-    id: 'haohoa1805',
-    title: title,
-    body: body,
-    android: {
-      channelId,
-      // pressAction is needed if you want the notification to open the app when pressed
-      pressAction: {
-        id: 'default',
+    // Display a notification
+    await notifee.displayNotification({
+      id: 'haohoa1805',
+      title: title,
+      body: body,
+      android: {
+        channelId,
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
       },
-    },
-  });
-  }catch(err) {
-    console.log(err.toString())
+    });
+    //thêm cái id vô
+    await notifee.onForegroundEvent(async ({type, detail}) => {
+      // Do something here, such as navigate to a specific screen using the navigation prop
+      navigation.navigate('MyFeedback');
+    });
+  } catch (err) {
+    console.log(err.toString());
   }
-  
 };
 
 const OrderTab = ({navigation}) => {
@@ -270,7 +281,14 @@ const OrderTab = ({navigation}) => {
       screenOptions={{
         tabBarLabelStyle: {fontSize: 10},
         tabBarStyle: {backgroundColor: colorsPES.white},
-        tabBarPressColor: colorsPES.borderColorBlue,
+        tabBarPressColor: color.MAIN,
+        tabBarActiveTintColor: color.MAIN,
+        tabBarIndicatorStyle: {backgroundColor: color.MAIN},
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontFamily: Fonts.Man_Medium,
+          fontWeight: 'bold',
+        },
       }}>
       <topTab.Screen
         name="Awaiting"

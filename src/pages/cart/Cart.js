@@ -36,6 +36,7 @@ import {
 import { ProductContext } from '../../api/authservice/ProductAPI/ProductContext';
 import { ConfirmDialog, SuccessDialog, FailDialog } from '../../components';
 import { addCart } from '../../api/authservice/ProductAPI/ProductService';
+import EmptyList from '../empty/EmptyList';
 
 const Cart = ({ navigation }) => {
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
@@ -102,11 +103,11 @@ const Cart = ({ navigation }) => {
       if (res == false) {
         handleFailed();
       } else {
-        handleSuccess();
+        // handleSuccess();
         onGetCart()
         onCountCart()
         setConfirmDialogVisible(false)
-        setTimeout(() => handleSuccessDialogClose(), 3000)
+        // setTimeout(() => handleSuccessDialogClose(), 3000)
       }
     } catch (error) {
       console.log('error', error);
@@ -196,7 +197,7 @@ const Cart = ({ navigation }) => {
             ? (<ActivityIndicator size='large' color={colorsPES.borderColorBlue} />)
             : (
               <View style={{ width: '100%', height: '100%' }}>
-                <FlatList
+                {cart?.length == 0 ? <EmptyList/> : <FlatList
                   scrollEnabled={false}
                   data={cart}
                   showsVerticalScrollIndicator={false}
@@ -313,7 +314,7 @@ const Cart = ({ navigation }) => {
                       </View>
                     </View>
                   )}
-                />
+                />}
               </View>
             )
         }
