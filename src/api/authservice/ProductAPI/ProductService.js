@@ -106,3 +106,15 @@ export const getBillsDetails = async (idBill) => {
   const result = await customAxios().get(`/api/bill/${idBill}`)
   return result
 }
+
+export const getSearchSuggest = async (searchData) => {
+  const data = {searchData}
+  const result = await customAxios().post(`/api/search/suggest`, data)
+  return result
+}
+
+export const getSearchResult= async (searchResult) => {
+  const data = {searchResult}
+  const result = await customAxios().post(`/api/search/action`, data)
+  return result
+}

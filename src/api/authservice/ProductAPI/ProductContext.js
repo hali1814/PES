@@ -19,7 +19,9 @@ import {
   getUnRate,
   pushRate,
   cancelBill,
-  getBillsDetails
+  getBillsDetails,
+  getSearchSuggest,
+  getSearchResult
 } from './ProductService';
 import React, { useState, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -335,6 +337,35 @@ export const ProductsContextProvider = props => {
     }
   }
 
+  const getSearchSuggestController = async (searchData) => {
+    try {
+      const res = await getSearchSuggest(searchData)
+      if (res.status === 'success') {
+        return res.data
+      }else {
+        return false
+      }
+    } catch (error) {
+      console.log('getSearchSuggestController failed ===>', error);
+      throw error
+    }
+  }
+
+
+  const getSearchResultController = async (searchResult) => {
+    try {
+      const res = await getSearchResult(searchResult)
+      if (res.status === 'success') {
+        return res.data
+      }else {
+        return false
+      }
+    } catch (error) {
+      console.log('getSearchResultController failed ===>', error);
+      throw error
+    }
+  }
+
   return (
     <ProductContext.Provider
       value={{
@@ -387,7 +418,9 @@ export const ProductsContextProvider = props => {
         getUnRateContext,
         pushRateController,
         cancelBillController,
-        getBillDetailsController
+        getBillDetailsController,
+        getSearchSuggestController,
+        getSearchResultController
       }}>
       {children}
     </ProductContext.Provider>

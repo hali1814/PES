@@ -123,7 +123,7 @@ const Product = ({navigation, onPressProducts}) => {
         </View>
         <View style={styles.SearchStyles}>
           <TouchableOpacity
-            onPress={() => console.log('search')}
+            onPress={() => navigation.navigate('Search')}
             activeOpacity={1}
             style={styles.customSearch}>
             <Image source={icons.search_icon} style={{width: 20, height: 20}} />

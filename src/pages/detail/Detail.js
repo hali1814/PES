@@ -668,6 +668,7 @@ const Detail = props => {
                 {/* //list reviews */}
                 {detail?.rates?.map((e, index) => (
                   <View
+                    key={index}
                     style={{
                       paddingVertical: 5,
                       borderBottomColor: color.BORDER_BOTTOM,

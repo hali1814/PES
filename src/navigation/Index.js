@@ -48,6 +48,9 @@ import color from '../styles/colors';
 import PostRate from '../pages/profile/PostRate';
 import Fonts from '../assets/fonts/fonts';
 import Bill from '../pages/bill/Bill';
+import Search from '../pages/search/Search';
+import SearchEmpty from '../pages/search/SearchEmpty';
+import ProductSearched from '../pages/search/ProductSearched';
 
 const Tab = createBottomTabNavigator();
 const topTab = createMaterialTopTabNavigator();
@@ -100,6 +103,9 @@ const AppStackScreen = ({navigation}) => {
       <appStack.Screen name="OrderConfirmation" component={OrderConfirmation} />
       <appStack.Screen name="SelectVoucher" component={SelectVoucher} />
       <appStack.Screen name="PostRate" component={PostRate} />
+      <appStack.Screen name="Search" component={Search} />
+      <appStack.Screen name="SearchEmpty" component={SearchEmpty} />
+      <appStack.Screen name="ProductSearched" component={ProductSearched} />
     </appStack.Navigator>
   );
 };
