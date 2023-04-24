@@ -13,10 +13,15 @@ import color from '../../styles/colors';
 import {icons, images} from '../../assets';
 import Fonts from '../../assets/fonts/fonts';
 import {ProductContext} from '../../api/authservice/ProductAPI/ProductContext';
+import {useIsFocused} from '@react-navigation/native';
 
-const Notification = () => {
-  const {getListNotification} = useContext(ProductContext);
+const Notification = ({navigation}) => {
+  const {getListNotification, sawNotificationContext} = useContext(ProductContext);
   const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) getAll();
+  }, [isFocused]);
   const renderItem = ({item}) => (
     <View
       elevation={2}
@@ -31,13 +36,18 @@ const Notification = () => {
         borderRadius: 4,
       }}>
       <TouchableOpacity
+      onPress={ async ()=>{
+        await sawNotificationContext(item._id)
+        navigation.navigate('Bill', {_id: item.idBill})
+
+      }}
         style={{height: '100%', width: '100%', flexDirection: 'row'}}>
         <View
           style={{
             height: '100%',
             width: '75%',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+   
             paddingHorizontal: 5,
           }}>
           <Text
@@ -74,10 +84,6 @@ const Notification = () => {
     const data = await getListNotification();
     setData(data);
   };
-
-  useEffect(() => {
-    getAll();
-  }, []);
 
   return (
     <ScrollView style={styles.Container}>

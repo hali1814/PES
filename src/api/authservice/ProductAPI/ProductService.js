@@ -79,7 +79,7 @@ export const allNotification = async () => {
 
 export const sawNotification = async (idNotification) => {
   const data = {idNotification}
-  const result = await customAxios().post('/api/notification/all', data)
+  const result = await customAxios().post('/api/notification/saw', data)
   return result
 }
 

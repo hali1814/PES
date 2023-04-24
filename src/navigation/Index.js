@@ -43,7 +43,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Notification from '../pages/notification/Notification';
 import {ProductContext} from '../api/authservice/ProductAPI/ProductContext';
 import messaging from '@react-native-firebase/messaging';
-import notifee from '@notifee/react-native';
+import notifee, {EventType} from '@notifee/react-native';
 import color from '../styles/colors';
 import PostRate from '../pages/profile/PostRate';
 import Fonts from '../assets/fonts/fonts';
@@ -109,8 +109,9 @@ const AppStackScreen = ({navigation}) => {
     </appStack.Navigator>
   );
 };
-
+import {useIsFocused} from '@react-navigation/native';
 const MyTab = ({navigation}) => {
+  const isFocused = useIsFocused();
   const {countNotificationContext} = useContext(ProductContext);
   const [countNotification, setCountNotification] = useState(0);
 
@@ -121,7 +122,10 @@ const MyTab = ({navigation}) => {
   };
 
   useEffect(() => {
-    callCountNotification();
+    if (isFocused) callCountNotification();
+  }, [isFocused]);
+
+  useEffect(() => {
     //notification
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
     console.log('setup firebase notification');
@@ -131,7 +135,9 @@ const MyTab = ({navigation}) => {
         remoteMessage.notification,
       );
     });
-
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
     // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
@@ -153,7 +159,6 @@ const MyTab = ({navigation}) => {
 
       // Extract data from message
       const {title, body} = message?.notification;
-      console.log(title, body);
       // Show notification
       displayNotification(title, body, navigation);
     });
@@ -258,6 +263,23 @@ const displayNotification = async (title, body, navigation) => {
       name: 'Default Channel',
     });
 
+    await notifee.onBackgroundEvent(async ({type, detail}) => {
+      console.log('notifee.onBackgroundEvent');
+      if (type === EventType.PRESS) {
+        // Thực hiện một hành động nào đó khi người dùng nhấn vào thông báo
+        console.log('Notification pressed!');
+        navigation.navigate('Notification');
+      }
+    });
+
+    await notifee.onForegroundEvent(async ({type, detail}) => {
+      // Do something here, such as navigate to a specific screen using the navigation prop
+      if (type === EventType.PRESS) {
+        // Thực hiện một hành động nào đó khi người dùng nhấn vào thông báo
+        console.log('Notification pressed!');
+        navigation.navigate('Notification');
+      }
+    });
     // Display a notification
     await notifee.displayNotification({
       id: 'haohoa1805',
@@ -265,6 +287,12 @@ const displayNotification = async (title, body, navigation) => {
       body: body,
       android: {
         channelId,
+        // largeIcon:
+        //   'http://pes.store/images/0de49237-516d-4ddc-851a-f1b4d6072ad2.png',
+        smallIcon: 'ic_pes',
+        sound: 'notification.mp3',
+        // Đường dẫn đến thư mục raw của dự án
+
         // pressAction is needed if you want the notification to open the app when pressed
         pressAction: {
           id: 'default',
@@ -272,10 +300,6 @@ const displayNotification = async (title, body, navigation) => {
       },
     });
     //thêm cái id vô
-    await notifee.onForegroundEvent(async ({type, detail}) => {
-      // Do something here, such as navigate to a specific screen using the navigation prop
-      navigation.navigate('MyFeedback');
-    });
   } catch (err) {
     console.log(err.toString());
   }
