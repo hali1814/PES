@@ -8,7 +8,8 @@ import {
   changeProfile,
   upload,
   setTokenDevice,
-  activeUser
+  activeUser,
+  loginByGG
 } from './UserService';
 import React, {useState, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -150,7 +151,7 @@ export const UserContextProvider = props => {
       if (res.status == 'success') {
         setUser(res.data);
         setProfileLoading(false);
-        console.log(res.data);
+        return res.data
       } else if (res.status == 'inactive') {
         const message = res.data.message;
         console.log('message ==> ', message);
@@ -200,6 +201,37 @@ export const UserContextProvider = props => {
     }
   };
 
+  const onLoginGG = async (uid, email, nickName, avatar) => {
+    try {
+      const res = await loginByGG(uid, email, nickName, avatar);
+      if (res.status == 'success') {
+        const token = res.data.token;
+        await AsyncStorage.setItem('token', token);
+        //set tokenDevice
+        messaging()
+          .getToken()
+          .then(token => {
+            setTokenDevice(token);
+            // Gửi token lên máy chủ để lưu trữ và sử dụng sau này
+          });
+        //
+        const getProfile = await onGetUserInfor()
+        setIsLoggedIn(true);
+        return true;
+      } else if (res.status == 'inactive') {
+        const message = res.data.message;
+        console.log('Message ===>', message);
+        return message;
+      } else {
+        setIsLoggedIn(false);
+        return false;
+      }
+    } catch (e) {
+      console.log('onLogin error', e);
+    }
+    return false;
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -223,7 +255,8 @@ export const UserContextProvider = props => {
         voucher_shipping,
         setVoucher_shipping,
         setTokenDeviceContext,
-        activeVoucherController
+        activeVoucherController,
+        onLoginGG
       }}>
       {children}
     </UserContext.Provider>

@@ -417,6 +417,8 @@ const Product = ({navigation, onPressProducts}) => {
           }}>
           <PESCategories />
         </View>
+
+        
         {productLoading ? (
           <ActivityIndicator size="large" color={colorsPES.borderColorBlue} />
         ) : (

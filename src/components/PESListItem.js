@@ -18,6 +18,7 @@ const PESListItem = props => {
   const {item, navigation, onPress} = props;
 
   const navigationPush = () => {
+
     navigation.navigate('Detail', {id: item._id, type: item.type});
   };
 

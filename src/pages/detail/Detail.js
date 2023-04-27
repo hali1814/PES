@@ -59,12 +59,14 @@ import {formatPrice} from '../../utils/MoneyFormat';
 import colorsPES from '../../constants/colors';
 import {Picker} from '@react-native-picker/picker';
 import Toast from 'react-native-toast-message';
+import { useIsFocused } from '@react-navigation/native';
 const {width: screenWidth} = Dimensions.get('window');
 
 const Detail = props => {
   const {route, navigation} = props;
   const {id, type} = route.params;
   const [visible, setVisible] = useState(false);
+  const isFocused = useIsFocused()
   const showDialog = () => {
     const tmp = [];
 
@@ -145,10 +147,10 @@ const Detail = props => {
   const [sizesModal, setSizesModal] = useState([]);
   const [detailColor, setDetailColor] = useState();
   const [detailSize, setDetailSize] = useState(false);
-
   useEffect(() => {
-    getDetailProduct();
-  }, []);
+    
+    if (isFocused) getDetailProduct();
+  }, [isFocused]);
 
   const [detailImage, setDetailImage] = useState('');
   const [detailPrice, setDetailPrice] = useState(0);

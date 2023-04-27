@@ -280,6 +280,12 @@ const displayNotification = async (title, body, navigation) => {
         navigation.navigate('Notification');
       }
     });
+
+    await notifee.createChannel({
+      id: 'custom-sound',
+      name: 'Channel with custom sound',
+      sound: 'notification',
+    });
     // Display a notification
     await notifee.displayNotification({
       id: 'haohoa1805',
@@ -290,7 +296,8 @@ const displayNotification = async (title, body, navigation) => {
         // largeIcon:
         //   'http://pes.store/images/0de49237-516d-4ddc-851a-f1b4d6072ad2.png',
         smallIcon: 'ic_pes',
-        sound: 'notification.mp3',
+        sound: 'notification',
+    
         // Đường dẫn đến thư mục raw của dự án
 
         // pressAction is needed if you want the notification to open the app when pressed

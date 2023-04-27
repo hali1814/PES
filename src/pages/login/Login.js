@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Alert,
   StatusBar,
+  Modal,
 } from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
 import colorsPES from '../../constants/colors';
@@ -18,6 +19,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FailDialog, SuccessDialog, ConfirmDialog} from '../../components';
 import Fonts from '../../assets/fonts/fonts';
 import color from '../../styles/colors';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Loading from '../../components/Loading';
+// import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+GoogleSignin.configure({
+  // scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+  webClientId:
+    '225166278712-vhtrmm2qqkp2m0sgcoal8ffkunc8vukm.apps.googleusercontent.com',
+});
 
 const Login = props => {
   const {navigation, route} = props;
@@ -25,6 +35,84 @@ const Login = props => {
   const [errorPassword, setErrorPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('0865658544');
   const [password, setPassword] = useState('123');
+  const [loading, setLoading] = useState(false);
+
+  //auth gg
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  ///GG
+  async function onGoogleButtonPress() {
+    try {
+      // Check if your device supports Google Play
+      setLoading(true);
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      // Get the users ID token
+      const {idToken} = await GoogleSignin.signIn();
+      setLoading(false);
+      // console.log(idToken, '11111111');
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // console.log(user, 'ahihi')
+
+  async function onLoginGoogle() {
+    onGoogleButtonPress().then(user => {
+      const data = user.user
+      // uid, email, nickName, avatar
+      console.log(data.uid, data.email, data.nickName, data.photoURL)
+      onLoginGG(data.uid, data.email, data.displayName, data.photoURL)
+      
+    }
+      ,
+    );
+  }
+
+  ///////////////////////////////////
+  //FB
+  // async function onFacebookButtonPress() {
+  //   // Attempt login with permissions
+  //   const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+
+  //   if (result.isCancelled) {
+  //     throw 'User cancelled the login process';
+  //   }
+
+  //   // Once signed in, get the users AccesToken
+  //   const data = await AccessToken.getCurrentAccessToken();
+
+  //   if (!data) {
+  //     throw 'Something went wrong obtaining access token';
+  //   }
+
+  //   // Create a Firebase credential with the AccessToken
+  //   const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+
+  //   // Sign-in the user with the credential
+  //   return auth().signInWithCredential(facebookCredential);
+  // }
+
+  // async function onLoginGoogle() {
+  //   onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))
+  // }
+
   const isValidationOK = () =>
     phoneNumber.length > 0 &&
     password.length > 0 &&
@@ -53,17 +141,17 @@ const Login = props => {
     setConfirmDialogVisible(false);
   };
 
-  const {onLogin, setIsLoggedIn} = useContext(UserContext);
-  const checkToken = async ()=>{
+  const {onLogin, setIsLoggedIn, onLoginGG} = useContext(UserContext);
+  const checkToken = async () => {
     const token = await AsyncStorage.getItem('token');
-    console.log(token)
-      if (token) {
-        setIsLoggedIn(true);
-      }
-  }
-  useEffect(()=>{
-    checkToken()
-  }, [])
+    console.log(token);
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  };
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   const login = async () => {
     try {
@@ -150,7 +238,7 @@ const Login = props => {
         {errorPassword}
       </Text>
       <View style={styles.socialLoginContainer}>
-        <TouchableOpacity style={styles.googleLogin}>
+        <TouchableOpacity onPress={onLoginGoogle} style={styles.googleLogin}>
           <Image style={{width: 18, height: 18}} source={icons.googleIcon} />
           <View style={{height: 20, marginLeft: 8}}>
             <Text
@@ -225,13 +313,17 @@ const Login = props => {
           visible={confirmDialogVisible}
           onCancelPress={handleConfirmDialogClose}
           onPress={() => {
-            navigation.navigate('OTP', {phoneNumber: phoneNumber, password: password});
-            handleConfirmDialogClose()
+            navigation.navigate('OTP', {
+              phoneNumber: phoneNumber,
+              password: password,
+            });
+            handleConfirmDialogClose();
           }}
           message="Tài khoản của bạn chưa được kích hoạt"
           confirmMessage="Nhập OTP"
         />
       </View>
+      <Loading visible={loading} />
     </SafeAreaView>
   );
 };
@@ -249,7 +341,6 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 16,
     paddingVertical: 10,
-    
   },
 
   loginText: {
@@ -291,7 +382,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-
   },
 
   googleLogin: {

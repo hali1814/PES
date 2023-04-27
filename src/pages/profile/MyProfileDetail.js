@@ -325,22 +325,22 @@ const MyProfileDetail = (props) => {
                     </View>
                     <View style={styles.inforDetail}>
                         <Text style={styles.titleText}>Số điện thoại</Text>
-                        <Text style={styles.contentText}>{user.userName}</Text>
+                        <Text style={styles.contentText}>{user?.userName}</Text>
                     </View>
                     <View style={styles.inforDetail}>
                         <Text style={styles.titleText}>Email</Text>
-                        <Text style={styles.contentText}>{user.email}</Text>
+                        <Text style={styles.contentText}>{user?.email}</Text>
                     </View>
                     <View style={styles.inforDetail}>
                         <Text style={styles.titleText}>Ngày sinh</Text>
-                        <Text style={styles.contentText}>{user.date.slice(0, 10)}</Text>
+                        <Text style={styles.contentText}>{user?.date?.slice(0, 10)}</Text>
                     </View>
                     <View style={styles.addressDetail}>
                         <View style={styles.addressTitle}>
                             <Text style={styles.titleText}>Địa chỉ giao hàng</Text>
                         </View>
                         <Text style={styles.contentText}>
-                            {user.address}
+                            {user?.address}
                         </Text>
                     </View>
                     <TouchableOpacity onPress={() => { navigation.push('ChangePassword') }} style={styles.adjustContainer}>
@@ -416,8 +416,8 @@ const MyProfileDetail = (props) => {
                             >
                                 <TextInput
                                     style={[styles.textDate, {}]}
-                                    placeholder={`Ngày sinh : ${user.date.slice(0, 10)}`}
-                                    value={date ? user.date.slice(0, 10) : ''}
+                                    placeholder={`Ngày sinh : ${user?.date?.slice(0, 10)}`}
+                                    value={date ? user?.date?.slice(0, 10) : ''}
                                     editable={false}
                                 />
                                 <Icon
@@ -620,6 +620,7 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        backgroundColor: colorsPES.white
+        backgroundColor: colorsPES.white,
+        marginTop: StatusBar.currentHeight
     },
 })

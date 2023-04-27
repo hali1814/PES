@@ -8,15 +8,16 @@ const width = Dimensions.get('screen').width / 2 - 30;
 export const PESFlatList = ({navigation, onPressFlatlist}) => {
   const {onGetAllProducts, products} = useContext(ProductContext);
 
-  const [currentProducts, setCurrentProducts] = useState([]);
+  const [currentProducts, setCurrentProducts] = useState(products);
   
-  useEffect(() => {
-    onGetAllProducts();
-  }, []);
+  // useEffect(() => {
+  //   console.log('haohoaaaaaaaaaa')
+    
+  // }, []);
 
-  useEffect(() => {
-    setCurrentProducts(products);
-  }, [products]);
+  // useEffect(() => {
+  //   setCurrentProducts(products);
+  // }, []);
 
   // Hàm lọc danh sách sản phẩm hiện tại theo thể loại
   const filterProductsByGenre = genreId => {
@@ -29,7 +30,7 @@ export const PESFlatList = ({navigation, onPressFlatlist}) => {
   return (
     <FlatList
       scrollEnabled = {false}
-      data={currentProducts}
+      data={products}
       numColumns={2}
       keyExtractor={item => item._id}
       style={{height: '100%'}}

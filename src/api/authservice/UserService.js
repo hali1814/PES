@@ -81,3 +81,10 @@ export const activeUser = async (userName) => {
   const result = await customAxios().post('/api/active', data);
   return result;
 };
+
+
+export const loginByGG = async (uid, email, nickName, avatar) => {
+  const data = {uid, email, nickName, avatar}
+  const result = await customAxios().post('/api/login/google', data);
+  return result;
+};

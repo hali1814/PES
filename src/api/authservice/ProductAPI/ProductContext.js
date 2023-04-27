@@ -160,7 +160,7 @@ export const ProductsContextProvider = props => {
       const res = await getProductsByGenres(_id);
       if (res.status == 'success') {
         setProducts(res.data)
-        setProductsByGenre(res.data);
+        // setProductsByGenre(res.data);
         setProductLoading(false)
         // setRelatedProductLoading(false)
         return true;
