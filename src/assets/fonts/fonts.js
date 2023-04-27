@@ -16,6 +16,11 @@ const Fonts = {
   Work_Regular: 'WorkSans-Regular',
   Work_SemiBold: 'WorkSans-SemiBold',
   Work_Thin: 'WorkSans-Thin',
+  Roboto_Bold: 'Roboto-Bold',
+  Roboto_Light: 'Roboto-Light',
+  Roboto_Medium: 'Roboto-Medium',
+  Roboto_Regular: 'Roboto-Regular',
+  Roboto_Thin: 'Roboto-Thin'
 };
 
 export default Fonts;

@@ -57,21 +57,17 @@ const Product = ({navigation, onPressProducts}) => {
 
   const effectTextSearch = () => {
     let i = 1;
-    const intervalId = setInterval(() => {
+    setInterval(() => {
       setTextSearch(listTextSearch[i]);
       i++;
       if (i == listTextSearch.length) i = 0;
     }, 3000);
-    return intervalId;
   };
 
   useEffect(() => {
     onGetAllProducts();
     onGetAllFlashSaleProducts();
-    const intervalId = effectTextSearch();
-    return () => {
-      clearInterval(intervalId);
-    };
+    effectTextSearch();
   }, []);
 
   useEffect(() => {
@@ -103,9 +99,6 @@ const Product = ({navigation, onPressProducts}) => {
         barStyle={'light-content'}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Search and voucher */}
-
-        {/* Search */}
         {/* Voucher */}
         <View>
           <SliderBox
@@ -117,13 +110,13 @@ const Product = ({navigation, onPressProducts}) => {
             circleLoop={true}
             inactiveDotColor="#90A4AE"
             dotStyle={{
-              marginBottom: 10,
+            marginBottom: 10,
             }}
           />
         </View>
         <View style={styles.SearchStyles}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Search')}
+            onPress={() => console.log('search')}
             activeOpacity={1}
             style={styles.customSearch}>
             <Image source={icons.search_icon} style={{width: 20, height: 20}} />
@@ -131,7 +124,7 @@ const Product = ({navigation, onPressProducts}) => {
               style={{
                 fontSize: 15,
                 width: '70%',
-                fontFamily: Fonts.Work_SemiBold,
+                fontFamily: Fonts.Roboto_Regular,
                 color: color.MAIN,
               }}>
               {textSearch}
@@ -143,7 +136,7 @@ const Product = ({navigation, onPressProducts}) => {
               navigation.navigate('Cart');
             }}>
             <View>
-              <Image source={icons.cardIcon} style={{width: 35, height: 35}} />
+              <Image source={icons.cardIcon} style={{width: 28, height: 28, tintColor:'#fff'}} />
               {cartQuantity == 0 ? (
                 <View></View>
               ) : (
@@ -167,10 +160,6 @@ const Product = ({navigation, onPressProducts}) => {
               )}
             </View>
           </TouchableOpacity>
-          {/* <TouchableOpacity onPress={notificantion}>
-            <Image source={icons.chatIcon} style={{ width: 24, height: 24 }} />
-
-          </TouchableOpacity> */}
         </View>
         {/* FlashSale */}
         <View
@@ -194,8 +183,8 @@ const Product = ({navigation, onPressProducts}) => {
               justifyContent: 'space-between',
             }}>
             <Image
-              style={{height: 28, width: 28, tintColor: color.TEXT_SECOND}}
-              source={require('../../assets/images/haohoa_scanQR.png')}
+              style={{height: 28, width: 28, tintColor: '#94a3b8'}}
+              source={require('../../assets/icons/QR.png')}
             />
             <View
               style={{
@@ -223,7 +212,8 @@ const Product = ({navigation, onPressProducts}) => {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: Fonts.Work_SemiBold,
+                    fontFamily: Fonts.Roboto_Bold,
+                    fontWeight:'700',
                     color: color.BLACK,
                   }}>
                   PesPay Wallet
@@ -232,7 +222,7 @@ const Product = ({navigation, onPressProducts}) => {
               <Text
                 style={{
                   fontSize: 10,
-                  fontFamily: Fonts.Work_SemiBold,
+                  fontFamily: Fonts.Roboto_Regular,
                   color: color.TEXT_SECOND,
                 }}>
                 Discount 80.000VND - Active PesPay now
@@ -264,7 +254,8 @@ const Product = ({navigation, onPressProducts}) => {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: Fonts.Work_SemiBold,
+                    fontWeight:'700',
+                    fontFamily: Fonts.Roboto_Bold,
                     color: color.BLACK,
                   }}>
                   18.500 Coins
@@ -273,7 +264,7 @@ const Product = ({navigation, onPressProducts}) => {
               <Text
                 style={{
                   fontSize: 10,
-                  fontFamily: Fonts.Work_SemiBold,
+                  fontFamily: Fonts.Roboto_Regular,
                   color: color.TEXT_SECOND,
                 }}>
                 My Coin
@@ -283,7 +274,6 @@ const Product = ({navigation, onPressProducts}) => {
           <View
             style={{
               height: 48,
-
               justifyContent: 'center',
             }}>
             <View
@@ -314,7 +304,7 @@ const Product = ({navigation, onPressProducts}) => {
               </Text>
               <View
                 style={{
-                  marginLeft: 10,
+                  marginLeft: 12,
                   height: '100%',
                   alignItems: 'center',
                   flexDirection: 'row',
@@ -372,7 +362,7 @@ const Product = ({navigation, onPressProducts}) => {
           {flashSaleLoading ? (
             <ActivityIndicator size="large" color={colorsPES.borderColorBlue} />
           ) : (
-            <View>
+            <View style={{paddingHorizontal:10}}>
               <FlatList
                 pagingEnabled
                 data={flashSaleProducts}
@@ -394,7 +384,7 @@ const Product = ({navigation, onPressProducts}) => {
             backgroundColor: 'white',
             marginTop: 10,
             justifyContent: 'center',
-            paddingHorizontal: 5,
+            paddingHorizontal: 10,
           }}>
           <Text
             style={{
@@ -417,8 +407,6 @@ const Product = ({navigation, onPressProducts}) => {
           }}>
           <PESCategories />
         </View>
-
-        
         {productLoading ? (
           <ActivityIndicator size="large" color={colorsPES.borderColorBlue} />
         ) : (
@@ -440,8 +428,8 @@ const styles = StyleSheet.create({
 
   SearchStyles: {
     height: 54,
+    width:'100%',
     position: 'absolute',
-    width: '100%',
     top: 0,
     marginTop: StatusBar.currentHeight,
     flexDirection: 'row',
@@ -451,7 +439,7 @@ const styles = StyleSheet.create({
   },
 
   customSearch: {
-    width: '88%',
+    width: '90%',
     height: 35,
     paddingHorizontal: 10,
     flexDirection: 'row',

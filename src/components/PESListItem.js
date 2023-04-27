@@ -42,32 +42,31 @@ const PESListItem = props => {
         </View>
       </View>
       {/* Title với About */}
+      <View style={{paddingVertical:4, paddingHorizontal: 8}}>
       <View
         style={{
-          marginTop: 6,
-          paddingHorizontal: 6,
-          height: 69,
-          justifyContent: 'space-evenly',
+          marginTop: 8,
         }}>
         <Text numberOfLines={1} style={styles.textName}>
           {item.name}
         </Text>
-        {/* Price */}
-        <View style={{flexDirection: 'row',  justifyContent: 'space-between'}}>
+      </View>
+       {/* Price */}
+       <View style={{ marginTop:8 }}>
           <Text style={styles.textPrice}>{formatPrice(price)}</Text>
           <Text
             style={{
-              fontSize: 10,
-              fontFamily: Fonts.Work_SemiBold,
+              fontSize: 12,
+              fontFamily: Fonts.Roboto_Medium,
+              color:color.BLACK,
               fontWeight: '100',
-              
-     
               textAlignVertical: 'bottom'
             }}>
-            {item.sold} sold
+            {item.sold} đã bán
           </Text>
         </View>
       </View>
+
     </TouchableOpacity>
   );
 };
@@ -93,10 +92,8 @@ const styles = StyleSheet.create({
   Container: {
     flex: 0.5,
     backgroundColor: color.WHITE,
-    height: 230,
     flexDirection: 'column',
-    marginLeft: 5,
-    marginBottom: 5
+    margin:4
   },
   headerContainer: {
     flexDirection: 'row',
@@ -129,9 +126,9 @@ const styles = StyleSheet.create({
   },
   textName: {
     textTransform: 'capitalize',
-    fontSize: 15,
-    fontFamily: Fonts.Work_SemiBold,
-    fontWeight: 'bold'
+    fontSize: 14,
+    fontFamily: Fonts.Roboto_Medium,
+    color:color.BLACK
   },
   textAbout: {
     marginTop: 4,

@@ -41,11 +41,12 @@ const PESListFlashSale = props => {
           <Text style={styles.txtSale}>{item.sale}%</Text>
         </View>
       </View>
-      <View style={{alignItems: 'center'}}>
+      <View style={{marginTop:4}}>
         <Text style={styles.textPrice}>{formatPrice(price)}</Text>
       </View>
       <View
         style={{
+          marginTop:4,
           backgroundColor: 'pink',
           height: 15,
           width: 130,
@@ -67,7 +68,7 @@ const PESListFlashSale = props => {
         <Text
           style={{
             fontSize: 10,
-            fontFamily: Fonts.Work_SemiBold,
+            fontFamily: Fonts.R,
             color: 'white',
             fontWeight: 'bold',
             position: 'relative',
@@ -103,7 +104,6 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     borderRadius: 1,
-
     width: 150,
     height: 210,
     margin: 2.5,
@@ -144,9 +144,9 @@ const styles = StyleSheet.create({
   },
   textPrice: {
     fontSize: 16,
-    fontFamily: Fonts.Work_SemiBold,
-    alignContent: 'center',
+    fontFamily: Fonts.Roboto_Bold,
     color: color.MAIN,
+    fontWeight:'700'
   },
   imgContainer: {
     width: '50%',
