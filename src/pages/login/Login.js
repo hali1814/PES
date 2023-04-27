@@ -79,7 +79,7 @@ const Login = props => {
       // uid, email, nickName, avatar
       console.log(data.uid, data.email, data.nickName, data.photoURL)
       onLoginGG(data.uid, data.email, data.displayName, data.photoURL)
-      
+
     }
       ,
     );
@@ -177,7 +177,7 @@ const Login = props => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={colorsPES.white} />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}> Nhập số điện thoại</Text>
+        <Text style={styles.title}>{'Nhập số điện thoại'}</Text>
       </View>
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcome}>
@@ -210,14 +210,14 @@ const Login = props => {
           }}
         />
       </View>
-      <Text style={{color: 'red', fontSize: 14, fontFamily: Fonts.Man_Medium}}>
+      <Text style={{color: 'red', fontSize: 14, fontFamily: Fonts.Roboto_Medium}}>
         {errorPhoneNumber}
       </Text>
       <View style={styles.InputContainerMK}>
         <TextInput
           style={{
             width: '80%',
-            fontFamily: Fonts.Man_Medium,
+            fontFamily: Fonts.Roboto_Medium,
             fontSize: 14,
           }}
           placeholder="Nhập mật khẩu"
@@ -234,37 +234,10 @@ const Login = props => {
           }}
         />
       </View>
-      <Text style={{color: 'red', fontSize: 14, fontFamily: Fonts.Man_Medium}}>
+      <View style={{justifyContent:'space-between',flexDirection:'row'}}>
+      <Text style={{ marginTop:4, width:'65%', color: 'red', fontSize: 14, fontFamily: Fonts.Roboto_Medium}}>
         {errorPassword}
       </Text>
-      <View style={styles.socialLoginContainer}>
-        <TouchableOpacity onPress={onLoginGoogle} style={styles.googleLogin}>
-          <Image style={{width: 18, height: 18}} source={icons.googleIcon} />
-          <View style={{height: 20, marginLeft: 8}}>
-            <Text
-              style={{
-                fontFamily: Fonts.Man_Regular,
-                fontSize: 15,
-                color: color.MAIN,
-              }}>
-              {'Google'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.googleLogin}>
-          <Image style={{width: 18, height: 18}} source={icons.facebookIcon} />
-          <View style={{height: 20, marginLeft: 8}}>
-            <Text
-              style={{
-                fontFamily: Fonts.Man_Regular,
-                fontSize: 15,
-                color: color.MAIN,
-              }}>
-              {'Facebook'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
       <TouchableOpacity
         onPress={() => {
           navigation.push('');
@@ -272,13 +245,9 @@ const Login = props => {
         style={styles.registerContainer}>
         <Text style={styles.registerText}>{'Quên mật khẩu?'}</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.push('Register');
-        }}
-        style={styles.registerContainer}>
-        <Text style={styles.registerText}>{'Đăng ký tài khoản mới'}</Text>
-      </TouchableOpacity>
+      </View>
+
+      <View>
       <TouchableOpacity
         disabled={isValidationOK() == false}
         style={[
@@ -293,6 +262,23 @@ const Login = props => {
         onPress={login}>
         <Text style={styles.loginText}>{'Đăng nhập'}</Text>
       </TouchableOpacity>
+      </View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.push('Register');
+        }}
+        style={styles.newAccout}>
+        <Text style={styles.registerText}>{'Đăng ký tài khoản mới'}</Text>
+      </TouchableOpacity>
+
+      <View style={styles.socialLoginContainer}>
+        <TouchableOpacity onPress={onLoginGoogle} style={styles.facebookLogin}>
+          <Image style={{width: 18, height: 18}} source={icons.googleIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.facebookLogin}>
+          <Image style={{width: 24, height: 24}} source={icons.facebookIcon} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.termContainer}>
         <Text style={styles.termText}>
           {
@@ -354,55 +340,45 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 8,
-    borderRadius: 5,
+    marginTop: 54,
+    borderRadius: 60,
   },
 
   registerText: {
-    fontFamily: Fonts.Man_Bold,
+    fontFamily: Fonts.Roboto_Bold,
+    fontWeight:'700',
     fontSize: 14,
     color: colorsPES.borderColorBlue,
   },
 
   registerContainer: {
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 8,
+    marginTop:4,
+    alignItems:'flex-end'
+  },
+  newAccout: {
+    marginTop:24,
+    alignItems:'center'
   },
 
   facebookLogin: {
-    width: 157.5,
-    height: 44,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
     borderWidth: 1,
+    width:44,
+    height:44,
+    padding:12,
+    borderRadius:360,
     borderColor: colorsPES.borderColorBlue,
-    borderRadius: 8,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft:12
   },
 
-  googleLogin: {
-    width: 157.5,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    height: 49,
-    borderWidth: 1,
-    borderColor: colorsPES.borderColorBlue,
-    borderRadius: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
 
   socialLoginContainer: {
-    marginTop: 50,
-    width: '100%',
-    height: 44,
+    width: '97%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    alignItems:'center',
+    justifyContent:'center',
+    marginTop:300,
   },
 
   InputContainer: {
@@ -420,8 +396,7 @@ const styles = StyleSheet.create({
   InputContainerMK: {
     width: '100%',
     height: 44,
-    marginTop: 12,
-    marginBottom: 6,
+    marginTop: 8,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -431,7 +406,7 @@ const styles = StyleSheet.create({
   },
 
   welcome: {
-    fontWeight: '400',
+    fontFamily:Fonts.Roboto_Regular,
     fontSize: 14,
     color: color.TEXT_PRIMARY,
   },
@@ -442,18 +417,19 @@ const styles = StyleSheet.create({
   },
 
   titleContainer: {
-    marginTop: 24,
+    marginTop: 44,
   },
 
   title: {
-    fontFamily: Fonts.Man_ExtraBold,
-    fontSize: 20,
+    fontFamily: Fonts.Roboto_Bold,
+    fontWeight:'700',
+    fontSize: 24,
     color: color.TEXT_PRIMARY,
   },
 
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     paddingTop: 16,
     backgroundColor: colorsPES.white,
   },
